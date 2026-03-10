@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+
+  // ===============================================
+  // Custom Instructions (Local Override)
+  // ===============================================
+  // Uncomment and customize to add personal preferences
+  // that override the team settings
+  //
+  // "customInstructions": "My personal preferences:\n- Always use verbose output\n- Prefer detailed explanations",
+
+  "permissions": {
+    "allow": [
+      // ===============================================
+      // Local Permission Overrides (Example File)
+      // ===============================================
+      // Copy this file to settings.local.json and customize
+      // settings.local.json is gitignored and won't be committed
+      //
+      // Use this for:
+      // - Personal workflow preferences
+      // - Machine-specific paths
+      // - More permissive rules you trust locally
+      //
+      // ===============================================
+
+      // Example: Auto-approve git push (if you trust yourself)
+      // "Bash(git push *)",
+
+      // Example: Allow destructive docker operations
+      // "Bash(docker rm *)",
+      // "Bash(docker rmi *)",
+      // "Bash(docker system prune *)",
+
+      // Example: Allow reading sensitive files (use carefully!)
+      // "Read(.env)",
+      // "Read(.env.*)",
+
+      // Example: Complex chained commands
+      // "Bash(source .venv/bin/activate && python -m pytest * && python scripts/*)",
+
+      // Example: Allow sudo (use with extreme caution!)
+      // "Bash(sudo *)",
+
+      // Example: Allow removing files
+      // "Bash(rm *)",
+
+      // Example: Machine-specific paths
+      // "Read(~/my-custom-config.yaml)",
+      // "Bash(~/my-scripts/*)"
+    ],
+
+    "deny": [
+      // Example: Block specific operations even if allowed in settings.json
+      // "Bash(git push origin main)",
+      // "Bash(docker rm prod-*)"
+    ],
+
+    "ask": [
+      // Example: Override 'allow' rules to require confirmation
+      // "Bash(make deploy)"
+    ]
+  },
+
+  // ===============================================
+  // Other Local Settings Examples
+  // ===============================================
+
+  // IDE integration settings
+  // "ide": {
+  //   "enabled": true,
+  //   "features": {
+  //     "applyDiff": true,
+  //     "openFile": true
+  //   }
+  // },
+
+  // Custom instructions for Claude
+  // "customInstructions": "Always use type hints in Python code",
+
+  // Default model preference
+  // "defaultModel": "claude-opus-4",
+
+  // Memory settings
+  // "memory": {
+  //   "enabled": true
+  // }
+}

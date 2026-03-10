@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+
+  "customInstructions": "## Critical Behavior (Always Follow)\n\n### 1. Task Runner Preference\n**ALWAYS prefer `mise run <task>` over direct bash/python commands**\n- Mise automatically handles virtualenv activation\n- ✅ CORRECT: `mise run tests-cov`\n- ❌ WRONG: `python -m pytest tests/`\n- See all tasks: `mise tasks`\n\n### 2. Python Virtual Environment\n- Project uses `.venv/` virtualenv (Python 3.13+)\n- If not using mise, activate first:\n  - ✅ CORRECT: `bash -c 'source .venv/bin/activate && python -m pytest tests/'`\n  - ❌ WRONG: `python -m pytest tests/` (fails without virtualenv)\n\n### 3. Common Tasks (Quick Reference)\n- Tests with coverage: `mise run tests-cov`\n- Coverage report: `mise run coverage-report`\n- Coverage analysis: `mise run coverage-analyze`\n- Generate changelog: `mise run changelog`\n- Generate SDK: `mise run generate-client`\n\n### 4. Code Quality Standards\n- Coverage target: ≥80% per file\n- Follow PEP 8 for Python\n- No emojis unless requested\n- Run coverage after code changes\n\n### 5. Git Workflow\n- Main branch: `main`\n- Create feature branches\n- Generate changelog before PRs: `mise run changelog`",
+
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest *)",
+      "Bash(python3 -m pytest *)",
+      "Bash(pytest *)",
+      "Bash(coverage *)",
+      "Bash(python -m coverage *)",
+
+      "Bash(source .venv/bin/activate)",
+      "Bash(source .venv/bin/activate && *)",
+      "Bash(.venv/bin/python3:*)",
+
+      "Bash(python scripts/*)",
+      "Bash(python3 scripts/*)",
+      "Bash(./scripts/*.sh)",
+      "Bash(bash scripts/*)",
+
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git branch *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+
+      "Bash(docker build *)",
+      "Bash(docker run *)",
+      "Bash(docker ps *)",
+      "Bash(docker images *)",
+      "Bash(docker pull *)",
+      "Bash(docker exec *)",
+
+      "Bash(make *)",
+      "Bash(mise *)",
+      "Bash(mise run *)",
+
+      "Bash(pip install *)",
+      "Bash(pip list *)",
+      "Bash(pip show *)",
+      "Bash(python -m pip *)",
+      "Bash(python3 -m pip *)",
+
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(wc *)",
+      "Bash(find *)",
+      "Bash(grep *)",
+      "Bash(awk *)",
+      "Bash(sed *)",
+      "Bash(sort *)",
+      "Bash(uniq *)",
+      "Bash(pwd)",
+      "Bash(which *)",
+      "Bash(echo *)",
+      "Bash(cd *)",
+      "Bash(tree *)",
+
+      "Bash(mkdir *)",
+      "Bash(touch *)",
+      "Bash(chmod +x *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+
+      "Bash(* --version)",
+      "Bash(* --help)",
+      "Bash(* -v)",
+      "Bash(* -h)",
+
+      "Read",
+
+      "Edit(/src/**)",
+      "Edit(/tests/**)",
+      "Edit(/scripts/**)",
+      "Edit(/docs/**)",
+      "Edit(/changelog/**)",
+      "Edit(*.md)",
+      "Edit(*.py)",
+      "Edit(*.sh)",
+      "Edit(*.toml)",
+      "Edit(*.yaml)",
+      "Edit(*.yml)",
+      "Edit(*.json)",
+      "Edit(Makefile*)",
+      "Edit(Dockerfile*)",
+
+      "Write(/src/**)",
+      "Write(/tests/**)",
+      "Write(/scripts/**)",
+      "Write(/docs/**)",
+      "Write(/changelog/**)"
+    ],
+
+    "deny": [
+      "Bash(git push --force *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean -fd *)",
+      "Bash(git branch -D *)",
+
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(//etc/passwd)",
+      "Read(//etc/shadow)",
+      "Read(~/.ssh/id_*)",
+      "Read(~/.aws/credentials)",
+
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(.git/**)",
+      "Edit(.gitignore)",
+
+      "Bash(rm -rf *)",
+      "Bash(rm -r *)",
+      "Bash(sudo *)",
+      "Bash(su *)",
+      "Bash(dd *)",
+      "Bash(mkfs *)",
+      "Bash(format *)",
+
+      "Bash(docker system prune *)",
+      "Bash(docker volume prune *)",
+      "Bash(docker network prune *)"
+    ],
+
+    "ask": [
+      "Bash(git push *)",
+
+      "Bash(docker rm *)",
+      "Bash(docker rmi *)",
+      "Bash(docker stop *)",
+
+      "Bash(rm *)"
+    ]
+  }
+}
