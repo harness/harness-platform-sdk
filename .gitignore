@@ -136,3 +136,5 @@ settings.local.json
 context_history
 .ai
 .claude/skills
+.claude/skills-manifest.json
+rendered
