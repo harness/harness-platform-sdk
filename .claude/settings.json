@@ -16,9 +16,12 @@
       "Bash(.venv/bin/python3:*)",
 
       "Bash(python scripts/*)",
+      "Bash(python -c *)",
+      "Bash(python3 *)",
       "Bash(python3 scripts/*)",
       "Bash(./scripts/*.sh)",
       "Bash(bash scripts/*)",
+      "Bash(datamodel-codegen *)",
 
       "Bash(git status *)",
       "Bash(git diff *)",
@@ -64,6 +67,7 @@
       "Bash(tree *)",
 
       "Bash(mkdir *)",
+      "Bash(mkdir -p *)",
       "Bash(touch *)",
       "Bash(chmod +x *)",
       "Bash(cp *)",

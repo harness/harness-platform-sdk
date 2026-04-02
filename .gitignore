@@ -138,3 +138,6 @@ context_history
 .claude/skills
 .claude/skills-manifest.json
 rendered
+
+# large JSON file, derived artifact from the YAML — regenerated on every pipeline run; no need to track it
+openapi/harness-openapi-normalized.json
