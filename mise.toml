@@ -1,0 +1,23 @@
+[tasks]
+
+# OpenAPI spec management tasks
+fetch-spec = "echo 'Placeholder: fetch OpenAPI spec from Harness'"
+normalize-spec = "echo 'Placeholder: normalize OpenAPI spec'"
+convert-spec = "echo 'Placeholder: convert spec to OpenAPI 3.0'"
+
+# Model generation tasks (populated in Branch 3)
+generate-models = "echo 'Placeholder: generate models from OpenAPI spec'"
+sort-models = "echo 'Placeholder: sort generated models'"
+
+# Combined regeneration task
+regenerate = ["fetch-spec", "normalize-spec", "convert-spec", "generate-models", "sort-models"]
+
+# Testing tasks
+tests = "pytest tests/"
+tests-cov = "pytest --cov=src/harness_python_sdk --cov-report=term-missing tests/"
+tests-watch = "pytest-watch tests/ -- -v"
+
+# Development utilities
+lint = "black src/ tests/ && isort src/ tests/"
+type-check = "mypy src/harness_python_sdk"
+clean = "rm -rf .pytest_cache dist build *.egg-info .coverage"
