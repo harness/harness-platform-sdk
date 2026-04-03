@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-04-03
+
+### Added
+
+- **Configurable Base URL** — HarnessClient now supports custom Harness instances
+  - `base_url` kwarg in `HarnessClient.__init__()` for convenient construction
+  - `base_url` property (getter/setter) for runtime updates
+  - Setter atomically closes old session and opens new one with updated URL
+  - Default remains `https://app.harness.io` for backward compatibility
+  - Supports both kwarg and explicit config construction patterns
+
+### Changed
+
+- **Internal refactoring:** Extracted `_build_http_client()` helper to support base URL updates
+- No breaking changes to existing public API
+
+### Testing
+
+- Added 7 new test cases covering:
+  - Construction with `base_url` kwarg (with/without defaults)
+  - Explicit config with `base_url`
+  - Base URL property getter and setter behavior
+  - Session lifecycle on URL changes (no leaks)
+  - Multi-reassignment scenarios
+- **Coverage:** 89.67% (maintained above 85% target) ✅
+
+---
+
 ## [0.1.0] - 2026-04-03
 
 ### Added
@@ -82,10 +110,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
-| Version | Branch | Status | Release Date |
-|---------|--------|--------|--------------|
+| Version | Feature | Status | Release Date |
+|---------|---------|--------|--------------|
 | 0.0.1 | 1: Spec Analysis Spike | ✅ Complete | 2026-04-02 |
 | 0.1.0 | 2: Core Client | ✅ Complete | 2026-04-03 |
+| 0.1.1 | 2.1: Configurable Base URL | ✅ Complete | 2026-04-03 |
 | 0.2.0 | 3: Model Generation Pipeline | 🔲 Planned | TBD |
 | 0.3.0 | 4: Domain APIs | 🔲 Planned | TBD |
 | 1.0.0 | 5: Test Suite Hardening | 🔲 Planned | TBD |

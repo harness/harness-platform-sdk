@@ -84,3 +84,23 @@ class TestClientLifecycle:
 
         client1.close()
         client2.close()
+
+    def test_base_url_setter_no_session_leak(self):
+        """Test that base_url setter twice does not leak sessions."""
+        client = HarnessClient(api_key="key", account_id="acc")
+
+        # Set base_url first time
+        first_client = client._http_client
+        client.base_url = "https://my.harness.io"
+        assert first_client.is_closed
+
+        # Set base_url second time
+        second_client = client._http_client
+        client.base_url = "https://another.harness.io"
+        assert second_client.is_closed
+
+        # Final client should be open
+        assert not client._http_client.is_closed
+        assert client.base_url == "https://another.harness.io"
+
+        client.close()

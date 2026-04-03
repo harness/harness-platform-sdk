@@ -50,6 +50,7 @@ class HarnessClient:
         account_id: str | None = None,
         default_org: str | None = None,
         default_project: str | None = None,
+        base_url: str | None = None,
     ):
         """Initialize HarnessClient.
 
@@ -59,26 +60,24 @@ class HarnessClient:
             account_id: Account ID (used if config not provided).
             default_org: Default organization for scope resolution.
             default_project: Default project for scope resolution.
+            base_url: Base URL for Harness API (used if config not provided).
         """
         if config is None:
             if api_key is None or account_id is None:
                 raise ValueError("Either config or (api_key, account_id) required")
-            self._config = HarnessConfig(api_key=api_key, account_id=account_id)
+            config_kwargs = {"api_key": api_key, "account_id": account_id}
+            if base_url is not None:
+                config_kwargs["base_url"] = base_url
+            self._config = HarnessConfig(**config_kwargs)
         else:
-            self._config = config
+            # If base_url kwarg is provided, it takes precedence over config's value
+            if base_url is not None:
+                self._config = config.model_copy(update={"base_url": base_url})
+            else:
+                self._config = config
 
         # Build HTTP client with retry transport
-        transport = httpx.HTTPTransport(retries=self._config.max_retries)
-        self._http_client = httpx.Client(
-            base_url=self._config.base_url,
-            timeout=self._config.timeout,
-            transport=transport,
-            headers={
-                "x-api-key": self._config.api_key,
-                "Content-Type": "application/json",
-            },
-            verify=self._config.verify_ssl,
-        )
+        self._http_client = self._build_http_client()
 
         # Set up default scope
         self._default_scope = Scope(
@@ -96,6 +95,24 @@ class HarnessClient:
         self.close()
         return False
 
+    def _build_http_client(self) -> httpx.Client:
+        """Build and return a new httpx.Client with current config.
+
+        Returns:
+            A new httpx.Client configured with current settings.
+        """
+        transport = httpx.HTTPTransport(retries=self._config.max_retries)
+        return httpx.Client(
+            base_url=self._config.base_url,
+            timeout=self._config.timeout,
+            transport=transport,
+            headers={
+                "x-api-key": self._config.api_key,
+                "Content-Type": "application/json",
+            },
+            verify=self._config.verify_ssl,
+        )
+
     def close(self):
         """Close the underlying HTTP client."""
         if self._http_client:
@@ -107,6 +124,24 @@ class HarnessClient:
             f"HarnessClient(account_id={self._config.account_id!r}, "
             f"base_url={self._config.base_url!r})"
         )
+
+    @property
+    def base_url(self) -> str:
+        """Get the base URL for the Harness API."""
+        return self._config.base_url
+
+    @base_url.setter
+    def base_url(self, value: str) -> None:
+        """Set the base URL for the Harness API.
+
+        Closes the existing httpx session and opens a new one with the updated URL.
+
+        Args:
+            value: New base URL for the Harness API.
+        """
+        self.close()
+        self._config = self._config.model_copy(update={"base_url": value})
+        self._http_client = self._build_http_client()
 
     def set_default_scope(self, org: str | None = None, project: str | None = None):
         """Update the default scope for requests.

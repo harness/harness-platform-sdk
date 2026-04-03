@@ -73,6 +73,33 @@ class TestHarnessClientConstruction:
         assert client._default_scope.project == "proj-456"
         client.close()
 
+    def test_client_construction_with_base_url_kwarg(self):
+        """Test creating client with base_url kwarg."""
+        client = HarnessClient(
+            api_key="key",
+            account_id="acc",
+            base_url="https://my.harness.io",
+        )
+        assert client.base_url == "https://my.harness.io"
+        client.close()
+
+    def test_client_construction_without_base_url_kwarg(self):
+        """Test creating client without base_url defaults to app.harness.io."""
+        client = HarnessClient(api_key="key", account_id="acc")
+        assert client.base_url == "https://app.harness.io"
+        client.close()
+
+    def test_client_construction_with_explicit_config_base_url(self):
+        """Test creating client with explicit config containing base_url."""
+        config = HarnessConfig(
+            api_key="key",
+            account_id="acc",
+            base_url="https://custom.harness.io",
+        )
+        client = HarnessClient(config=config)
+        assert client.base_url == "https://custom.harness.io"
+        client.close()
+
     def test_client_repr_no_api_key(self):
         """Test that client repr does not contain API key."""
         client = HarnessClient(api_key="secret-key-12345", account_id="acc")
@@ -105,6 +132,46 @@ class TestHarnessClientLifecycle:
         client = HarnessClient(api_key="key", account_id="acc")
         client.close()
         client.close()  # Should not raise
+
+    def test_base_url_setter_updates_value(self):
+        """Test that setting base_url updates the property."""
+        client = HarnessClient(api_key="key", account_id="acc")
+        assert client.base_url == "https://app.harness.io"
+        client.base_url = "https://my.harness.io"
+        assert client.base_url == "https://my.harness.io"
+        client.close()
+
+    def test_base_url_setter_closes_old_session(self):
+        """Test that setting base_url closes the old httpx session."""
+        client = HarnessClient(api_key="key", account_id="acc")
+        old_http_client = client._http_client
+        old_client_id = id(old_http_client)
+
+        # Set new base_url
+        client.base_url = "https://my.harness.io"
+
+        # New session should be different
+        new_http_client = client._http_client
+        new_client_id = id(new_http_client)
+        assert old_client_id != new_client_id
+
+        # Old client should be closed
+        assert old_http_client.is_closed
+        # New client should be open
+        assert not new_http_client.is_closed
+
+        client.close()
+
+    def test_base_url_setter_creates_new_session(self):
+        """Test that base_url setter creates a new working session."""
+        client = HarnessClient(api_key="key", account_id="acc")
+        client.base_url = "https://my.harness.io"
+
+        # Session should be usable (not closed)
+        assert not client._http_client.is_closed
+        assert client.base_url == "https://my.harness.io"
+
+        client.close()
 
 
 class TestScopeResolution:
