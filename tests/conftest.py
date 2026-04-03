@@ -1,3 +1,4 @@
+# GENERATED — do not edit. Run mise run regenerate to update.
 """
 Pytest configuration and fixtures for all test suites.
 """

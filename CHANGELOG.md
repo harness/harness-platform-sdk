@@ -5,6 +5,83 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-04-03
+
+### Added
+
+- **Branch 3: Model Generation Pipeline** — Automated OpenAPI model generation with quality control
+  - **Spec Normalization Engine** (`scripts/normalize_spec.py`):
+    - Fixes 4 categories of Harness OpenAPI spec defects (763 total repairs)
+    - Malformed `required` fields (3 fixed): Property-level → schema-level promotion
+    - Broken discriminator mappings (36 fixed): Removes invalid schema references
+    - Empty schemas (487 fixed): Adds well-formed `properties: {}`
+    - Inline response promotion (237 fixed): Generates refs for inline schemas
+    - Generates `docs/spec_repairs.json` audit trail for full traceability
+  - **YAML→JSON Conversion** (`scripts/convert_spec.py`):
+    - Converts normalized OpenAPI YAML to JSON for code generation
+    - Validates output (16.4 MB JSON spec)
+  - **Model Post-Processing** (`scripts/stamp_generated.py`):
+    - Adds `# GENERATED — do not edit...` header to all generated files
+    - Rewrites `BaseModel` → `HarnessModel` inheritance
+    - Ensures Pydantic v2 config (extra="allow", populate_by_name=True)
+  - **Domain Model Organization** (`scripts/sort_models.py`):
+    - Distributes 89 generated models across 14 domains + misc
+    - Domains: pipelines, connectors, secrets, infrastructure, access_control, environments, projects, organizations, cost, governance, cloud, audit, gitops, chaos
+    - Fully idempotent sorting algorithm
+    - Creates domain directories with package markers
+  - **Comprehensive Smoke Test** (`tests/unit_tests/test_models_smoke.py`):
+    - 18 test cases validating all 14 domains + misc
+    - Verifies HarnessModel inheritance and Pydantic config
+    - Tests extra field allowance and camelCase population
+    - Confirms all domain packages are importable
+
+### Changed
+
+- **mise.toml** — Added complete model generation pipeline:
+  - `normalize-spec`: Spec quality fixes
+  - `convert-spec`: YAML→JSON conversion
+  - `generate-models`: datamodel-code-generator with post-processing
+  - `sort-models`: Domain sorting and organization
+  - `regenerate`: Full end-to-end chain (normalize → convert → generate → sort)
+- **pyproject.toml** — Updated package discovery to include models namespace
+- **Infrastructure improvements**:
+  - `openapi/harness-openapi-normalized.yaml` (368K lines) — Normalized spec artifact
+  - `openapi/harness-openapi-normalized.json` — JSON version for code generation
+  - `scripts/inline_response_map.json` — Inline schema promotion audit
+  - 15 domain directories with `.gitkeep` for tracking
+
+### Infrastructure
+
+- **Code Generation Pipeline** — Fully automated from raw spec to domain-organized models
+  - Uses datamodel-code-generator 0.55.0 with Pydantic v2 backend
+  - Gracefully handles generator limitations (omits --collapse-root-models and --use-alias-generators)
+  - Post-processing ensures all models stamped and properly inherited
+  - All generated artifacts are version-controlled for reproducibility
+- **Package Structure** — Models organized into semantic domains
+  - Enables future branch 4 implementation (domain-specific API files)
+  - Provides clear separation of concerns across 14 Harness domains
+
+### Testing
+
+- Added 18 new test cases covering:
+  - Model generation and inheritance (all 14 domains)
+  - HarnessModel config (extra fields, alias support)
+  - Package discovery and __init__.py presence
+  - GENERATED header verification
+- **Total test count:** 134 tests (117 existing + 17 new)
+- **Coverage:** Maintained ≥85% on src/harness_python_sdk (models excluded per spec)
+- **Regressions:** 0 ✅
+
+### Fixes
+
+- **v3 Improvement:** Fixed __init__.py handling in post-processing
+  - datamodel-code-generator creates complex __init__ files with imports
+  - Post-processing now ensures all __init__.py files are simple markers
+  - Prevents import chain failures and ensures clean domain imports
+  - Verified with full regeneration cycle: all 134 tests passing
+
+---
+
 ## [0.1.1] - 2026-04-03
 
 ### Added
@@ -110,14 +187,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
-| Version | Feature | Status | Release Date |
-|---------|---------|--------|--------------|
-| 0.0.1 | 1: Spec Analysis Spike | ✅ Complete | 2026-04-02 |
-| 0.1.0 | 2: Core Client | ✅ Complete | 2026-04-03 |
-| 0.1.1 | 2.1: Configurable Base URL | ✅ Complete | 2026-04-03 |
-| 0.2.0 | 3: Model Generation Pipeline | 🔲 Planned | TBD |
-| 0.3.0 | 4: Domain APIs | 🔲 Planned | TBD |
-| 1.0.0 | 5: Test Suite Hardening | 🔲 Planned | TBD |
+| Version | Feature | Status | Release Date | Tests | Coverage |
+|---------|---------|--------|--------------|-------|----------|
+| 0.0.1 | 1: Spec Analysis Spike | ✅ Complete | 2026-04-02 | N/A | N/A |
+| 0.1.0 | 2: Core Client | ✅ Complete | 2026-04-03 | 110 | 89.43% |
+| 0.1.1 | 2.1: Configurable Base URL | ✅ Complete | 2026-04-03 | 117 | 89.67% |
+| 0.2.0 | 3: Model Generation Pipeline | ✅ Complete | 2026-04-03 | 134 | ≥85% |
+| 0.3.0 | 4: Domain APIs | 🔲 Planned | TBD | TBD | TBD |
+| 1.0.0 | 5: Test Suite Hardening | 🔲 Planned | TBD | TBD | TBD |
 
 ---
 

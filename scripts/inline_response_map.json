@@ -1,0 +1,950 @@
+{
+  "get-role-assignments-count_200_Response": {
+    "operation_id": "get-role-assignments-count",
+    "status_code": "200"
+  },
+  "get-roles-count_200_Response": {
+    "operation_id": "get-roles-count",
+    "status_code": "200"
+  },
+  "credits-overusage_400_Response": {
+    "operation_id": "credits-overusage",
+    "status_code": "400"
+  },
+  "get-license-type_400_Response": {
+    "operation_id": "get-license-type",
+    "status_code": "400"
+  },
+  "get-devops-essentials-license_400_Response": {
+    "operation_id": "get-devops-essentials-license",
+    "status_code": "400"
+  },
+  "delete-account-scoped-certificate_400_Response": {
+    "operation_id": "delete-account-scoped-certificate",
+    "status_code": "400"
+  },
+  "delete-org-scoped-certificate_400_Response": {
+    "operation_id": "delete-org-scoped-certificate",
+    "status_code": "400"
+  },
+  "delete-project-scoped-certificate_400_Response": {
+    "operation_id": "delete-project-scoped-certificate",
+    "status_code": "400"
+  },
+  "delete-environment_400_Response": {
+    "operation_id": "delete-environment",
+    "status_code": "400"
+  },
+  "delete-environment_400_Response_1": {
+    "operation_id": "delete-environment",
+    "status_code": "400"
+  },
+  "delete-org-scoped-environment_400_Response": {
+    "operation_id": "delete-org-scoped-environment",
+    "status_code": "400"
+  },
+  "delete-org-scoped-environment_400_Response_1": {
+    "operation_id": "delete-org-scoped-environment",
+    "status_code": "400"
+  },
+  "delete-account-scoped-environment_400_Response": {
+    "operation_id": "delete-account-scoped-environment",
+    "status_code": "400"
+  },
+  "delete-account-scoped-environment_400_Response_1": {
+    "operation_id": "delete-account-scoped-environment",
+    "status_code": "400"
+  },
+  "delete-infrastructure_400_Response": {
+    "operation_id": "delete-infrastructure",
+    "status_code": "400"
+  },
+  "delete-infrastructure_400_Response_1": {
+    "operation_id": "delete-infrastructure",
+    "status_code": "400"
+  },
+  "delete-org-scoped-infrastructure_400_Response": {
+    "operation_id": "delete-org-scoped-infrastructure",
+    "status_code": "400"
+  },
+  "delete-org-scoped-infrastructure_400_Response_1": {
+    "operation_id": "delete-org-scoped-infrastructure",
+    "status_code": "400"
+  },
+  "delete-account-scoped-infrastructure_400_Response": {
+    "operation_id": "delete-account-scoped-infrastructure",
+    "status_code": "400"
+  },
+  "delete-account-scoped-infrastructure_400_Response_1": {
+    "operation_id": "delete-account-scoped-infrastructure",
+    "status_code": "400"
+  },
+  "export-license-usage-activity_400_Response": {
+    "operation_id": "export-license-usage-activity",
+    "status_code": "400"
+  },
+  "credits-allocation-export-data_400_Response": {
+    "operation_id": "credits-allocation-export-data",
+    "status_code": "400"
+  },
+  "license-usage-activity_400_Response": {
+    "operation_id": "license-usage-activity",
+    "status_code": "400"
+  },
+  "get-sync-data-collection-result_400_Response": {
+    "operation_id": "get-sync-data-collection-result",
+    "status_code": "400"
+  },
+  "delete-account-scoped-banner_400_Response": {
+    "operation_id": "delete-account-scoped-banner",
+    "status_code": "400"
+  },
+  "get-v1-devSubscriptions_200_Response": {
+    "operation_id": "get-v1-devSubscriptions",
+    "status_code": "200"
+  },
+  "get-v1-moduleLicenseUtilization_200_Response": {
+    "operation_id": "get-v1-moduleLicenseUtilization",
+    "status_code": "200"
+  },
+  "get-v1-listPrincipalsWithAccess_200_Response": {
+    "operation_id": "get-v1-listPrincipalsWithAccess",
+    "status_code": "200"
+  },
+  "post-v1-listPrincipalsWithAccess_200_Response": {
+    "operation_id": "post-v1-listPrincipalsWithAccess",
+    "status_code": "200"
+  },
+  "get-v1-dailyModuleAccountAccess_200_Response": {
+    "operation_id": "get-v1-dailyModuleAccountAccess",
+    "status_code": "200"
+  },
+  "get-v1-moduleAccess_200_Response": {
+    "operation_id": "get-v1-moduleAccess",
+    "status_code": "200"
+  },
+  "zoomOauthTokenGenerate_200_Response": {
+    "operation_id": "zoomOauthTokenGenerate",
+    "status_code": "200"
+  },
+  "delete-notification-channel_400_Response": {
+    "operation_id": "delete-notification-channel",
+    "status_code": "400"
+  },
+  "delete-notification-rule_400_Response": {
+    "operation_id": "delete-notification-rule",
+    "status_code": "400"
+  },
+  "delete-notification-channel-org_400_Response": {
+    "operation_id": "delete-notification-channel-org",
+    "status_code": "400"
+  },
+  "delete-notification-channel-account_400_Response": {
+    "operation_id": "delete-notification-channel-account",
+    "status_code": "400"
+  },
+  "delete-notification-rule-org_400_Response": {
+    "operation_id": "delete-notification-rule-org",
+    "status_code": "400"
+  },
+  "delete-notification-rule-account_400_Response": {
+    "operation_id": "delete-notification-rule-account",
+    "status_code": "400"
+  },
+  "notification-resource-list_200_Response": {
+    "operation_id": "notification-resource-list",
+    "status_code": "200"
+  },
+  "delete-trigger_400_Response": {
+    "operation_id": "delete-trigger",
+    "status_code": "400"
+  },
+  "delete-trigger_400_Response_1": {
+    "operation_id": "delete-trigger",
+    "status_code": "400"
+  },
+  "delete-pipeline_400_Response": {
+    "operation_id": "delete-pipeline",
+    "status_code": "400"
+  },
+  "delete-pipeline_400_Response_1": {
+    "operation_id": "delete-pipeline",
+    "status_code": "400"
+  },
+  "delete-input-set_400_Response": {
+    "operation_id": "delete-input-set",
+    "status_code": "400"
+  },
+  "delete-input-set_400_Response_1": {
+    "operation_id": "delete-input-set",
+    "status_code": "400"
+  },
+  "getApprovalInstancesByExecutionId_400_Response": {
+    "operation_id": "getApprovalInstancesByExecutionId",
+    "status_code": "400"
+  },
+  "getApprovalInstancesByExecutionId_400_Response_1": {
+    "operation_id": "getApprovalInstancesByExecutionId",
+    "status_code": "400"
+  },
+  "addHarnessApprovalActivityByPipelineExecutionId_400_Response": {
+    "operation_id": "addHarnessApprovalActivityByPipelineExecutionId",
+    "status_code": "400"
+  },
+  "delete-template-acc_400_Response": {
+    "operation_id": "delete-template-acc",
+    "status_code": "400"
+  },
+  "delete-template-acc_400_Response_1": {
+    "operation_id": "delete-template-acc",
+    "status_code": "400"
+  },
+  "delete-template-org_400_Response": {
+    "operation_id": "delete-template-org",
+    "status_code": "400"
+  },
+  "delete-template-org_400_Response_1": {
+    "operation_id": "delete-template-org",
+    "status_code": "400"
+  },
+  "delete-template-project_400_Response": {
+    "operation_id": "delete-template-project",
+    "status_code": "400"
+  },
+  "delete-template-project_400_Response_1": {
+    "operation_id": "delete-template-project",
+    "status_code": "400"
+  },
+  "Infrastructure#Execute_200_Response": {
+    "operation_id": "Infrastructure#Execute",
+    "status_code": "200"
+  },
+  "getGitSyncConfigList_default_Response": {
+    "operation_id": "getGitSyncConfigList",
+    "status_code": "default"
+  },
+  "getGitSyncConfigList_default_Response_1": {
+    "operation_id": "getGitSyncConfigList",
+    "status_code": "default"
+  },
+  "getGitSyncConfigList_default_Response_2": {
+    "operation_id": "getGitSyncConfigList",
+    "status_code": "default"
+  },
+  "deleteAgentMtlsEndpointForAccount_200_Response": {
+    "operation_id": "deleteAgentMtlsEndpointForAccount",
+    "status_code": "200"
+  },
+  "deleteAgentMtlsEndpointForAccount_200_Response_1": {
+    "operation_id": "deleteAgentMtlsEndpointForAccount",
+    "status_code": "200"
+  },
+  "checkAgentMtlsEndpointDomainPrefixAvailability_200_Response": {
+    "operation_id": "checkAgentMtlsEndpointDomainPrefixAvailability",
+    "status_code": "200"
+  },
+  "checkAgentMtlsEndpointDomainPrefixAvailability_200_Response_1": {
+    "operation_id": "checkAgentMtlsEndpointDomainPrefixAvailability",
+    "status_code": "200"
+  },
+  "overrideDelegateImageTag_1_200_Response": {
+    "operation_id": "overrideDelegateImageTag_1",
+    "status_code": "200"
+  },
+  "overrideDelegateImageTag_1_200_Response_1": {
+    "operation_id": "overrideDelegateImageTag_1",
+    "status_code": "200"
+  },
+  "processWebhookEvent_default_Response": {
+    "operation_id": "processWebhookEvent",
+    "status_code": "default"
+  },
+  "processWebhookEvent_default_Response_1": {
+    "operation_id": "processWebhookEvent",
+    "status_code": "default"
+  },
+  "processWebhookEvent_default_Response_2": {
+    "operation_id": "processWebhookEvent",
+    "status_code": "default"
+  },
+  "processWebhookEvent_default_Response_3": {
+    "operation_id": "processWebhookEvent",
+    "status_code": "default"
+  },
+  "adjustBudgetAmountOperation_202_Response": {
+    "operation_id": "adjustBudgetAmountOperation",
+    "status_code": "202"
+  },
+  "cloneBudgetsBulkOperation_202_Response": {
+    "operation_id": "cloneBudgetsBulkOperation",
+    "status_code": "202"
+  },
+  "deleteBudgetsBulkOperation_202_Response": {
+    "operation_id": "deleteBudgetsBulkOperation",
+    "status_code": "202"
+  },
+  "checkBulkBudgetJobStatus_200_Response": {
+    "operation_id": "checkBulkBudgetJobStatus",
+    "status_code": "200"
+  },
+  "manageBudgetAlertsBulkOperation_202_Response": {
+    "operation_id": "manageBudgetAlertsBulkOperation",
+    "status_code": "202"
+  },
+  "getAnomalyResourceList_200_Response": {
+    "operation_id": "getAnomalyResourceList",
+    "status_code": "200"
+  },
+  "AutoStoppingRuleDetails_200_Response": {
+    "operation_id": "AutoStoppingRuleDetails",
+    "status_code": "200"
+  },
+  "SavingsFromAutoStoppingRule_200_Response": {
+    "operation_id": "SavingsFromAutoStoppingRule",
+    "status_code": "200"
+  },
+  "CoolDownAutostoppingRule_200_Response": {
+    "operation_id": "CoolDownAutostoppingRule",
+    "status_code": "200"
+  },
+  "GetAutoStoppingRuleV2_200_Response": {
+    "operation_id": "GetAutoStoppingRuleV2",
+    "status_code": "200"
+  },
+  "deleteAutoStoppingSchedule_200_Response": {
+    "operation_id": "deleteAutoStoppingSchedule",
+    "status_code": "200"
+  },
+  "SetupConfiguration_200_Response": {
+    "operation_id": "SetupConfiguration",
+    "status_code": "200"
+  },
+  "SetupConfiguration_400_Response": {
+    "operation_id": "SetupConfiguration",
+    "status_code": "400"
+  },
+  "GetSetupConfiguration_200_Response": {
+    "operation_id": "GetSetupConfiguration",
+    "status_code": "200"
+  },
+  "GetEstimatedSavingsForSetup_200_Response": {
+    "operation_id": "GetEstimatedSavingsForSetup",
+    "status_code": "200"
+  },
+  "GetEstimatedSavingsForSetup_400_Response": {
+    "operation_id": "GetEstimatedSavingsForSetup",
+    "status_code": "400"
+  },
+  "GetCostCoverageForSetup_200_Response": {
+    "operation_id": "GetCostCoverageForSetup",
+    "status_code": "200"
+  },
+  "GetCostCoverageForSetup_400_Response": {
+    "operation_id": "GetCostCoverageForSetup",
+    "status_code": "400"
+  },
+  "GetRIFilterOptions_200_Response": {
+    "operation_id": "GetRIFilterOptions",
+    "status_code": "200"
+  },
+  "GetSPFilterOptions_200_Response": {
+    "operation_id": "GetSPFilterOptions",
+    "status_code": "200"
+  },
+  "GetRegionFilters_200_Response": {
+    "operation_id": "GetRegionFilters",
+    "status_code": "200"
+  },
+  "GetInstanceFamilyFilters_200_Response": {
+    "operation_id": "GetInstanceFamilyFilters",
+    "status_code": "200"
+  },
+  "GetProviderAccountFilters_200_Response": {
+    "operation_id": "GetProviderAccountFilters",
+    "status_code": "200"
+  },
+  "getMetricGraphForSLO_200_Response": {
+    "operation_id": "getMetricGraphForSLO",
+    "status_code": "200"
+  },
+  "listSlo_200_Response": {
+    "operation_id": "listSlo",
+    "status_code": "200"
+  },
+  "FilterService_Delete_200_Response": {
+    "operation_id": "FilterService_Delete",
+    "status_code": "200"
+  },
+  "AgentApplicationService_PodLogs2_200_Response": {
+    "operation_id": "AgentApplicationService_PodLogs2",
+    "status_code": "200"
+  },
+  "AgentApplicationService_PodLogsBatch2_200_Response": {
+    "operation_id": "AgentApplicationService_PodLogsBatch2",
+    "status_code": "200"
+  },
+  "AgentApplicationService_PodLogs_200_Response": {
+    "operation_id": "AgentApplicationService_PodLogs",
+    "status_code": "200"
+  },
+  "AgentApplicationService_PodLogsBatch_200_Response": {
+    "operation_id": "AgentApplicationService_PodLogsBatch",
+    "status_code": "200"
+  },
+  "AgentServiceForServer_GetDeployYaml_200_Response": {
+    "operation_id": "AgentServiceForServer_GetDeployYaml",
+    "status_code": "200"
+  },
+  "AgentServiceForServer_PostDeployHelmChart_200_Response": {
+    "operation_id": "AgentServiceForServer_PostDeployHelmChart",
+    "status_code": "200"
+  },
+  "AgentServiceForServer_PostDeployYaml_200_Response": {
+    "operation_id": "AgentServiceForServer_PostDeployYaml",
+    "status_code": "200"
+  },
+  "AgentServiceForServer_GetDeployHelmChart_200_Response": {
+    "operation_id": "AgentServiceForServer_GetDeployHelmChart",
+    "status_code": "200"
+  },
+  "AgentServiceForServer_GetDeployOverrides_200_Response": {
+    "operation_id": "AgentServiceForServer_GetDeployOverrides",
+    "status_code": "200"
+  },
+  "AgentServiceForServer_PostDeployOverrides_200_Response": {
+    "operation_id": "AgentServiceForServer_PostDeployOverrides",
+    "status_code": "200"
+  },
+  "AgentServiceForServer_GetOperatorYaml_200_Response": {
+    "operation_id": "AgentServiceForServer_GetOperatorYaml",
+    "status_code": "200"
+  },
+  "AgentServiceForServer_PostOperatorYaml_200_Response": {
+    "operation_id": "AgentServiceForServer_PostOperatorYaml",
+    "status_code": "200"
+  },
+  "AgentApplicationService_Watch_200_Response": {
+    "operation_id": "AgentApplicationService_Watch",
+    "status_code": "200"
+  },
+  "AgentApplicationService_WatchResourceTree_200_Response": {
+    "operation_id": "AgentApplicationService_WatchResourceTree",
+    "status_code": "200"
+  },
+  "ApplicationService_Exists_200_Response": {
+    "operation_id": "ApplicationService_Exists",
+    "status_code": "200"
+  },
+  "ApplicationSetService_GetApplicationSetGenerator_200_Response": {
+    "operation_id": "ApplicationSetService_GetApplicationSetGenerator",
+    "status_code": "200"
+  },
+  "ApplicationSetService_GetApplicationSetTemplate_200_Response": {
+    "operation_id": "ApplicationSetService_GetApplicationSetTemplate",
+    "status_code": "200"
+  },
+  "ClusterService_Exists_200_Response": {
+    "operation_id": "ClusterService_Exists",
+    "status_code": "200"
+  },
+  "RepositoryService_Exists_200_Response": {
+    "operation_id": "RepositoryService_Exists",
+    "status_code": "200"
+  },
+  "evaluations#list_200_Response": {
+    "operation_id": "evaluations#list",
+    "status_code": "200"
+  },
+  "examples#list_200_Response": {
+    "operation_id": "examples#list",
+    "status_code": "200"
+  },
+  "policies#list_200_Response": {
+    "operation_id": "policies#list",
+    "status_code": "200"
+  },
+  "policies#list_policy_sets_200_Response": {
+    "operation_id": "policies#list_policy_sets",
+    "status_code": "200"
+  },
+  "policysets#list_200_Response": {
+    "operation_id": "policysets#list",
+    "status_code": "200"
+  },
+  "policysets#listall_200_Response": {
+    "operation_id": "policysets#listall",
+    "status_code": "200"
+  },
+  "get_dashboard_element_download_task_results_200_Response": {
+    "operation_id": "get_dashboard_element_download_task_results",
+    "status_code": "200"
+  },
+  "listStatusCheckRecentSpace_200_Response": {
+    "operation_id": "listStatusCheckRecentSpace",
+    "status_code": "200"
+  },
+  "listSpaceLabels_200_Response": {
+    "operation_id": "listSpaceLabels",
+    "status_code": "200"
+  },
+  "listSpaceLabelValues_200_Response": {
+    "operation_id": "listSpaceLabelValues",
+    "status_code": "200"
+  },
+  "listPrincipals_200_Response": {
+    "operation_id": "listPrincipals",
+    "status_code": "200"
+  },
+  "listPullReqSpace_200_Response": {
+    "operation_id": "listPullReqSpace",
+    "status_code": "200"
+  },
+  "countPullReqSpace_200_Response": {
+    "operation_id": "countPullReqSpace",
+    "status_code": "200"
+  },
+  "listRepos_200_Response": {
+    "operation_id": "listRepos",
+    "status_code": "200"
+  },
+  "archive_200_Response": {
+    "operation_id": "archive",
+    "status_code": "200"
+  },
+  "archive_200_Response_1": {
+    "operation_id": "archive",
+    "status_code": "200"
+  },
+  "archive_200_Response_2": {
+    "operation_id": "archive",
+    "status_code": "200"
+  },
+  "getBlame_200_Response": {
+    "operation_id": "getBlame",
+    "status_code": "200"
+  },
+  "listBranches_200_Response": {
+    "operation_id": "listBranches",
+    "status_code": "200"
+  },
+  "listStatusCheckResults_200_Response": {
+    "operation_id": "listStatusCheckResults",
+    "status_code": "200"
+  },
+  "listStatusCheckRecent_200_Response": {
+    "operation_id": "listStatusCheckRecent",
+    "status_code": "200"
+  },
+  "getCommitDiff_200_Response": {
+    "operation_id": "getCommitDiff",
+    "status_code": "200"
+  },
+  "calculateCommitDivergence_200_Response": {
+    "operation_id": "calculateCommitDivergence",
+    "status_code": "200"
+  },
+  "rawDiff_200_Response": {
+    "operation_id": "rawDiff",
+    "status_code": "200"
+  },
+  "rawDiff_200_Response_1": {
+    "operation_id": "rawDiff",
+    "status_code": "200"
+  },
+  "rawDiffPost_200_Response": {
+    "operation_id": "rawDiffPost",
+    "status_code": "200"
+  },
+  "rawDiffPost_200_Response_1": {
+    "operation_id": "rawDiffPost",
+    "status_code": "200"
+  },
+  "listRepoLabels_200_Response": {
+    "operation_id": "listRepoLabels",
+    "status_code": "200"
+  },
+  "listRepoLabelValues_200_Response": {
+    "operation_id": "listRepoLabelValues",
+    "status_code": "200"
+  },
+  "getRepoLanguages_200_Response": {
+    "operation_id": "getRepoLanguages",
+    "status_code": "200"
+  },
+  "listPullReq_200_Response": {
+    "operation_id": "listPullReq",
+    "status_code": "200"
+  },
+  "listPullReqActivities_200_Response": {
+    "operation_id": "listPullReqActivities",
+    "status_code": "200"
+  },
+  "listPullReqCommits_200_Response": {
+    "operation_id": "listPullReqCommits",
+    "status_code": "200"
+  },
+  "diffPullReq_200_Response": {
+    "operation_id": "diffPullReq",
+    "status_code": "200"
+  },
+  "diffPullReq_200_Response_1": {
+    "operation_id": "diffPullReq",
+    "status_code": "200"
+  },
+  "diffPullReqPost_200_Response": {
+    "operation_id": "diffPullReqPost",
+    "status_code": "200"
+  },
+  "diffPullReqPost_200_Response_1": {
+    "operation_id": "diffPullReqPost",
+    "status_code": "200"
+  },
+  "fileViewListPullReq_200_Response": {
+    "operation_id": "fileViewListPullReq",
+    "status_code": "200"
+  },
+  "reviewerListPullReq_200_Response": {
+    "operation_id": "reviewerListPullReq",
+    "status_code": "200"
+  },
+  "repoRuleList_200_Response": {
+    "operation_id": "repoRuleList",
+    "status_code": "200"
+  },
+  "listTags_200_Response": {
+    "operation_id": "listTags",
+    "status_code": "200"
+  },
+  "listRepoWebhooks_200_Response": {
+    "operation_id": "listRepoWebhooks",
+    "status_code": "200"
+  },
+  "listRepoWebhookExecutions_200_Response": {
+    "operation_id": "listRepoWebhookExecutions",
+    "status_code": "200"
+  },
+  "listGitignore_200_Response": {
+    "operation_id": "listGitignore",
+    "status_code": "200"
+  },
+  "listLicenses_200_Response": {
+    "operation_id": "listLicenses",
+    "status_code": "200"
+  },
+  "spaceRuleList_200_Response": {
+    "operation_id": "spaceRuleList",
+    "status_code": "200"
+  },
+  "listUsergroups_200_Response": {
+    "operation_id": "listUsergroups",
+    "status_code": "200"
+  },
+  "listSpaceWebhooks_200_Response": {
+    "operation_id": "listSpaceWebhooks",
+    "status_code": "200"
+  },
+  "listSpaceWebhookExecutions_200_Response": {
+    "operation_id": "listSpaceWebhookExecutions",
+    "status_code": "200"
+  },
+  "RegistrylistSpaceLabels_200_Response": {
+    "operation_id": "RegistrylistSpaceLabels",
+    "status_code": "200"
+  },
+  "RegistrylistSpaceLabelValues_200_Response": {
+    "operation_id": "RegistrylistSpaceLabelValues",
+    "status_code": "200"
+  },
+  "module-registry#list-module-tags-by-id_200_Response": {
+    "operation_id": "module-registry#list-module-tags-by-id",
+    "status_code": "200"
+  },
+  "module-registry#list-readme-by-id_200_Response": {
+    "operation_id": "module-registry#list-readme-by-id",
+    "status_code": "200"
+  },
+  "module-registry#list-connectors_200_Response": {
+    "operation_id": "module-registry#list-connectors",
+    "status_code": "200"
+  },
+  "ansible#show-data_200_Response": {
+    "operation_id": "ansible#show-data",
+    "status_code": "200"
+  },
+  "ansible#get-file_200_Response": {
+    "operation_id": "ansible#get-file",
+    "status_code": "200"
+  },
+  "ansible#show-inventory-as-ansible_200_Response": {
+    "operation_id": "ansible#show-inventory-as-ansible",
+    "status_code": "200"
+  },
+  "workspaces#list-all-workspace-tags_200_Response": {
+    "operation_id": "workspaces#list-all-workspace-tags",
+    "status_code": "200"
+  },
+  "workspace_templates#get-workspaces-by-template-id_200_Response": {
+    "operation_id": "workspace_templates#get-workspaces-by-template-id",
+    "status_code": "200"
+  },
+  "workspaces#show-data_200_Response": {
+    "operation_id": "workspaces#show-data",
+    "status_code": "200"
+  },
+  "workspaces#download-remote-execution_200_Response": {
+    "operation_id": "workspaces#download-remote-execution",
+    "status_code": "200"
+  },
+  "workspaces#list-workspace-resource-types_200_Response": {
+    "operation_id": "workspaces#list-workspace-resource-types",
+    "status_code": "200"
+  },
+  "workspaces#list-workspace-resource-types-and-attributes_200_Response": {
+    "operation_id": "workspaces#list-workspace-resource-types-and-attributes",
+    "status_code": "200"
+  },
+  "workspaces#list-workspace-resource-type-attributes_200_Response": {
+    "operation_id": "workspaces#list-workspace-resource-type-attributes",
+    "status_code": "200"
+  },
+  "tf-standard-backend#pull-terraform-state_200_Response": {
+    "operation_id": "tf-standard-backend#pull-terraform-state",
+    "status_code": "200"
+  },
+  "system#list-supported-provisioner-versions_200_Response": {
+    "operation_id": "system#list-supported-provisioner-versions",
+    "status_code": "200"
+  },
+  "workspaces#list-associated-workspaces_200_Response": {
+    "operation_id": "workspaces#list-associated-workspaces",
+    "status_code": "200"
+  },
+  "provider-registry#get-file_200_Response": {
+    "operation_id": "provider-registry#get-file",
+    "status_code": "200"
+  },
+  "module-registry#getModule_200_Response": {
+    "operation_id": "module-registry#getModule",
+    "status_code": "200"
+  },
+  "Frontend#ExecutionIssueCounts_200_Response": {
+    "operation_id": "Frontend#ExecutionIssueCounts",
+    "status_code": "200"
+  },
+  "STO Data Frontend#ExecutionArtifactScanSummary_200_Response": {
+    "operation_id": "STO Data Frontend#ExecutionArtifactScanSummary",
+    "status_code": "200"
+  },
+  "STO Data Frontend#ExecutionArtifactSummary_200_Response": {
+    "operation_id": "STO Data Frontend#ExecutionArtifactSummary",
+    "status_code": "200"
+  },
+  "STO Data Frontend#ExecutionSummary_200_Response": {
+    "operation_id": "STO Data Frontend#ExecutionSummary",
+    "status_code": "200"
+  },
+  "STO Data Frontend#ExecutionIssueCounts_200_Response": {
+    "operation_id": "STO Data Frontend#ExecutionIssueCounts",
+    "status_code": "200"
+  },
+  "V1ListDatabaseSchema_200_Response": {
+    "operation_id": "V1ListDatabaseSchema",
+    "status_code": "200"
+  },
+  "V1GetDeployedState_200_Response": {
+    "operation_id": "V1GetDeployedState",
+    "status_code": "200"
+  },
+  "categories#deleteCategories_200_Response": {
+    "operation_id": "categories#deleteCategories",
+    "status_code": "200"
+  },
+  "categories#deleteCategory_200_Response": {
+    "operation_id": "categories#deleteCategory",
+    "status_code": "200"
+  },
+  "collections#listCollections_200_Response": {
+    "operation_id": "collections#listCollections",
+    "status_code": "200"
+  },
+  "collections#createCollection_200_Response": {
+    "operation_id": "collections#createCollection",
+    "status_code": "200"
+  },
+  "collections#editCollection_200_Response": {
+    "operation_id": "collections#editCollection",
+    "status_code": "200"
+  },
+  "collections#deleteCollection_200_Response": {
+    "operation_id": "collections#deleteCollection",
+    "status_code": "200"
+  },
+  "contributors#getActiveVersions_200_Response": {
+    "operation_id": "contributors#getActiveVersions",
+    "status_code": "200"
+  },
+  "contributors#getSchema_200_Response": {
+    "operation_id": "contributors#getSchema",
+    "status_code": "200"
+  },
+  "users#listActiveUsers_200_Response": {
+    "operation_id": "users#listActiveUsers",
+    "status_code": "200"
+  },
+  "contributors#updateContributors_200_Response": {
+    "operation_id": "contributors#updateContributors",
+    "status_code": "200"
+  },
+  "contributors#updateContributors_400_Response": {
+    "operation_id": "contributors#updateContributors",
+    "status_code": "400"
+  },
+  "contributors#updateContributors_404_Response": {
+    "operation_id": "contributors#updateContributors",
+    "status_code": "404"
+  },
+  "seiContributors#listContributors_200_Response": {
+    "operation_id": "seiContributors#listContributors",
+    "status_code": "200"
+  },
+  "dora#getLeadTime_200_Response": {
+    "operation_id": "dora#getLeadTime",
+    "status_code": "200"
+  },
+  "dora#getDeploymentFrequency_200_Response": {
+    "operation_id": "dora#getDeploymentFrequency",
+    "status_code": "200"
+  },
+  "dora#getChangeFailureRate_200_Response": {
+    "operation_id": "dora#getChangeFailureRate",
+    "status_code": "200"
+  },
+  "dora#getMeanTimeToRestore_200_Response": {
+    "operation_id": "dora#getMeanTimeToRestore",
+    "status_code": "200"
+  },
+  "createComplianceStandards_200_Response": {
+    "operation_id": "createComplianceStandards",
+    "status_code": "200"
+  },
+  "getCICDWorkflowsList_200_Response": {
+    "operation_id": "getCICDWorkflowsList",
+    "status_code": "200"
+  },
+  "getRepoRulesEvaluationTrend_200_Response": {
+    "operation_id": "getRepoRulesEvaluationTrend",
+    "status_code": "200"
+  },
+  "getArtifactV2ChainOfCustody_200_Response": {
+    "operation_id": "getArtifactV2ChainOfCustody",
+    "status_code": "200"
+  },
+  "getArtifactChainOfCustodyV2_200_Response": {
+    "operation_id": "getArtifactChainOfCustodyV2",
+    "status_code": "200"
+  },
+  "getComplianceStandardsFilters_200_Response": {
+    "operation_id": "getComplianceStandardsFilters",
+    "status_code": "200"
+  },
+  "saveSignature_200_Response": {
+    "operation_id": "saveSignature",
+    "status_code": "200"
+  },
+  "saveIntegrityVerification_200_Response": {
+    "operation_id": "saveIntegrityVerification",
+    "status_code": "200"
+  },
+  "getActionManifest_200_Response": {
+    "operation_id": "getActionManifest",
+    "status_code": "200"
+  },
+  "deleteAction_200_Response": {
+    "operation_id": "deleteAction",
+    "status_code": "200"
+  },
+  "GetChaosExperimentRunReport_200_Response": {
+    "operation_id": "GetChaosExperimentRunReport",
+    "status_code": "200"
+  },
+  "getLegacyKubernetesHelmInfraCommand_200_Response": {
+    "operation_id": "getLegacyKubernetesHelmInfraCommand",
+    "status_code": "200"
+  },
+  "getLegacyKubernetesChaosInfraManifest_200_Response": {
+    "operation_id": "getLegacyKubernetesChaosInfraManifest",
+    "status_code": "200"
+  },
+  "deleteLegacyKubernetesChaosInfra_200_Response": {
+    "operation_id": "deleteLegacyKubernetesChaosInfra",
+    "status_code": "200"
+  },
+  "testLegacyKubernetesChaosInfraConnection_200_Response": {
+    "operation_id": "testLegacyKubernetesChaosInfraConnection",
+    "status_code": "200"
+  },
+  "deleteMachineChaosInfra_200_Response": {
+    "operation_id": "deleteMachineChaosInfra",
+    "status_code": "200"
+  },
+  "getExperimentationActivityReport_200_Response": {
+    "operation_id": "getExperimentationActivityReport",
+    "status_code": "200"
+  },
+  "getServiceUsageReport_200_Response": {
+    "operation_id": "getServiceUsageReport",
+    "status_code": "200"
+  },
+  "deleteActionTemplate_200_Response": {
+    "operation_id": "deleteActionTemplate",
+    "status_code": "200"
+  },
+  "deleteProbeTemplate_200_Response": {
+    "operation_id": "deleteProbeTemplate",
+    "status_code": "200"
+  },
+  "deleteTargetNetworkMap_200_Response": {
+    "operation_id": "deleteTargetNetworkMap",
+    "status_code": "200"
+  },
+  "getExperimentRunsCSV_200_Response": {
+    "operation_id": "getExperimentRunsCSV",
+    "status_code": "200"
+  },
+  "updateNote_200_Response": {
+    "operation_id": "updateNote",
+    "status_code": "200"
+  },
+  "stopOnboardingExperiments_200_Response": {
+    "operation_id": "stopOnboardingExperiments",
+    "status_code": "200"
+  },
+  "getChaosExperimentRunsForPipeline_200_Response": {
+    "operation_id": "getChaosExperimentRunsForPipeline",
+    "status_code": "200"
+  },
+  "getProbeManifest_200_Response": {
+    "operation_id": "getProbeManifest",
+    "status_code": "200"
+  },
+  "deleteProbe_200_Response": {
+    "operation_id": "deleteProbe",
+    "status_code": "200"
+  },
+  "enableProbe_200_Response": {
+    "operation_id": "enableProbe",
+    "status_code": "200"
+  },
+  "verifyProbe_200_Response": {
+    "operation_id": "verifyProbe",
+    "status_code": "200"
+  },
+  "GetChaosExperimentRunReportPDF_200_Response": {
+    "operation_id": "GetChaosExperimentRunReportPDF",
+    "status_code": "200"
+  },
+  "enableRule_200_Response": {
+    "operation_id": "enableRule",
+    "status_code": "200"
+  }
+}

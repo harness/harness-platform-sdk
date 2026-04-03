@@ -1,23 +1,93 @@
-[tasks]
+# mise.toml
+#
+# Learn more about Mise-en-Place - https://mise.jdx.dev/getting-started.html
+#
+# Task runner for the Harness Python SDK project.
+# Covers OpenAPI spec management, model generation, testing, and development utilities.
 
-# OpenAPI spec management tasks
-fetch-spec = "echo 'Placeholder: fetch OpenAPI spec from Harness'"
-normalize-spec = "echo 'Placeholder: normalize OpenAPI spec'"
-convert-spec = "echo 'Placeholder: convert spec to OpenAPI 3.0'"
+# ---------------------------------------------------------------------------
+# OpenAPI Spec Management
+# ---------------------------------------------------------------------------
 
-# Model generation tasks (populated in Branch 3)
-generate-models = "echo 'Placeholder: generate models from OpenAPI spec'"
-sort-models = "echo 'Placeholder: sort generated models'"
+[tasks."spec:fetch"]
+description = "Fetch the latest OpenAPI spec from Harness"
+run = "echo 'Placeholder: fetch OpenAPI spec from Harness'"
 
-# Combined regeneration task
-regenerate = ["fetch-spec", "normalize-spec", "convert-spec", "generate-models", "sort-models"]
+[tasks."spec:normalize"]
+description = "Normalize the raw OpenAPI spec (removes incomplete discriminators, etc.)"
+run = "python scripts/normalize_spec.py"
 
-# Testing tasks
-tests = "pytest tests/"
-tests-cov = "pytest --cov=src/harness_python_sdk --cov-report=term-missing tests/"
-tests-watch = "pytest-watch tests/ -- -v"
+[tasks."spec:convert"]
+description = "Convert the normalized spec to the format required for code generation"
+run = "python scripts/convert_spec.py"
 
-# Development utilities
-lint = "black src/ tests/ && isort src/ tests/"
-type-check = "mypy src/harness_python_sdk"
-clean = "rm -rf .pytest_cache dist build *.egg-info .coverage"
+# ---------------------------------------------------------------------------
+# Model Generation
+#
+# Notes:
+#   - datamodel-code-generator 0.55.0 does not support --use-alias-generators; flag omitted
+#   - --collapse-root-models causes IndexError on Harness spec; using --reuse-model only
+#   - normalize_spec.py removes 36 incomplete discriminators to prevent generation failures
+# ---------------------------------------------------------------------------
+
+[tasks."models:generate"]
+description = "Generate Pydantic v2 models from the normalized OpenAPI spec"
+run = """
+  python -m datamodel_code_generator \
+    --input openapi/harness-openapi-normalized.json \
+    --output datagen_staging/ \
+    --input-file-type openapi \
+    --output-model-type pydantic_v2.BaseModel \
+    --reuse-model \
+  && python scripts/stamp_generated.py
+"""
+
+[tasks."models:sort"]
+description = "Sort and organise the generated model files"
+run = "python scripts/sort_models.py"
+
+# ---------------------------------------------------------------------------
+# Combined Regeneration
+# ---------------------------------------------------------------------------
+
+[tasks.regenerate]
+description = "Full pipeline: fetch → normalize → convert → generate → sort models"
+run = [
+    {task = "spec:fetch"},
+    {task = "spec:normalize"},
+    {task = "spec:convert"},
+    {task = "models:generate"},
+    {task = "models:sort"},
+]
+
+# ---------------------------------------------------------------------------
+# Testing
+# ---------------------------------------------------------------------------
+
+[tasks.tests]
+description = "Run the full test suite"
+run = "pytest tests/"
+
+[tasks."tests:cov"]
+description = "Run the test suite with coverage report"
+run = "pytest --cov=src/harness_python_sdk --cov-report=term-missing tests/"
+
+[tasks."tests:watch"]
+description = "Run tests in watch mode (re-runs on file changes)"
+run = "pytest-watch tests/ -- -v"
+
+# ---------------------------------------------------------------------------
+# Development Utilities
+# ---------------------------------------------------------------------------
+
+[tasks.lint]
+description = "Format source and test files with black and isort"
+run = "black src/ tests/ && isort src/ tests/"
+
+[tasks."type-check"]
+description = "Run mypy static type checking over the SDK source"
+run = "mypy src/harness_python_sdk"
+
+[tasks.clean]
+description = "Remove build artefacts, caches, and coverage data"
+run = "rm -rf .pytest_cache dist build *.egg-info .coverage"

@@ -1,0 +1,2822 @@
+{
+  "generated_at": "2026-04-03T21:55:55.352048+00:00",
+  "source_spec": "/Users/jeremygoodrum/solutions_factory/plugins/harness-python-sdk/openapi/harness-openapi.yaml",
+  "repairs": {
+    "malformed_required": [
+      {
+        "schema": "WarmUpOption",
+        "field": "idle_time_mins"
+      },
+      {
+        "schema": "WarmUpOption",
+        "field": "source"
+      },
+      {
+        "schema": "WarmUpOption",
+        "field": "forced_trigger"
+      }
+    ],
+    "broken_discriminator": [
+      {
+        "schema": "CVNGLog",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "EntitiesRule",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "SetupUsageDetail",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "TGTGenerationSpecDTO",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "NotificationSettingConfigDTO1",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "SecondaryEventDetails",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "ViewCondition",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "RecommendationAdhocDTO",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "SLOTargetSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "ServiceLevelIndicatorSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "SSHCredentialSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "MetricThresholdSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "RecommendationPreset",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "ConnectorSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "ServiceLevelObjectiveSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "DowntimeSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "Card",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "AuditEventData",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "BaseWinRmSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "NGVariable1",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "AzureRepoWebhookTriggerSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "QueryDefinitionsDTO",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "GitAuthentication",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "SLIMetricSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "ConnectorConfig",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "BaseSSHSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "HarnessWebhookTriggerSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "WebhookResponseSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "Source",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "OnetimeSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "NotificationChannel",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "ProviderRequestInfo",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "SecretSpec1",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "VariableConfigDTO",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "BudgetScope",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      },
+      {
+        "schema": "CalenderSpec",
+        "removed_reason": "Incomplete discriminator: mapping doesn't include all child schemas"
+      }
+    ],
+    "empty_schema": [
+      {
+        "schema": "GovernanceStatus"
+      },
+      {
+        "schema": "PrometheusMetricsResponse"
+      },
+      {
+        "schema": "ModuleType"
+      },
+      {
+        "schema": "FavoritesResourceType"
+      },
+      {
+        "schema": "EnvironmentType"
+      },
+      {
+        "schema": "InfrastructureType"
+      },
+      {
+        "schema": "AgreementType"
+      },
+      {
+        "schema": "AllowedSourceType"
+      },
+      {
+        "schema": "BatchReleaseDetailsResponse"
+      },
+      {
+        "schema": "CertificateInputSpecType"
+      },
+      {
+        "schema": "BannerIntent"
+      },
+      {
+        "schema": "StreamingDestinationStatus"
+      },
+      {
+        "schema": "StaticAuditFilter"
+      },
+      {
+        "schema": "ModuleType1"
+      },
+      {
+        "schema": "Action"
+      },
+      {
+        "schema": "PrincipalType"
+      },
+      {
+        "schema": "EnvironmentType1"
+      },
+      {
+        "schema": "FilterType"
+      },
+      {
+        "schema": "ChannelType"
+      },
+      {
+        "schema": "Status"
+      },
+      {
+        "schema": "ResourceTypeEnum"
+      },
+      {
+        "schema": "ArtifactType"
+      },
+      {
+        "schema": "MoveConfigOperationType"
+      },
+      {
+        "schema": "YamlInputType"
+      },
+      {
+        "schema": "StageExecutionResponseList"
+      },
+      {
+        "schema": "TemplateMetaDataList"
+      },
+      {
+        "schema": "YamlInputType1"
+      },
+      {
+        "schema": "StatusInfoV2"
+      },
+      {
+        "schema": "LayoutResponse"
+      },
+      {
+        "schema": "AggFormula"
+      },
+      {
+        "schema": "AggregationScopeLevel"
+      },
+      {
+        "schema": "AggregationComputeStatus"
+      },
+      {
+        "schema": "EntityMoveOperationType"
+      },
+      {
+        "schema": "EntityJsonSchemaResponse"
+      },
+      {
+        "schema": "Parser"
+      },
+      {
+        "schema": "ParserDeclaration"
+      },
+      {
+        "schema": "ParserDescriptorProto"
+      },
+      {
+        "schema": "ParserEditionDefault"
+      },
+      {
+        "schema": "ParserEnumDescriptorProto"
+      },
+      {
+        "schema": "ParserEnumOptions"
+      },
+      {
+        "schema": "ParserEnumReservedRange"
+      },
+      {
+        "schema": "ParserEnumValueDescriptorProto"
+      },
+      {
+        "schema": "ParserEnumValueOptions"
+      },
+      {
+        "schema": "ParserExtensionRange"
+      },
+      {
+        "schema": "ParserExtensionRangeOptions"
+      },
+      {
+        "schema": "ParserFeatureSet"
+      },
+      {
+        "schema": "ParserFeatureSupport"
+      },
+      {
+        "schema": "ParserFieldDescriptorProto"
+      },
+      {
+        "schema": "ParserFieldOptions"
+      },
+      {
+        "schema": "ParserFileDescriptorProto"
+      },
+      {
+        "schema": "ParserFileOptions"
+      },
+      {
+        "schema": "ParserGovernanceMetadata"
+      },
+      {
+        "schema": "ParserLocation"
+      },
+      {
+        "schema": "ParserMessage"
+      },
+      {
+        "schema": "ParserMessageLite"
+      },
+      {
+        "schema": "ParserMessageOptions"
+      },
+      {
+        "schema": "ParserMethodDescriptorProto"
+      },
+      {
+        "schema": "ParserMethodOptions"
+      },
+      {
+        "schema": "ParserNamePart"
+      },
+      {
+        "schema": "ParserOneofDescriptorProto"
+      },
+      {
+        "schema": "ParserOneofOptions"
+      },
+      {
+        "schema": "ParserPolicyMetadata"
+      },
+      {
+        "schema": "ParserPolicySetMetadata"
+      },
+      {
+        "schema": "ParserReservedRange"
+      },
+      {
+        "schema": "ParserServiceDescriptorProto"
+      },
+      {
+        "schema": "ParserServiceOptions"
+      },
+      {
+        "schema": "ParserSourceCodeInfo"
+      },
+      {
+        "schema": "ParserUninterpretedOption"
+      },
+      {
+        "schema": "AnthropicAuthCredentialsDTO"
+      },
+      {
+        "schema": "ArtifactoryAuthCredentials"
+      },
+      {
+        "schema": "AwsCodeCommitCredentials"
+      },
+      {
+        "schema": "AwsCodeCommitHttpsCredentialsSpec"
+      },
+      {
+        "schema": "AwsCredentialSpec"
+      },
+      {
+        "schema": "AwsKmsCredentialSpec"
+      },
+      {
+        "schema": "AwsSdkClientBackOffStrategySpec"
+      },
+      {
+        "schema": "AwsSecretManagerCredentialSpec"
+      },
+      {
+        "schema": "AzureAuthCredential"
+      },
+      {
+        "schema": "AzureCredentialSpec"
+      },
+      {
+        "schema": "AzureMSIAuth"
+      },
+      {
+        "schema": "AzureRepoApiAccessSpec"
+      },
+      {
+        "schema": "AzureRepoCredentials"
+      },
+      {
+        "schema": "AzureRepoHttpCredentialsSpec"
+      },
+      {
+        "schema": "BambooAuthCredentialsDTO"
+      },
+      {
+        "schema": "BitbucketCredentials"
+      },
+      {
+        "schema": "BitbucketHttpCredentialsSpec"
+      },
+      {
+        "schema": "CeAwsCredentialSpec"
+      },
+      {
+        "schema": "DockerAuthCredentials"
+      },
+      {
+        "schema": "GcpCcmCredentialSpec"
+      },
+      {
+        "schema": "GcpCredentialSpec"
+      },
+      {
+        "schema": "GitHubMcpAuthCredentialsDTO"
+      },
+      {
+        "schema": "GithubApiAccessSpec"
+      },
+      {
+        "schema": "GithubCredentials"
+      },
+      {
+        "schema": "GithubHttpCredentialsSpec"
+      },
+      {
+        "schema": "GitlabApiAccessSpec"
+      },
+      {
+        "schema": "GitlabCredentials"
+      },
+      {
+        "schema": "GitlabHttpCredentialsSpec"
+      },
+      {
+        "schema": "HarnessApiAccessSpec"
+      },
+      {
+        "schema": "HarnessHttpCredentialsSpec"
+      },
+      {
+        "schema": "HttpHelmAuthCredentials"
+      },
+      {
+        "schema": "JDBCAuthCredentialsDTO"
+      },
+      {
+        "schema": "JenkinsAuthCredentialsDTO"
+      },
+      {
+        "schema": "JiraAuthCredentials"
+      },
+      {
+        "schema": "KubernetesAuthCredential"
+      },
+      {
+        "schema": "KubernetesCredentialSpec"
+      },
+      {
+        "schema": "LangSmithAuthCredentialsDTO"
+      },
+      {
+        "schema": "MLFlowAuthCredentials"
+      },
+      {
+        "schema": "NexusAuthCredentials"
+      },
+      {
+        "schema": "OciHelmAuthCredentials"
+      },
+      {
+        "schema": "OpenAIAuthCredentialsDTO"
+      },
+      {
+        "schema": "RancherConnectorConfigAuthentication"
+      },
+      {
+        "schema": "SalesforceCredentialSpec"
+      },
+      {
+        "schema": "ServiceNowAuthCredentials"
+      },
+      {
+        "schema": "SpotCredentialSpec"
+      },
+      {
+        "schema": "TasCredentialSpec"
+      },
+      {
+        "schema": "TerraformCloudCredentialSpec"
+      },
+      {
+        "schema": "GitSyncErrorDetails"
+      },
+      {
+        "schema": "AccountSettingConfig"
+      },
+      {
+        "schema": "ParserEntityDetailProtoDTO"
+      },
+      {
+        "schema": "ParserEntityGitMetadata"
+      },
+      {
+        "schema": "ParserIdentifierRefProtoDTO"
+      },
+      {
+        "schema": "ParserInfraDefinitionReferenceProtoDTO"
+      },
+      {
+        "schema": "ParserInputSetReferenceProtoDTO"
+      },
+      {
+        "schema": "ParserStringValue"
+      },
+      {
+        "schema": "ParserTemplateReferenceProtoDTO"
+      },
+      {
+        "schema": "ParserTriggerReferenceProtoDTO"
+      },
+      {
+        "schema": "AwsSdkBackOffStrategySpec"
+      },
+      {
+        "schema": "ServiceMoveConfigResponse"
+      },
+      {
+        "schema": "PostProdRollbackSwimLaneInfo"
+      },
+      {
+        "schema": "SourceCodeManagerAuthentication"
+      },
+      {
+        "schema": "NGTriggerEventInfo"
+      },
+      {
+        "schema": "ApprovalInstanceDetailsDTO"
+      },
+      {
+        "schema": "CriteriaSpecDTO"
+      },
+      {
+        "schema": "ParserInputsMetadata"
+      },
+      {
+        "schema": "OrchestrationMap"
+      },
+      {
+        "schema": "ParserAsyncChainExecutableResponse"
+      },
+      {
+        "schema": "ParserAsyncExecutableResponse"
+      },
+      {
+        "schema": "ParserBuildInfo"
+      },
+      {
+        "schema": "ParserChild"
+      },
+      {
+        "schema": "ParserChildChainExecutableResponse"
+      },
+      {
+        "schema": "ParserChildExecutableResponse"
+      },
+      {
+        "schema": "ParserChildrenExecutableResponse"
+      },
+      {
+        "schema": "ParserExecutableResponse"
+      },
+      {
+        "schema": "ParserExecutionErrorInfo"
+      },
+      {
+        "schema": "ParserExecutionTriggerInfo"
+      },
+      {
+        "schema": "ParserExpressionBlock"
+      },
+      {
+        "schema": "ParserFacilitatorExecutableResponse"
+      },
+      {
+        "schema": "ParserForMetadata"
+      },
+      {
+        "schema": "ParserMatrixMetadata"
+      },
+      {
+        "schema": "ParserNodeRunInfo"
+      },
+      {
+        "schema": "ParserPipelineStageInfo"
+      },
+      {
+        "schema": "ParserRerunInfo"
+      },
+      {
+        "schema": "ParserSkipInfo"
+      },
+      {
+        "schema": "ParserSkipTaskExecutableResponse"
+      },
+      {
+        "schema": "ParserStrategyMetadata"
+      },
+      {
+        "schema": "ParserSyncExecutableResponse"
+      },
+      {
+        "schema": "ParserTaskChainExecutableResponse"
+      },
+      {
+        "schema": "ParserTaskExecutableResponse"
+      },
+      {
+        "schema": "ParserTemplateReferenceSummary"
+      },
+      {
+        "schema": "ParserTriggeredBy"
+      },
+      {
+        "schema": "ParserUnitProgress"
+      },
+      {
+        "schema": "PmsStepDetails"
+      },
+      {
+        "schema": "ParserAmbiance"
+      },
+      {
+        "schema": "ParserArtifactData"
+      },
+      {
+        "schema": "ParserBranchHook"
+      },
+      {
+        "schema": "ParserCommit"
+      },
+      {
+        "schema": "ParserExecutionMetadata"
+      },
+      {
+        "schema": "ParserExecutionPrincipalInfo"
+      },
+      {
+        "schema": "ParserFailureData"
+      },
+      {
+        "schema": "ParserFailureInfo"
+      },
+      {
+        "schema": "ParserFailureTypeInfo"
+      },
+      {
+        "schema": "ParserLabel"
+      },
+      {
+        "schema": "ParserLevel"
+      },
+      {
+        "schema": "ParserManifestData"
+      },
+      {
+        "schema": "ParserParsedPayload"
+      },
+      {
+        "schema": "ParserPerm"
+      },
+      {
+        "schema": "ParserPostExecutionRollbackInfo"
+      },
+      {
+        "schema": "ParserPullRequest"
+      },
+      {
+        "schema": "ParserPullRequestHook"
+      },
+      {
+        "schema": "ParserPushHook"
+      },
+      {
+        "schema": "ParserReference"
+      },
+      {
+        "schema": "ParserRelease"
+      },
+      {
+        "schema": "ParserReleaseHook"
+      },
+      {
+        "schema": "ParserRepository"
+      },
+      {
+        "schema": "ParserRetryExecutionInfo"
+      },
+      {
+        "schema": "ParserSignature"
+      },
+      {
+        "schema": "ParserStepType"
+      },
+      {
+        "schema": "ParserStrategyInfo"
+      },
+      {
+        "schema": "ParserTagHook"
+      },
+      {
+        "schema": "ParserTimestamp"
+      },
+      {
+        "schema": "ParserTriggerPayload"
+      },
+      {
+        "schema": "ParserUser"
+      },
+      {
+        "schema": "OidcAuthParams"
+      },
+      {
+        "schema": "RecommendationDetailsDTO"
+      },
+      {
+        "schema": "ApiKeyRequestType"
+      },
+      {
+        "schema": "FeatureFlagRequestKind"
+      },
+      {
+        "schema": "FeatureState"
+      },
+      {
+        "schema": "OrganizationDictionary"
+      },
+      {
+        "schema": "PatchInstruction"
+      },
+      {
+        "schema": "ServiceDep"
+      },
+      {
+        "schema": "TemplateMetadataFilterExpression"
+      },
+      {
+        "schema": "ChangeSourceSpec"
+      },
+      {
+        "schema": "CVNGNotificationChannelSpec"
+      },
+      {
+        "schema": "NotificationRuleConditionSpec"
+      },
+      {
+        "schema": "AgentQueryAgentSortByOptions"
+      },
+      {
+        "schema": "ApplicationQueryApplicationSortByOptions"
+      },
+      {
+        "schema": "ApplicationSetGeneratorGetQueryApplicationSetGeneratorType"
+      },
+      {
+        "schema": "ApplicationSetGetQueryFetchMode"
+      },
+      {
+        "schema": "ApplicationSetQueryApplicationSetSortByOptions"
+      },
+      {
+        "schema": "ClusterQueryClusterSortByOptions"
+      },
+      {
+        "schema": "OCIRepoTypeResponseOCIRepoTypeEnum"
+      },
+      {
+        "schema": "RepoListReqRepoSortByOptions"
+      },
+      {
+        "schema": "applicationsApplicationResponse"
+      },
+      {
+        "schema": "applicationsOperationTerminateResponse"
+      },
+      {
+        "schema": "clustersClusterResponse"
+      },
+      {
+        "schema": "clustersClusterType"
+      },
+      {
+        "schema": "gpgkeysGnuPGPublicKeyResponse"
+      },
+      {
+        "schema": "hrepocredsRepoCredsResponse"
+      },
+      {
+        "schema": "projectsEmptyResponse"
+      },
+      {
+        "schema": "protobufNullValue"
+      },
+      {
+        "schema": "repositoriesDirectoryAppSpec"
+      },
+      {
+        "schema": "repositoriesESOGeneratorType"
+      },
+      {
+        "schema": "repositoriesRepoResponse"
+      },
+      {
+        "schema": "servicev1HealthStatus"
+      },
+      {
+        "schema": "v1AgentOperator"
+      },
+      {
+        "schema": "v1AgentScope"
+      },
+      {
+        "schema": "v1AgentType"
+      },
+      {
+        "schema": "v1ClusterInfraType"
+      },
+      {
+        "schema": "v1ConnectedStatus"
+      },
+      {
+        "schema": "v1DisasterRecoveryType"
+      },
+      {
+        "schema": "v1Empty"
+      },
+      {
+        "schema": "v1ExportEntityType"
+      },
+      {
+        "schema": "v1FilterType"
+      },
+      {
+        "schema": "v1FilterVisibility"
+      },
+      {
+        "schema": "v1OperationPhase"
+      },
+      {
+        "schema": "v1SortOrderOptions"
+      },
+      {
+        "schema": "EnumCheckPayloadKind"
+      },
+      {
+        "schema": "EnumCheckStatus"
+      },
+      {
+        "schema": "EnumContentEncodingType"
+      },
+      {
+        "schema": "EnumFileDiffStatus"
+      },
+      {
+        "schema": "EnumGitSignatureResult"
+      },
+      {
+        "schema": "EnumLabelColor"
+      },
+      {
+        "schema": "EnumLabelType"
+      },
+      {
+        "schema": "EnumMergeCheckStatus"
+      },
+      {
+        "schema": "EnumMergeMethod"
+      },
+      {
+        "schema": "EnumPrincipalType"
+      },
+      {
+        "schema": "EnumPublicKeyScheme"
+      },
+      {
+        "schema": "EnumPullReqActivityKind"
+      },
+      {
+        "schema": "EnumPullReqActivityType"
+      },
+      {
+        "schema": "EnumPullReqCommentStatus"
+      },
+      {
+        "schema": "EnumPullReqReviewDecision"
+      },
+      {
+        "schema": "EnumPullReqReviewerType"
+      },
+      {
+        "schema": "EnumPullReqState"
+      },
+      {
+        "schema": "EnumPullReqSubState"
+      },
+      {
+        "schema": "EnumRepoState"
+      },
+      {
+        "schema": "EnumRepoType"
+      },
+      {
+        "schema": "EnumResourceType"
+      },
+      {
+        "schema": "EnumRuleState"
+      },
+      {
+        "schema": "EnumRuleType"
+      },
+      {
+        "schema": "EnumWebhookExecutionResult"
+      },
+      {
+        "schema": "EnumWebhookParent"
+      },
+      {
+        "schema": "EnumWebhookTrigger"
+      },
+      {
+        "schema": "GitCommitFileStats"
+      },
+      {
+        "schema": "GitFileAction"
+      },
+      {
+        "schema": "ImporterPipelineOption"
+      },
+      {
+        "schema": "ImporterProviderType"
+      },
+      {
+        "schema": "OpenapiContentType"
+      },
+      {
+        "schema": "OpenapiPostRawDiffRequest"
+      },
+      {
+        "schema": "OpenapiPostRawPRDiffRequest"
+      },
+      {
+        "schema": "OpenapiRuleType"
+      },
+      {
+        "schema": "RepoContent"
+      },
+      {
+        "schema": "RepoContentType"
+      },
+      {
+        "schema": "SettingsVulnerabilityScanningMode"
+      },
+      {
+        "schema": "ShaSHA"
+      },
+      {
+        "schema": "TypesRepoLangStat"
+      },
+      {
+        "schema": "TypesRepoTags"
+      },
+      {
+        "schema": "Anonymous"
+      },
+      {
+        "schema": "ArtifactEntityMetadata"
+      },
+      {
+        "schema": "ArtifactScanEvaluateRequestStatusV3"
+      },
+      {
+        "schema": "RegistryArtifactType"
+      },
+      {
+        "schema": "AuthType"
+      },
+      {
+        "schema": "BulkDownloadRequestStatus"
+      },
+      {
+        "schema": "BulkDownloadRequestStatusV3"
+      },
+      {
+        "schema": "ClientSetupStepType"
+      },
+      {
+        "schema": "CreatedAtMsV3"
+      },
+      {
+        "schema": "DeletedAtMsV3"
+      },
+      {
+        "schema": "RegistryEnvironmentType"
+      },
+      {
+        "schema": "FirewallExceptionStatusV3"
+      },
+      {
+        "schema": "FirewallModeV3"
+      },
+      {
+        "schema": "MetadataType"
+      },
+      {
+        "schema": "MetadataTypeV3"
+      },
+      {
+        "schema": "ModifiedAtMsV3"
+      },
+      {
+        "schema": "PackageKindV3"
+      },
+      {
+        "schema": "PackageType"
+      },
+      {
+        "schema": "PackageTypeV3"
+      },
+      {
+        "schema": "PolicyFailureDetailCategoryV3"
+      },
+      {
+        "schema": "PolicySetsV3"
+      },
+      {
+        "schema": "RegistryType"
+      },
+      {
+        "schema": "RegistryTypeV3"
+      },
+      {
+        "schema": "ResourceMetadataV3"
+      },
+      {
+        "schema": "ScanStatusV3"
+      },
+      {
+        "schema": "SectionType"
+      },
+      {
+        "schema": "RegistryStatus"
+      },
+      {
+        "schema": "Trigger"
+      },
+      {
+        "schema": "UpstreamProxyConfigFirewallMode"
+      },
+      {
+        "schema": "WebhookExecResult"
+      },
+      {
+        "schema": "ActivityResourceCollection"
+      },
+      {
+        "schema": "AnsibleActivityResourceCollection"
+      },
+      {
+        "schema": "AnsibleDataResourceCollection"
+      },
+      {
+        "schema": "AnsibleHost"
+      },
+      {
+        "schema": "ApprovalResourceCollection"
+      },
+      {
+        "schema": "ChangedCostsByModuleResourceCollection"
+      },
+      {
+        "schema": "ChangedCostsCollection"
+      },
+      {
+        "schema": "ChangedOutputCollection"
+      },
+      {
+        "schema": "ChangedResourceCollection"
+      },
+      {
+        "schema": "ChangedResourcesCollection"
+      },
+      {
+        "schema": "CostResourceCollection"
+      },
+      {
+        "schema": "CostResourcesCollection"
+      },
+      {
+        "schema": "DefaultPipelineCollection"
+      },
+      {
+        "schema": "ExecutionResourceCollection"
+      },
+      {
+        "schema": "HostActivityResourceCollection"
+      },
+      {
+        "schema": "HostResourceCollection"
+      },
+      {
+        "schema": "InventoryDetailResourceCollection"
+      },
+      {
+        "schema": "InventoryHostResourceCollection"
+      },
+      {
+        "schema": "InventoryVarResourceCollection"
+      },
+      {
+        "schema": "ModuleExecutionResourceCollection"
+      },
+      {
+        "schema": "ModuleResourceCollection"
+      },
+      {
+        "schema": "OutputCollection"
+      },
+      {
+        "schema": "PlaybookResourceCollection"
+      },
+      {
+        "schema": "ProviderCollection"
+      },
+      {
+        "schema": "ResourceCollection"
+      },
+      {
+        "schema": "SigningKeyCollection"
+      },
+      {
+        "schema": "VariableSetResourceCollection"
+      },
+      {
+        "schema": "WorkspaceDataResourceCollection"
+      },
+      {
+        "schema": "WorkspaceModuleCollection"
+      },
+      {
+        "schema": "WorkspaceResourceCollection"
+      },
+      {
+        "schema": "WorkspaceResourceSummaryCollection"
+      },
+      {
+        "schema": "WorkspaceVariableResourceCollection"
+      },
+      {
+        "schema": "ChangeSetDeploymentStatus"
+      },
+      {
+        "schema": "Command"
+      },
+      {
+        "schema": "CommandExecutionStatus"
+      },
+      {
+        "schema": "CustomOperations"
+      },
+      {
+        "schema": "DBSchemaType"
+      },
+      {
+        "schema": "DBStepType"
+      },
+      {
+        "schema": "FlywayCommand"
+      },
+      {
+        "schema": "FlywayCommandExecutionStatus"
+      },
+      {
+        "schema": "FlywayCustomOperations"
+      },
+      {
+        "schema": "MigrationType"
+      },
+      {
+        "schema": "OrderInstance"
+      },
+      {
+        "schema": "SortInstance"
+      },
+      {
+        "schema": "EnvironmentTypeFilter"
+      },
+      {
+        "schema": "EnvironmentType2"
+      },
+      {
+        "schema": "DeleteRepositoriesRequestBody"
+      },
+      {
+        "schema": "Operator"
+      },
+      {
+        "schema": "VulnerabilitySeverity"
+      },
+      {
+        "schema": "RemediationStatus"
+      },
+      {
+        "schema": "NameOperator"
+      },
+      {
+        "schema": "ExemptionStatusDTO"
+      },
+      {
+        "schema": "ContainerArtifactMetadata"
+      },
+      {
+        "schema": "LayerType"
+      },
+      {
+        "schema": "GetIntegrationSummaryResponse"
+      },
+      {
+        "schema": "IntegrationType"
+      },
+      {
+        "schema": "ComplianceCheckType"
+      },
+      {
+        "schema": "ComplianceCheckEntityType"
+      },
+      {
+        "schema": "ComplianceStandardType"
+      },
+      {
+        "schema": "ComplianceCheckSeverity"
+      },
+      {
+        "schema": "ComplianceResultStatus"
+      },
+      {
+        "schema": "ComplianceScanType"
+      },
+      {
+        "schema": "ComplianceSourcePlatform"
+      },
+      {
+        "schema": "ExecutionType"
+      },
+      {
+        "schema": "RepositoryPlatform"
+      },
+      {
+        "schema": "VerificationStatus"
+      },
+      {
+        "schema": "actions.ActionType"
+      },
+      {
+        "schema": "actions.InfrastructureType"
+      },
+      {
+        "schema": "api.ResponseErrorCode"
+      },
+      {
+        "schema": "bulkaction.BulkAddTagsInExperimetsResponse"
+      },
+      {
+        "schema": "bulkaction.BulkDeleteExperimetsResponse"
+      },
+      {
+        "schema": "chaos_experiment.ChaosExperimentType"
+      },
+      {
+        "schema": "chaos_experiment_run.ExperimentType"
+      },
+      {
+        "schema": "chaos_hub.AuthType"
+      },
+      {
+        "schema": "chaos_hub.ConnectorScope"
+      },
+      {
+        "schema": "chaos_infrastructure_v2.InfraScope"
+      },
+      {
+        "schema": "chaos_infrastructure_v2.InfraType"
+      },
+      {
+        "schema": "chaoscomponent.ChaosComponentType"
+      },
+      {
+        "schema": "chaoshubresources.PermissionLevel"
+      },
+      {
+        "schema": "chaosresourcenotes.NoteType"
+      },
+      {
+        "schema": "chaosserviceusage.InfrastructureType"
+      },
+      {
+        "schema": "chaosserviceusage.ServiceType"
+      },
+      {
+        "schema": "common.ImportType"
+      },
+      {
+        "schema": "common.VolumeType"
+      },
+      {
+        "schema": "database.ConnectionType"
+      },
+      {
+        "schema": "database.NetworkMapResourceKind"
+      },
+      {
+        "schema": "execution.ChaosStepStatus"
+      },
+      {
+        "schema": "execution.ChaosStepType"
+      },
+      {
+        "schema": "experiment.AuthType"
+      },
+      {
+        "schema": "experiment.CleanupPolicy"
+      },
+      {
+        "schema": "experiment.InfraType"
+      },
+      {
+        "schema": "experiment.WorkloadKind"
+      },
+      {
+        "schema": "github_com_harness_hce-saas_graphql_server_api.Empty"
+      },
+      {
+        "schema": "github_com_harness_hce-saas_graphql_server_pkg_database_mongodb_probe.DatadogSyntheticsTestType"
+      },
+      {
+        "schema": "github_com_harness_hce-saas_graphql_server_pkg_database_mongodb_recommendation.RecommendationTargetType"
+      },
+      {
+        "schema": "github_com_harness_hce-saas_hce-sdk_common_probe_v1.DatadogSyntheticsTestType"
+      },
+      {
+        "schema": "github_com_harness_hce-saas_hce-sdk_template_schema_probe.DatadogSyntheticsTestType"
+      },
+      {
+        "schema": "github_com_wings-software_chaos-operator_api_litmuschaos_v1alpha1.ProbeVerdict"
+      },
+      {
+        "schema": "infra.DeploymentType"
+      },
+      {
+        "schema": "infra.InfraStatus"
+      },
+      {
+        "schema": "infra.InfraType"
+      },
+      {
+        "schema": "infra.PlatformType"
+      },
+      {
+        "schema": "infra_v2.EnvValueFrom"
+      },
+      {
+        "schema": "infra_v2.InfraScope"
+      },
+      {
+        "schema": "infra_v2.InfraStatus"
+      },
+      {
+        "schema": "infra_v2.InfraType"
+      },
+      {
+        "schema": "infra_v2.InfraTypeFilter"
+      },
+      {
+        "schema": "infra_v2.InstallationType"
+      },
+      {
+        "schema": "infra_v2.SortingField"
+      },
+      {
+        "schema": "infra_v2.UpdateStatus"
+      },
+      {
+        "schema": "infra_v2.UpgradeStatus"
+      },
+      {
+        "schema": "intstr.Type"
+      },
+      {
+        "schema": "k8s_io_apimachinery_pkg_apis_meta_v1.ConditionStatus"
+      },
+      {
+        "schema": "k8sinfra.UpdateEmissaryURLResponse"
+      },
+      {
+        "schema": "model.ClusterType"
+      },
+      {
+        "schema": "model.InfraScope"
+      },
+      {
+        "schema": "model.InfrastructureType"
+      },
+      {
+        "schema": "model.InstallationType"
+      },
+      {
+        "schema": "model.ScenarioType"
+      },
+      {
+        "schema": "model.UpdateStatus"
+      },
+      {
+        "schema": "model.UpgradeStatus"
+      },
+      {
+        "schema": "model.WorkflowRunStatus"
+      },
+      {
+        "schema": "model.WorkflowSortingField"
+      },
+      {
+        "schema": "model.WorkflowType"
+      },
+      {
+        "schema": "mongodb.ImportType"
+      },
+      {
+        "schema": "mongodb.ManagedBy"
+      },
+      {
+        "schema": "networkmap.ListTargetNetworkMapRequest"
+      },
+      {
+        "schema": "networkmap.RetryExperimentCreationResponse"
+      },
+      {
+        "schema": "pipelineonboarding.PipelineChaosOnboardingTaskResponse"
+      },
+      {
+        "schema": "pipelineonboarding.Status"
+      },
+      {
+        "schema": "probe.APMProbeType"
+      },
+      {
+        "schema": "probe.InfrastructureType"
+      },
+      {
+        "schema": "probe.ProbeType"
+      },
+      {
+        "schema": "recommendation.RecommendationCategory"
+      },
+      {
+        "schema": "recommendation.RecommendationSource"
+      },
+      {
+        "schema": "recommendation.RecommendationStatus"
+      },
+      {
+        "schema": "recommendation.RecommendationType"
+      },
+      {
+        "schema": "risks.ExecutionType"
+      },
+      {
+        "schema": "risks.Infrastructure"
+      },
+      {
+        "schema": "security_governance.AccessControl"
+      },
+      {
+        "schema": "security_governance.FaultType"
+      },
+      {
+        "schema": "security_governance.InfraType"
+      },
+      {
+        "schema": "security_governance.Operator"
+      },
+      {
+        "schema": "targetnetworkmap.ExperimentCreationMode"
+      },
+      {
+        "schema": "targetnetworkmap.Status"
+      },
+      {
+        "schema": "targetservice.ServiceType"
+      },
+      {
+        "schema": "template.InputCategory"
+      },
+      {
+        "schema": "template.InputType"
+      },
+      {
+        "schema": "types.InfrastructureType"
+      },
+      {
+        "schema": "types.ProbeType"
+      },
+      {
+        "schema": "types.ProbeVerdict"
+      },
+      {
+        "schema": "types.ScenarioType"
+      },
+      {
+        "schema": "types.UpdateCronExperimentAction"
+      },
+      {
+        "schema": "types.UpdateOperation"
+      },
+      {
+        "schema": "v1.AzureDataDiskCachingMode"
+      },
+      {
+        "schema": "v1.AzureDataDiskKind"
+      },
+      {
+        "schema": "v1.FieldsV1"
+      },
+      {
+        "schema": "v1.HostPathType"
+      },
+      {
+        "schema": "v1.IPFamily"
+      },
+      {
+        "schema": "v1.IPFamilyPolicyType"
+      },
+      {
+        "schema": "v1.LabelSelectorOperator"
+      },
+      {
+        "schema": "v1.ManagedFieldsOperationType"
+      },
+      {
+        "schema": "v1.MountPropagationMode"
+      },
+      {
+        "schema": "v1.PersistentVolumeAccessMode"
+      },
+      {
+        "schema": "v1.PersistentVolumeMode"
+      },
+      {
+        "schema": "v1.PodFSGroupChangePolicy"
+      },
+      {
+        "schema": "v1.PodPhase"
+      },
+      {
+        "schema": "v1.ProcMountType"
+      },
+      {
+        "schema": "v1.Protocol"
+      },
+      {
+        "schema": "v1.PullPolicy"
+      },
+      {
+        "schema": "v1.ResourceList"
+      },
+      {
+        "schema": "v1.SeccompProfileType"
+      },
+      {
+        "schema": "v1.ServiceAffinity"
+      },
+      {
+        "schema": "v1.ServiceExternalTrafficPolicyType"
+      },
+      {
+        "schema": "v1.ServiceInternalTrafficPolicyType"
+      },
+      {
+        "schema": "v1.ServiceType"
+      },
+      {
+        "schema": "v1.StorageMedium"
+      },
+      {
+        "schema": "v1.TaintEffect"
+      },
+      {
+        "schema": "v1.TolerationOperator"
+      },
+      {
+        "schema": "v2_onboarding.NetworkMapCreationMode"
+      },
+      {
+        "schema": "v2_onboarding.OnboardingMode"
+      },
+      {
+        "schema": "v2_onboarding.V2OnboardingStatus"
+      }
+    ],
+    "inline_response_promotions": [
+      {
+        "generated_name": "get-role-assignments-count_200_Response",
+        "operation_id": "get-role-assignments-count",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "get-roles-count_200_Response",
+        "operation_id": "get-roles-count",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "credits-overusage_400_Response",
+        "operation_id": "credits-overusage",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "get-license-type_400_Response",
+        "operation_id": "get-license-type",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "get-devops-essentials-license_400_Response",
+        "operation_id": "get-devops-essentials-license",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-account-scoped-certificate_400_Response",
+        "operation_id": "delete-account-scoped-certificate",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-org-scoped-certificate_400_Response",
+        "operation_id": "delete-org-scoped-certificate",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-project-scoped-certificate_400_Response",
+        "operation_id": "delete-project-scoped-certificate",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-environment_400_Response",
+        "operation_id": "delete-environment",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-environment_400_Response_1",
+        "operation_id": "delete-environment",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-org-scoped-environment_400_Response",
+        "operation_id": "delete-org-scoped-environment",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-org-scoped-environment_400_Response_1",
+        "operation_id": "delete-org-scoped-environment",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-account-scoped-environment_400_Response",
+        "operation_id": "delete-account-scoped-environment",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-account-scoped-environment_400_Response_1",
+        "operation_id": "delete-account-scoped-environment",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-infrastructure_400_Response",
+        "operation_id": "delete-infrastructure",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-infrastructure_400_Response_1",
+        "operation_id": "delete-infrastructure",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-org-scoped-infrastructure_400_Response",
+        "operation_id": "delete-org-scoped-infrastructure",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-org-scoped-infrastructure_400_Response_1",
+        "operation_id": "delete-org-scoped-infrastructure",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-account-scoped-infrastructure_400_Response",
+        "operation_id": "delete-account-scoped-infrastructure",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-account-scoped-infrastructure_400_Response_1",
+        "operation_id": "delete-account-scoped-infrastructure",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "export-license-usage-activity_400_Response",
+        "operation_id": "export-license-usage-activity",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "credits-allocation-export-data_400_Response",
+        "operation_id": "credits-allocation-export-data",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "license-usage-activity_400_Response",
+        "operation_id": "license-usage-activity",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "get-sync-data-collection-result_400_Response",
+        "operation_id": "get-sync-data-collection-result",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-account-scoped-banner_400_Response",
+        "operation_id": "delete-account-scoped-banner",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "get-v1-devSubscriptions_200_Response",
+        "operation_id": "get-v1-devSubscriptions",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "get-v1-moduleLicenseUtilization_200_Response",
+        "operation_id": "get-v1-moduleLicenseUtilization",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "get-v1-listPrincipalsWithAccess_200_Response",
+        "operation_id": "get-v1-listPrincipalsWithAccess",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "post-v1-listPrincipalsWithAccess_200_Response",
+        "operation_id": "post-v1-listPrincipalsWithAccess",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "get-v1-dailyModuleAccountAccess_200_Response",
+        "operation_id": "get-v1-dailyModuleAccountAccess",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "get-v1-moduleAccess_200_Response",
+        "operation_id": "get-v1-moduleAccess",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "zoomOauthTokenGenerate_200_Response",
+        "operation_id": "zoomOauthTokenGenerate",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "delete-notification-channel_400_Response",
+        "operation_id": "delete-notification-channel",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-notification-rule_400_Response",
+        "operation_id": "delete-notification-rule",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-notification-channel-org_400_Response",
+        "operation_id": "delete-notification-channel-org",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-notification-channel-account_400_Response",
+        "operation_id": "delete-notification-channel-account",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-notification-rule-org_400_Response",
+        "operation_id": "delete-notification-rule-org",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-notification-rule-account_400_Response",
+        "operation_id": "delete-notification-rule-account",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "notification-resource-list_200_Response",
+        "operation_id": "notification-resource-list",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "delete-trigger_400_Response",
+        "operation_id": "delete-trigger",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-trigger_400_Response_1",
+        "operation_id": "delete-trigger",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-pipeline_400_Response",
+        "operation_id": "delete-pipeline",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-pipeline_400_Response_1",
+        "operation_id": "delete-pipeline",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-input-set_400_Response",
+        "operation_id": "delete-input-set",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-input-set_400_Response_1",
+        "operation_id": "delete-input-set",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "getApprovalInstancesByExecutionId_400_Response",
+        "operation_id": "getApprovalInstancesByExecutionId",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "getApprovalInstancesByExecutionId_400_Response_1",
+        "operation_id": "getApprovalInstancesByExecutionId",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "addHarnessApprovalActivityByPipelineExecutionId_400_Response",
+        "operation_id": "addHarnessApprovalActivityByPipelineExecutionId",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-template-acc_400_Response",
+        "operation_id": "delete-template-acc",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-template-acc_400_Response_1",
+        "operation_id": "delete-template-acc",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-template-org_400_Response",
+        "operation_id": "delete-template-org",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-template-org_400_Response_1",
+        "operation_id": "delete-template-org",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-template-project_400_Response",
+        "operation_id": "delete-template-project",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "delete-template-project_400_Response_1",
+        "operation_id": "delete-template-project",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "Infrastructure#Execute_200_Response",
+        "operation_id": "Infrastructure#Execute",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getGitSyncConfigList_default_Response",
+        "operation_id": "getGitSyncConfigList",
+        "status_code": "default"
+      },
+      {
+        "generated_name": "getGitSyncConfigList_default_Response_1",
+        "operation_id": "getGitSyncConfigList",
+        "status_code": "default"
+      },
+      {
+        "generated_name": "getGitSyncConfigList_default_Response_2",
+        "operation_id": "getGitSyncConfigList",
+        "status_code": "default"
+      },
+      {
+        "generated_name": "deleteAgentMtlsEndpointForAccount_200_Response",
+        "operation_id": "deleteAgentMtlsEndpointForAccount",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "deleteAgentMtlsEndpointForAccount_200_Response_1",
+        "operation_id": "deleteAgentMtlsEndpointForAccount",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "checkAgentMtlsEndpointDomainPrefixAvailability_200_Response",
+        "operation_id": "checkAgentMtlsEndpointDomainPrefixAvailability",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "checkAgentMtlsEndpointDomainPrefixAvailability_200_Response_1",
+        "operation_id": "checkAgentMtlsEndpointDomainPrefixAvailability",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "overrideDelegateImageTag_1_200_Response",
+        "operation_id": "overrideDelegateImageTag_1",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "overrideDelegateImageTag_1_200_Response_1",
+        "operation_id": "overrideDelegateImageTag_1",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "processWebhookEvent_default_Response",
+        "operation_id": "processWebhookEvent",
+        "status_code": "default"
+      },
+      {
+        "generated_name": "processWebhookEvent_default_Response_1",
+        "operation_id": "processWebhookEvent",
+        "status_code": "default"
+      },
+      {
+        "generated_name": "processWebhookEvent_default_Response_2",
+        "operation_id": "processWebhookEvent",
+        "status_code": "default"
+      },
+      {
+        "generated_name": "processWebhookEvent_default_Response_3",
+        "operation_id": "processWebhookEvent",
+        "status_code": "default"
+      },
+      {
+        "generated_name": "adjustBudgetAmountOperation_202_Response",
+        "operation_id": "adjustBudgetAmountOperation",
+        "status_code": "202"
+      },
+      {
+        "generated_name": "cloneBudgetsBulkOperation_202_Response",
+        "operation_id": "cloneBudgetsBulkOperation",
+        "status_code": "202"
+      },
+      {
+        "generated_name": "deleteBudgetsBulkOperation_202_Response",
+        "operation_id": "deleteBudgetsBulkOperation",
+        "status_code": "202"
+      },
+      {
+        "generated_name": "checkBulkBudgetJobStatus_200_Response",
+        "operation_id": "checkBulkBudgetJobStatus",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "manageBudgetAlertsBulkOperation_202_Response",
+        "operation_id": "manageBudgetAlertsBulkOperation",
+        "status_code": "202"
+      },
+      {
+        "generated_name": "getAnomalyResourceList_200_Response",
+        "operation_id": "getAnomalyResourceList",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AutoStoppingRuleDetails_200_Response",
+        "operation_id": "AutoStoppingRuleDetails",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "SavingsFromAutoStoppingRule_200_Response",
+        "operation_id": "SavingsFromAutoStoppingRule",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "CoolDownAutostoppingRule_200_Response",
+        "operation_id": "CoolDownAutostoppingRule",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetAutoStoppingRuleV2_200_Response",
+        "operation_id": "GetAutoStoppingRuleV2",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "deleteAutoStoppingSchedule_200_Response",
+        "operation_id": "deleteAutoStoppingSchedule",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "SetupConfiguration_200_Response",
+        "operation_id": "SetupConfiguration",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "SetupConfiguration_400_Response",
+        "operation_id": "SetupConfiguration",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "GetSetupConfiguration_200_Response",
+        "operation_id": "GetSetupConfiguration",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetEstimatedSavingsForSetup_200_Response",
+        "operation_id": "GetEstimatedSavingsForSetup",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetEstimatedSavingsForSetup_400_Response",
+        "operation_id": "GetEstimatedSavingsForSetup",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "GetCostCoverageForSetup_200_Response",
+        "operation_id": "GetCostCoverageForSetup",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetCostCoverageForSetup_400_Response",
+        "operation_id": "GetCostCoverageForSetup",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "GetRIFilterOptions_200_Response",
+        "operation_id": "GetRIFilterOptions",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetSPFilterOptions_200_Response",
+        "operation_id": "GetSPFilterOptions",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetRegionFilters_200_Response",
+        "operation_id": "GetRegionFilters",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetInstanceFamilyFilters_200_Response",
+        "operation_id": "GetInstanceFamilyFilters",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetProviderAccountFilters_200_Response",
+        "operation_id": "GetProviderAccountFilters",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getMetricGraphForSLO_200_Response",
+        "operation_id": "getMetricGraphForSLO",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listSlo_200_Response",
+        "operation_id": "listSlo",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "FilterService_Delete_200_Response",
+        "operation_id": "FilterService_Delete",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentApplicationService_PodLogs2_200_Response",
+        "operation_id": "AgentApplicationService_PodLogs2",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentApplicationService_PodLogsBatch2_200_Response",
+        "operation_id": "AgentApplicationService_PodLogsBatch2",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentApplicationService_PodLogs_200_Response",
+        "operation_id": "AgentApplicationService_PodLogs",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentApplicationService_PodLogsBatch_200_Response",
+        "operation_id": "AgentApplicationService_PodLogsBatch",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentServiceForServer_GetDeployYaml_200_Response",
+        "operation_id": "AgentServiceForServer_GetDeployYaml",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentServiceForServer_PostDeployHelmChart_200_Response",
+        "operation_id": "AgentServiceForServer_PostDeployHelmChart",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentServiceForServer_PostDeployYaml_200_Response",
+        "operation_id": "AgentServiceForServer_PostDeployYaml",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentServiceForServer_GetDeployHelmChart_200_Response",
+        "operation_id": "AgentServiceForServer_GetDeployHelmChart",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentServiceForServer_GetDeployOverrides_200_Response",
+        "operation_id": "AgentServiceForServer_GetDeployOverrides",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentServiceForServer_PostDeployOverrides_200_Response",
+        "operation_id": "AgentServiceForServer_PostDeployOverrides",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentServiceForServer_GetOperatorYaml_200_Response",
+        "operation_id": "AgentServiceForServer_GetOperatorYaml",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentServiceForServer_PostOperatorYaml_200_Response",
+        "operation_id": "AgentServiceForServer_PostOperatorYaml",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentApplicationService_Watch_200_Response",
+        "operation_id": "AgentApplicationService_Watch",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "AgentApplicationService_WatchResourceTree_200_Response",
+        "operation_id": "AgentApplicationService_WatchResourceTree",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "ApplicationService_Exists_200_Response",
+        "operation_id": "ApplicationService_Exists",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "ApplicationSetService_GetApplicationSetGenerator_200_Response",
+        "operation_id": "ApplicationSetService_GetApplicationSetGenerator",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "ApplicationSetService_GetApplicationSetTemplate_200_Response",
+        "operation_id": "ApplicationSetService_GetApplicationSetTemplate",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "ClusterService_Exists_200_Response",
+        "operation_id": "ClusterService_Exists",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "RepositoryService_Exists_200_Response",
+        "operation_id": "RepositoryService_Exists",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "evaluations#list_200_Response",
+        "operation_id": "evaluations#list",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "examples#list_200_Response",
+        "operation_id": "examples#list",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "policies#list_200_Response",
+        "operation_id": "policies#list",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "policies#list_policy_sets_200_Response",
+        "operation_id": "policies#list_policy_sets",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "policysets#list_200_Response",
+        "operation_id": "policysets#list",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "policysets#listall_200_Response",
+        "operation_id": "policysets#listall",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "get_dashboard_element_download_task_results_200_Response",
+        "operation_id": "get_dashboard_element_download_task_results",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listStatusCheckRecentSpace_200_Response",
+        "operation_id": "listStatusCheckRecentSpace",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listSpaceLabels_200_Response",
+        "operation_id": "listSpaceLabels",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listSpaceLabelValues_200_Response",
+        "operation_id": "listSpaceLabelValues",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listPrincipals_200_Response",
+        "operation_id": "listPrincipals",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listPullReqSpace_200_Response",
+        "operation_id": "listPullReqSpace",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "countPullReqSpace_200_Response",
+        "operation_id": "countPullReqSpace",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listRepos_200_Response",
+        "operation_id": "listRepos",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "archive_200_Response",
+        "operation_id": "archive",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "archive_200_Response_1",
+        "operation_id": "archive",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "archive_200_Response_2",
+        "operation_id": "archive",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getBlame_200_Response",
+        "operation_id": "getBlame",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listBranches_200_Response",
+        "operation_id": "listBranches",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listStatusCheckResults_200_Response",
+        "operation_id": "listStatusCheckResults",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listStatusCheckRecent_200_Response",
+        "operation_id": "listStatusCheckRecent",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getCommitDiff_200_Response",
+        "operation_id": "getCommitDiff",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "calculateCommitDivergence_200_Response",
+        "operation_id": "calculateCommitDivergence",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "rawDiff_200_Response",
+        "operation_id": "rawDiff",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "rawDiff_200_Response_1",
+        "operation_id": "rawDiff",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "rawDiffPost_200_Response",
+        "operation_id": "rawDiffPost",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "rawDiffPost_200_Response_1",
+        "operation_id": "rawDiffPost",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listRepoLabels_200_Response",
+        "operation_id": "listRepoLabels",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listRepoLabelValues_200_Response",
+        "operation_id": "listRepoLabelValues",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getRepoLanguages_200_Response",
+        "operation_id": "getRepoLanguages",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listPullReq_200_Response",
+        "operation_id": "listPullReq",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listPullReqActivities_200_Response",
+        "operation_id": "listPullReqActivities",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listPullReqCommits_200_Response",
+        "operation_id": "listPullReqCommits",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "diffPullReq_200_Response",
+        "operation_id": "diffPullReq",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "diffPullReq_200_Response_1",
+        "operation_id": "diffPullReq",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "diffPullReqPost_200_Response",
+        "operation_id": "diffPullReqPost",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "diffPullReqPost_200_Response_1",
+        "operation_id": "diffPullReqPost",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "fileViewListPullReq_200_Response",
+        "operation_id": "fileViewListPullReq",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "reviewerListPullReq_200_Response",
+        "operation_id": "reviewerListPullReq",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "repoRuleList_200_Response",
+        "operation_id": "repoRuleList",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listTags_200_Response",
+        "operation_id": "listTags",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listRepoWebhooks_200_Response",
+        "operation_id": "listRepoWebhooks",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listRepoWebhookExecutions_200_Response",
+        "operation_id": "listRepoWebhookExecutions",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listGitignore_200_Response",
+        "operation_id": "listGitignore",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listLicenses_200_Response",
+        "operation_id": "listLicenses",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "spaceRuleList_200_Response",
+        "operation_id": "spaceRuleList",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listUsergroups_200_Response",
+        "operation_id": "listUsergroups",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listSpaceWebhooks_200_Response",
+        "operation_id": "listSpaceWebhooks",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "listSpaceWebhookExecutions_200_Response",
+        "operation_id": "listSpaceWebhookExecutions",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "RegistrylistSpaceLabels_200_Response",
+        "operation_id": "RegistrylistSpaceLabels",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "RegistrylistSpaceLabelValues_200_Response",
+        "operation_id": "RegistrylistSpaceLabelValues",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "module-registry#list-module-tags-by-id_200_Response",
+        "operation_id": "module-registry#list-module-tags-by-id",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "module-registry#list-readme-by-id_200_Response",
+        "operation_id": "module-registry#list-readme-by-id",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "module-registry#list-connectors_200_Response",
+        "operation_id": "module-registry#list-connectors",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "ansible#show-data_200_Response",
+        "operation_id": "ansible#show-data",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "ansible#get-file_200_Response",
+        "operation_id": "ansible#get-file",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "ansible#show-inventory-as-ansible_200_Response",
+        "operation_id": "ansible#show-inventory-as-ansible",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "workspaces#list-all-workspace-tags_200_Response",
+        "operation_id": "workspaces#list-all-workspace-tags",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "workspace_templates#get-workspaces-by-template-id_200_Response",
+        "operation_id": "workspace_templates#get-workspaces-by-template-id",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "workspaces#show-data_200_Response",
+        "operation_id": "workspaces#show-data",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "workspaces#download-remote-execution_200_Response",
+        "operation_id": "workspaces#download-remote-execution",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "workspaces#list-workspace-resource-types_200_Response",
+        "operation_id": "workspaces#list-workspace-resource-types",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "workspaces#list-workspace-resource-types-and-attributes_200_Response",
+        "operation_id": "workspaces#list-workspace-resource-types-and-attributes",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "workspaces#list-workspace-resource-type-attributes_200_Response",
+        "operation_id": "workspaces#list-workspace-resource-type-attributes",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "tf-standard-backend#pull-terraform-state_200_Response",
+        "operation_id": "tf-standard-backend#pull-terraform-state",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "system#list-supported-provisioner-versions_200_Response",
+        "operation_id": "system#list-supported-provisioner-versions",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "workspaces#list-associated-workspaces_200_Response",
+        "operation_id": "workspaces#list-associated-workspaces",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "provider-registry#get-file_200_Response",
+        "operation_id": "provider-registry#get-file",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "module-registry#getModule_200_Response",
+        "operation_id": "module-registry#getModule",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "Frontend#ExecutionIssueCounts_200_Response",
+        "operation_id": "Frontend#ExecutionIssueCounts",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "STO Data Frontend#ExecutionArtifactScanSummary_200_Response",
+        "operation_id": "STO Data Frontend#ExecutionArtifactScanSummary",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "STO Data Frontend#ExecutionArtifactSummary_200_Response",
+        "operation_id": "STO Data Frontend#ExecutionArtifactSummary",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "STO Data Frontend#ExecutionSummary_200_Response",
+        "operation_id": "STO Data Frontend#ExecutionSummary",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "STO Data Frontend#ExecutionIssueCounts_200_Response",
+        "operation_id": "STO Data Frontend#ExecutionIssueCounts",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "V1ListDatabaseSchema_200_Response",
+        "operation_id": "V1ListDatabaseSchema",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "V1GetDeployedState_200_Response",
+        "operation_id": "V1GetDeployedState",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "categories#deleteCategories_200_Response",
+        "operation_id": "categories#deleteCategories",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "categories#deleteCategory_200_Response",
+        "operation_id": "categories#deleteCategory",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "collections#listCollections_200_Response",
+        "operation_id": "collections#listCollections",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "collections#createCollection_200_Response",
+        "operation_id": "collections#createCollection",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "collections#editCollection_200_Response",
+        "operation_id": "collections#editCollection",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "collections#deleteCollection_200_Response",
+        "operation_id": "collections#deleteCollection",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "contributors#getActiveVersions_200_Response",
+        "operation_id": "contributors#getActiveVersions",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "contributors#getSchema_200_Response",
+        "operation_id": "contributors#getSchema",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "users#listActiveUsers_200_Response",
+        "operation_id": "users#listActiveUsers",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "contributors#updateContributors_200_Response",
+        "operation_id": "contributors#updateContributors",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "contributors#updateContributors_400_Response",
+        "operation_id": "contributors#updateContributors",
+        "status_code": "400"
+      },
+      {
+        "generated_name": "contributors#updateContributors_404_Response",
+        "operation_id": "contributors#updateContributors",
+        "status_code": "404"
+      },
+      {
+        "generated_name": "seiContributors#listContributors_200_Response",
+        "operation_id": "seiContributors#listContributors",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "dora#getLeadTime_200_Response",
+        "operation_id": "dora#getLeadTime",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "dora#getDeploymentFrequency_200_Response",
+        "operation_id": "dora#getDeploymentFrequency",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "dora#getChangeFailureRate_200_Response",
+        "operation_id": "dora#getChangeFailureRate",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "dora#getMeanTimeToRestore_200_Response",
+        "operation_id": "dora#getMeanTimeToRestore",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "createComplianceStandards_200_Response",
+        "operation_id": "createComplianceStandards",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getCICDWorkflowsList_200_Response",
+        "operation_id": "getCICDWorkflowsList",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getRepoRulesEvaluationTrend_200_Response",
+        "operation_id": "getRepoRulesEvaluationTrend",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getArtifactV2ChainOfCustody_200_Response",
+        "operation_id": "getArtifactV2ChainOfCustody",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getArtifactChainOfCustodyV2_200_Response",
+        "operation_id": "getArtifactChainOfCustodyV2",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getComplianceStandardsFilters_200_Response",
+        "operation_id": "getComplianceStandardsFilters",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "saveSignature_200_Response",
+        "operation_id": "saveSignature",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "saveIntegrityVerification_200_Response",
+        "operation_id": "saveIntegrityVerification",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getActionManifest_200_Response",
+        "operation_id": "getActionManifest",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "deleteAction_200_Response",
+        "operation_id": "deleteAction",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetChaosExperimentRunReport_200_Response",
+        "operation_id": "GetChaosExperimentRunReport",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getLegacyKubernetesHelmInfraCommand_200_Response",
+        "operation_id": "getLegacyKubernetesHelmInfraCommand",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getLegacyKubernetesChaosInfraManifest_200_Response",
+        "operation_id": "getLegacyKubernetesChaosInfraManifest",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "deleteLegacyKubernetesChaosInfra_200_Response",
+        "operation_id": "deleteLegacyKubernetesChaosInfra",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "testLegacyKubernetesChaosInfraConnection_200_Response",
+        "operation_id": "testLegacyKubernetesChaosInfraConnection",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "deleteMachineChaosInfra_200_Response",
+        "operation_id": "deleteMachineChaosInfra",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getExperimentationActivityReport_200_Response",
+        "operation_id": "getExperimentationActivityReport",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getServiceUsageReport_200_Response",
+        "operation_id": "getServiceUsageReport",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "deleteActionTemplate_200_Response",
+        "operation_id": "deleteActionTemplate",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "deleteProbeTemplate_200_Response",
+        "operation_id": "deleteProbeTemplate",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "deleteTargetNetworkMap_200_Response",
+        "operation_id": "deleteTargetNetworkMap",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getExperimentRunsCSV_200_Response",
+        "operation_id": "getExperimentRunsCSV",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "updateNote_200_Response",
+        "operation_id": "updateNote",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "stopOnboardingExperiments_200_Response",
+        "operation_id": "stopOnboardingExperiments",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getChaosExperimentRunsForPipeline_200_Response",
+        "operation_id": "getChaosExperimentRunsForPipeline",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "getProbeManifest_200_Response",
+        "operation_id": "getProbeManifest",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "deleteProbe_200_Response",
+        "operation_id": "deleteProbe",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "enableProbe_200_Response",
+        "operation_id": "enableProbe",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "verifyProbe_200_Response",
+        "operation_id": "verifyProbe",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "GetChaosExperimentRunReportPDF_200_Response",
+        "operation_id": "GetChaosExperimentRunReportPDF",
+        "status_code": "200"
+      },
+      {
+        "generated_name": "enableRule_200_Response",
+        "operation_id": "enableRule",
+        "status_code": "200"
+      }
+    ]
+  },
+  "totals": {
+    "malformed_required": 3,
+    "broken_discriminator": 36,
+    "empty_schema": 487,
+    "inline_response_promotions": 237
+  }
+}

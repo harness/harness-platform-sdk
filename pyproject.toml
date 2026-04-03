@@ -43,10 +43,11 @@ Repository = "https://github.com/harness/harness-python-sdk"
 Issues = "https://github.com/harness/harness-python-sdk/issues"
 
 [tool.setuptools]
-packages = ["harness_python_sdk"]
+packages = ["harness_python_sdk", "models", "models.*"]
 
 [tool.setuptools.package-dir]
 "" = "src"
+"models" = "models"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
