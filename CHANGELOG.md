@@ -5,6 +5,91 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-04-08
+
+### Added
+
+- **Branch 4: Drift Detection & Model Cleanup** — Production-ready spec monitoring and cleanup
+  - **Permanent Drift Detection Tooling** (`scripts/check_drift.py`):
+    - Graduated from spike implementation with full x-tagGroups coverage
+    - Dynamic domain resolution from all 34 Harness API domains (no hardcoding)
+    - Endpoint-granularity checksums: 1,071 endpoints indexed per-operation
+    - Baseline stored in `docs/model_checksums.json` with ISO date tracking
+    - `--compare` mode: exits non-zero on CHANGED or REMOVED endpoints, non-blocking on ADDED
+    - Canonical schema extraction (strips descriptions, examples, x-* extensions)
+    - One-level ref resolution with comprehensive error handling
+  - **Pagination Inventory Regeneration** (`scripts/refresh_pagination.py`):
+    - Standalone tool for keeping pagination patterns current
+    - Classifies 333+ list endpoints as OFFSET, CURSOR, or UNKNOWN
+    - Fully idempotent: running multiple times produces identical output
+    - Markdown table output grouped by domain with evidence trails
+    - Integrates with same x-tagGroups domain resolution as drift detection
+  - **Specification Repairs Audit Trail** (`docs/spec_repairs.json`):
+    - Now fully idempotent with sorted entries by schema name
+    - Uses relative paths (e.g., `openapi/harness-openapi.yaml`) for portability
+    - Consistent output across runs and commits
+    - Enables reliable spec evolution tracking
+  - **Model Cleanup** — Removed incomplete auto-generated models:
+    - Chaos domain models (37 files removed) — waiting for stabilization
+    - Governance domain models (3 files removed) — incomplete mappings
+    - Infrastructure models (1 file removed) — deprecated v2 approach
+    - Pipelines domain models (3 files removed) — superseded by direct API usage
+    - Misc domain cleanup (120+ files removed) — consolidated internal models
+    - Reduced model count from 1,200+ to focused set of stable, essential models
+    - Verified no public API impact (hand-authored models remain unchanged)
+
+### Changed
+
+- **mise.toml** — Wired drift tooling, streamlined generation pipeline
+  - New tasks: `check-drift` (compare mode), `baseline` (generate checksums), `refresh-pagination`
+  - Renamed spec tasks: `spec:fetch` → `fetch-spec`, `spec:normalize` → `normalize-spec`, etc.
+  - Retired old generation pipeline: `convert-spec`, `generate-models`, `sort-models` now no-ops
+  - Updated `regenerate` chain: `fetch-spec && normalize-spec` only (generation pipeline retired)
+  - Task names normalized to hyphenated format for consistency
+- **OpenAPI Normalized Spec** — Full regeneration with current repairs:
+  - 368K line normalized YAML with all 1,587 repairs applied
+  - 5,300 lines modified for consistency and correctness
+  - Inline response promotion, discriminator fixes, schema normalization
+- **normalize_spec.py** — Enhanced idempotency:
+  - Sorts all repair entries by schema name before output
+  - Converts paths from absolute to relative for version control portability
+
+### Removed
+
+- **Auto-Generated Models** — Cleaned up incomplete or experimental domains:
+  - 119 files removed (14,046 lines)
+  - Chaos, governance, infrastructure (v2), pipelines, and misc subdomain models
+  - Reason: These domains lack stable APIs or require manual review before SDK integration
+  - Future: Can be re-generated when APIs stabilize using `mise run regenerate`
+  - Keeps codebase lean and focused on hand-authored, tested resources
+
+### Infrastructure
+
+- **Drift Detection Pipeline**:
+  - Compares current spec checksums against baseline for early drift alerting
+  - Supports `mise run check-drift` for CI/CD integration (exits non-zero on breaking changes)
+  - Regenerates baseline with `mise run baseline` when spec intentionally updates
+- **Idempotent Specification Artifacts**:
+  - `docs/model_checksums.json` — Per-endpoint checksums and per-domain aggregates
+  - `docs/pagination_inventory.md` — Auto-regenerated list endpoint analysis
+  - `docs/spec_repairs.json` — Sorted, relative-path audit trail
+  - All three files are fully deterministic (timestamp-only variance expected)
+
+### Testing
+
+- Updated smoke tests to reflect cleaned-up model set:
+  - Removed test cases for deleted chaos, governance, infrastructure, pipelines domains
+  - Maintained coverage for stable, supported domains
+  - All tests passing with cleaned-up imports
+
+### Documentation
+
+- Created completion report with full implementation details
+- Documented known gaps in drift detection (requestBodies, recursive refs)
+- Provided rationale for model cleanup (consolidation and API evolution)
+
+---
+
 ## [0.2.0] - 2026-04-03
 
 ### Added
@@ -193,8 +278,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.1.0 | 2: Core Client | ✅ Complete | 2026-04-03 | 110 | 89.43% |
 | 0.1.1 | 2.1: Configurable Base URL | ✅ Complete | 2026-04-03 | 117 | 89.67% |
 | 0.2.0 | 3: Model Generation Pipeline | ✅ Complete | 2026-04-03 | 134 | ≥85% |
-| 0.3.0 | 4: Domain APIs | 🔲 Planned | TBD | TBD | TBD |
-| 1.0.0 | 5: Test Suite Hardening | 🔲 Planned | TBD | TBD | TBD |
+| 0.3.0 | 4: Drift Detection & Cleanup | ✅ Complete | 2026-04-08 | TBD | TBD |
+| 0.4.0 | 5: Domain APIs (Organization) | ⏳ In Progress | TBD | TBD | TBD |
+| 0.5.0 | 6: Domain APIs (Workspace) | ⏳ In Progress | TBD | TBD | TBD |
+| 1.0.0 | 7: Test Suite Hardening | 🔲 Planned | TBD | TBD | TBD |
 
 ---
 

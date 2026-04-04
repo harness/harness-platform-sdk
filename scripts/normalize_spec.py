@@ -1,5 +1,6 @@
 # GENERATED — do not edit. Run mise run regenerate to update.
 #!/usr/bin/env python3
+from harness_python_sdk.base_model import HarnessModel
 """
 Normalize Harness OpenAPI spec by fixing known quality defects.
 
@@ -8,6 +9,7 @@ Fixes:
 2. Broken discriminator mappings (remove non-existent schema refs)
 3. Empty schemas (add empty properties dict)
 4. Inline response promotion (generate refs for inline schemas)
+5. Dotted schema name flattening (prefix CamelCase + preserve suffix casing)
 
 Outputs:
 - openapi/harness-openapi-normalized.yaml
@@ -44,17 +46,97 @@ class SpecNormalizer:
             "broken_discriminator": [],
             "empty_schema": [],
             "inline_response_promotions": [],
+            "dotted_schema_renames": [],
+            "discriminators_removed": 0,
         }
         self.inline_response_map = {}
         self._operation_counter = 0
 
     def normalize(self) -> Dict[str, Any]:
         """Run all fixes in sequence."""
+        self._fix_dotted_schema_names()
         self._fix_malformed_required()
         self._fix_broken_discriminators()
+        self._remove_all_discriminators()
         self._fix_empty_schemas()
         self._promote_inline_responses()
         return self.spec
+
+    def _make_flat_name(self, old_name: str) -> str:
+        """Convert a dotted schema name to flat PascalCase.
+
+        Preserves the exact casing of the suffix (part after the last dot).
+        Converts the prefix to CamelCase from snake_case/kebab-case.
+
+        Examples:
+            action.ActionTemplateProperties
+                -> ActionActionTemplateProperties
+            github_com_harness_hce-saas_graphql_server_api.Pagination
+                -> GithubComHarnessHceSaasGraphqlServerApiPagination
+        """
+        dot_pos = old_name.rfind('.')
+        prefix_raw = old_name[:dot_pos]
+        suffix = old_name[dot_pos + 1:]
+        prefix_clean = prefix_raw.replace('-', '_')
+        prefix_camel = ''.join(w.capitalize() for w in prefix_clean.split('_') if w)
+        return prefix_camel + suffix[0].upper() + suffix[1:]
+
+    def _fix_dotted_schema_names(self) -> None:
+        """Fix dotted-prefix schema names to flat PascalCase.
+
+        Schemas with dots in names (e.g., 'action.ActionTemplateProperties',
+        'github_com_harness_hce-saas_graphql_server_api.Pagination') confuse the
+        generator's module-resolution logic and cause flat-named schemas to be
+        silently dropped. This fix renames all dotted schemas to flat PascalCase
+        before generation.
+        """
+        schemas = self.spec.get("components", {}).get("schemas", {})
+
+        # Collect all dotted schema names
+        dotted_schemas = [name for name in schemas if '.' in name]
+        if not dotted_schemas:
+            return
+
+        # Build rename map with collision detection
+        rename_map = {}
+        collision_counter = defaultdict(int)
+
+        for old_name in dotted_schemas:
+            # Generate flat PascalCase name using correct algorithm
+            new_name = self._make_flat_name(old_name)
+
+            # Handle collisions with counter suffix
+            check_name = new_name
+            if check_name in schemas and check_name not in rename_map.values():
+                collision_counter[new_name] += 1
+                check_name = f"{new_name}_{collision_counter[new_name]}"
+
+            # Continue incrementing if collision persists
+            while check_name in schemas and check_name not in rename_map.values():
+                collision_counter[new_name] += 1
+                check_name = f"{new_name}_{collision_counter[new_name]}"
+
+            rename_map[old_name] = check_name
+            self.repairs["dotted_schema_renames"].append({
+                "old": old_name,
+                "new": check_name,
+            })
+
+        # Pass 1: Rename keys in components/schemas
+        for old_name, new_name in rename_map.items():
+            if old_name in schemas:
+                schemas[new_name] = schemas.pop(old_name)
+
+        # Pass 2: Replace all schema references using JSON string manipulation
+        # This ensures we catch all references including those in nested structures
+        spec_json = json.dumps(self.spec)
+        for old_name, new_name in rename_map.items():
+            old_ref = f'"#/components/schemas/{old_name}"'
+            new_ref = f'"#/components/schemas/{new_name}"'
+            spec_json = spec_json.replace(old_ref, new_ref)
+
+        # Reload spec from modified JSON
+        self.spec = json.loads(spec_json)
 
     def _fix_malformed_required(self) -> None:
         """Fix 1: Move property-level 'required: true' to schema-level 'required' array."""
@@ -274,6 +356,44 @@ class SpecNormalizer:
             if isinstance(schema_def, dict) and "x-discriminator-value" in schema_def:
                 del schema_def["x-discriminator-value"]
 
+    def _remove_all_discriminators(self) -> None:
+        """Remove all remaining discriminators from the spec.
+
+        Discriminators in the OpenAPI spec cause crashes in datamodel-code-generator
+        when discriminator mappings are incomplete or not resolvable. Since HarnessModel
+        uses extra="allow" for polymorphic payload handling, discriminators provide no
+        value for the SDK and can be safely removed.
+        """
+        schemas = self.spec.get("components", {}).get("schemas", {})
+        removed_count = 0
+
+        def remove_discriminators_recursive(obj: Dict[str, Any]) -> int:
+            """Recursively remove discriminators from object and nested schemas."""
+            count = 0
+            if not isinstance(obj, dict):
+                return count
+
+            # Remove discriminator from this object
+            if "discriminator" in obj:
+                del obj["discriminator"]
+                count += 1
+
+            # Remove from allOf/anyOf/oneOf sub-schemas
+            for combiner in ["allOf", "anyOf", "oneOf"]:
+                if combiner in obj and isinstance(obj[combiner], list):
+                    for sub_schema in obj[combiner]:
+                        if isinstance(sub_schema, dict):
+                            count += remove_discriminators_recursive(sub_schema)
+
+            return count
+
+        # Remove discriminators from all top-level schemas
+        for schema_name, schema_def in schemas.items():
+            if isinstance(schema_def, dict):
+                removed_count += remove_discriminators_recursive(schema_def)
+
+        self.repairs["discriminators_removed"] = removed_count
+
     def _fix_empty_schemas(self) -> None:
         """Fix 3: Add empty 'properties: {}' to schemas with no content."""
         schemas = self.spec.get("components", {}).get("schemas", {})
@@ -369,24 +489,44 @@ def main():
     with open(INLINE_MAP, "w") as f:
         json.dump(normalizer.inline_response_map, f, indent=2)
 
-    # Save repairs log
+    # Save repairs log with sorted entries and relative paths for idempotency
+    # Sort each repair list by schema name for consistent output
+    sorted_repairs = {}
+    for key, value in normalizer.repairs.items():
+        if isinstance(value, list):
+            # Sort list entries by their 'schema' field if it exists
+            if value and isinstance(value[0], dict) and 'schema' in value[0]:
+                sorted_repairs[key] = sorted(value, key=lambda x: x.get('schema', ''))
+            else:
+                sorted_repairs[key] = value
+        else:
+            sorted_repairs[key] = value
+
+    # Convert absolute path to relative path from repository root
+    try:
+        spec_relative = INPUT_SPEC.relative_to(Path(__file__).parent.parent)
+    except ValueError:
+        spec_relative = INPUT_SPEC
+
     repairs_log = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "source_spec": str(INPUT_SPEC),
-        "repairs": normalizer.repairs,
-        "totals": {k: len(v) for k, v in normalizer.repairs.items()},
+        "source_spec": str(spec_relative),
+        "repairs": sorted_repairs,
+        "totals": {k: (v if isinstance(v, int) else len(v)) for k, v in sorted_repairs.items()},
     }
     print(f"Writing repairs log to {REPAIRS_LOG}...")
     with open(REPAIRS_LOG, "w") as f:
         json.dump(repairs_log, f, indent=2)
 
     # Print summary
-    total_repairs = sum(len(v) for v in normalizer.repairs.values())
+    total_repairs = sum(v if isinstance(v, int) else len(v) for v in normalizer.repairs.values())
     print("\n" + "="*70)
     print("NORMALIZATION SUMMARY")
     print("="*70)
+    print(f"Dotted schema names renamed: {len(normalizer.repairs['dotted_schema_renames'])}")
     print(f"Malformed 'required' fields fixed: {len(normalizer.repairs['malformed_required'])}")
     print(f"Broken discriminators fixed: {len(normalizer.repairs['broken_discriminator'])}")
+    print(f"Discriminators removed: {normalizer.repairs['discriminators_removed']}")
     print(f"Empty schemas fixed: {len(normalizer.repairs['empty_schema'])}")
     print(f"Inline responses promoted: {len(normalizer.repairs['inline_response_promotions'])}")
     print(f"Total repairs: {total_repairs}")

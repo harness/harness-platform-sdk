@@ -9,56 +9,64 @@
 # OpenAPI Spec Management
 # ---------------------------------------------------------------------------
 
-[tasks."spec:fetch"]
+[tasks."fetch-spec"]
 description = "Fetch the latest OpenAPI spec from Harness"
 run = "echo 'Placeholder: fetch OpenAPI spec from Harness'"
 
-[tasks."spec:normalize"]
+[tasks."normalize-spec"]
 description = "Normalize the raw OpenAPI spec (removes incomplete discriminators, etc.)"
 run = "python scripts/normalize_spec.py"
 
-[tasks."spec:convert"]
-description = "Convert the normalized spec to the format required for code generation"
-run = "python scripts/convert_spec.py"
+[tasks."convert-spec"]
+description = "RETIRED 2026-04-08 — see v0_design_decisions.md"
+run = "echo 'convert-spec retired 2026-04-08 — see v0_design_decisions.md'"
 
 # ---------------------------------------------------------------------------
 # Model Generation
 #
-# Notes:
-#   - datamodel-code-generator 0.55.0 does not support --use-alias-generators; flag omitted
-#   - --collapse-root-models causes IndexError on Harness spec; using --reuse-model only
-#   - normalize_spec.py removes 36 incomplete discriminators to prevent generation failures
+# Reduction flags removed:
+#   - --reuse-model: Schema identity more valuable than lower model count (PM direction)
+#   - --collapse-root-models: Causes IndexError on malformed root-type schemas with empty fields
+#   - --use-alias-generators: Not supported in datamodel-code-generator 0.55.0
+#
+# NOTE: generate-models and sort-models tasks are retired as of 2026-04-08.
+# See v0_design_decisions.md for context.
 # ---------------------------------------------------------------------------
 
-[tasks."models:generate"]
-description = "Generate Pydantic v2 models from the normalized OpenAPI spec"
-run = """
-  python -m datamodel_code_generator \
-    --input openapi/harness-openapi-normalized.json \
-    --output datagen_staging/ \
-    --input-file-type openapi \
-    --output-model-type pydantic_v2.BaseModel \
-    --reuse-model \
-  && python scripts/stamp_generated.py
-"""
+[tasks."generate-models"]
+description = "RETIRED 2026-04-08 — see v0_design_decisions.md"
+run = "echo 'generate-models retired 2026-04-08 — see v0_design_decisions.md'"
 
-[tasks."models:sort"]
-description = "Sort and organise the generated model files"
-run = "python scripts/sort_models.py"
+[tasks."sort-models"]
+description = "RETIRED 2026-04-08 — see v0_design_decisions.md"
+run = "echo 'sort-models retired 2026-04-08 — see v0_design_decisions.md'"
 
 # ---------------------------------------------------------------------------
 # Combined Regeneration
 # ---------------------------------------------------------------------------
 
 [tasks.regenerate]
-description = "Full pipeline: fetch → normalize → convert → generate → sort models"
+description = "Regenerate: fetch-spec && normalize-spec only"
 run = [
-    {task = "spec:fetch"},
-    {task = "spec:normalize"},
-    {task = "spec:convert"},
-    {task = "models:generate"},
-    {task = "models:sort"},
+    {task = "fetch-spec"},
+    {task = "normalize-spec"},
 ]
+
+# ---------------------------------------------------------------------------
+# Drift Detection and Baseline Management
+# ---------------------------------------------------------------------------
+
+[tasks."check-drift"]
+description = "Check for drift between current spec and baseline checksums"
+run = "python scripts/check_drift.py --compare"
+
+[tasks.baseline]
+description = "Generate and update baseline checksums from current spec"
+run = "python scripts/check_drift.py"
+
+[tasks."refresh-pagination"]
+description = "Regenerate pagination inventory from current spec"
+run = "python scripts/refresh_pagination.py"
 
 # ---------------------------------------------------------------------------
 # Testing
@@ -89,5 +97,13 @@ description = "Run mypy static type checking over the SDK source"
 run = "mypy src/harness_python_sdk"
 
 [tasks.clean]
-description = "Remove build artefacts, caches, and coverage data"
+description = "Remove build artifacts, caches, and coverage data"
 run = "rm -rf .pytest_cache dist build *.egg-info .coverage"
+
+[tasks."clean:staging"]
+description = "Remove and Recreate datagen_staging directory"
+run = """
+    rm -rf datagen_staging && \
+    mkdir -p datagen_staging && \
+    touch datagen_staging/.gitkeep
+"""

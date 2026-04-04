@@ -101,18 +101,6 @@ def main():
             print(f"  ✓ {file_path.relative_to(MODELS_ROOT)}")
 
     print(f"\nModified {modified} files.")
-
-    # Ensure all domain directories have simple marker __init__.py files
-    all_domains = ["staging", "_spike", "pipelines", "connectors", "secrets", "infrastructure",
-                   "access_control", "environments", "projects", "organizations", "cost",
-                   "governance", "cloud", "audit", "gitops", "chaos", "misc"]
-    for domain in all_domains:
-        domain_dir = MODELS_ROOT / domain
-        if domain_dir.is_dir():
-            init_file = domain_dir / "__init__.py"
-            init_file.write_text("# This file intentionally left mostly empty\n")
-
-    print("✓ Reset all __init__.py files to simple markers")
     return 0
 
 
