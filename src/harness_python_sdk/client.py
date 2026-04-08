@@ -491,6 +491,7 @@ class HarnessClient:
         response_model: type[HarnessModel] | None = None,
         pagination_style: PaginationStyle = PaginationStyle.OFFSET,
         scope: Scope | None = None,
+        unwrap_field: str | None = None,
     ) -> Generator[Any, None, None]:
         """Paginate through results using specified pagination style.
 
@@ -500,6 +501,7 @@ class HarnessClient:
             response_model: Pydantic model for individual items.
             pagination_style: OFFSET or CURSOR.
             scope: Optional scope for URL building.
+            unwrap_field: Optional field name to extract from each item (e.g., "secret", "connector").
 
         Yields:
             Individual items from paginated response.
@@ -522,21 +524,47 @@ class HarnessClient:
 
                 response = self._get(url, params=params)
 
-                # Extract items from response (expect list or dict with items)
-                items = response if isinstance(response, list) else response.get("data", [])
+                # Extract items from response - handle multiple response structures:
+                # 1. Direct array (pipelines: /v1/orgs/{org}/projects/{project}/pipelines)
+                # 2. Nested data.content (connectors/secrets: /ng/api/*)
+                if isinstance(response, list):
+                    items = response
+                elif isinstance(response, dict):
+                    data = response.get("data")
+                    if isinstance(data, dict) and "content" in data:
+                        # Nested structure: response.data.content
+                        items = data.get("content", [])
+                    elif isinstance(data, list):
+                        # Direct data array
+                        items = data
+                    else:
+                        items = []
+                else:
+                    items = []
 
                 if not items:
                     break
 
                 # Yield each item
                 for item in items:
-                    if response_model and not isinstance(item, response_model):
-                        yield response_model(**item)
+                    # Unwrap nested field if specified
+                    data_to_yield = item
+                    if unwrap_field and isinstance(item, dict):
+                        data_to_yield = item.get(unwrap_field, item)
+
+                    if response_model and not isinstance(data_to_yield, response_model):
+                        yield response_model(**data_to_yield)
                     else:
-                        yield item
+                        yield data_to_yield
 
                 # Stop if fewer items than page size
-                if len(items) < page_size:
+                # Check nested pagination metadata first (more accurate)
+                if isinstance(response, dict) and isinstance(response.get("data"), dict):
+                    page_data = response["data"]
+                    page_item_count = page_data.get("pageItemCount", len(items))
+                    if page_item_count < page_size:
+                        break
+                elif len(items) < page_size:
                     break
 
                 page_index += 1
@@ -553,21 +581,110 @@ class HarnessClient:
 
                 response = self._get(url, params=params)
 
-                # Extract items and next token
-                items = response if isinstance(response, list) else response.get("data", [])
-                next_token = None
-                if isinstance(response, dict):
+                # Extract items and next token - handle multiple response structures
+                if isinstance(response, list):
+                    items = response
+                    next_token = None
+                elif isinstance(response, dict):
+                    data = response.get("data")
+                    if isinstance(data, dict) and "content" in data:
+                        # Nested structure: response.data.content
+                        items = data.get("content", [])
+                    elif isinstance(data, list):
+                        # Direct data array
+                        items = data
+                    else:
+                        items = []
+                    # Extract cursor token from response or nested data
                     next_token = response.get("pageToken")
+                    if not next_token and isinstance(data, dict):
+                        next_token = data.get("pageToken")
+                else:
+                    items = []
+                    next_token = None
 
                 if not items:
                     break
 
                 # Yield each item
                 for item in items:
-                    if response_model and not isinstance(item, response_model):
-                        yield response_model(**item)
+                    # Unwrap nested field if specified
+                    data_to_yield = item
+                    if unwrap_field and isinstance(item, dict):
+                        data_to_yield = item.get(unwrap_field, item)
+
+                    if response_model and not isinstance(data_to_yield, response_model):
+                        yield response_model(**data_to_yield)
                     else:
-                        yield item
+                        yield data_to_yield
 
                 if not next_token:
                     break
+
+        elif pagination_style == PaginationStyle.TODO:
+            # TODO: pagination style unconfirmed — return single page without pagination
+            response = self._get(url, params=params)
+
+            # Extract items from response - handle multiple response structures
+            if isinstance(response, list):
+                items = response
+            elif isinstance(response, dict):
+                data = response.get("data")
+                if isinstance(data, dict) and "content" in data:
+                    # Nested structure: response.data.content
+                    items = data.get("content", [])
+                elif isinstance(data, list):
+                    # Direct data array
+                    items = data
+                else:
+                    items = []
+            else:
+                items = []
+
+            # Yield each item
+            for item in items:
+                # Unwrap nested field if specified
+                data_to_yield = item
+                if unwrap_field and isinstance(item, dict):
+                    data_to_yield = item.get(unwrap_field, item)
+
+                if response_model and not isinstance(data_to_yield, response_model):
+                    yield response_model(**data_to_yield)
+                else:
+                    yield data_to_yield
+
+    @property
+    def pipelines(self):
+        """Lazy-loaded PipelinesApi instance."""
+        if not hasattr(self, "_pipelines"):
+            from harness_python_sdk.api.pipelines import PipelinesApi
+
+            self._pipelines = PipelinesApi(self)
+        return self._pipelines
+
+    @property
+    def connectors(self):
+        """Lazy-loaded ConnectorsApi instance."""
+        if not hasattr(self, "_connectors"):
+            from harness_python_sdk.api.connectors import ConnectorsApi
+
+            self._connectors = ConnectorsApi(self)
+        return self._connectors
+
+    @property
+    def secrets(self):
+        """Lazy-loaded SecretsApi instance."""
+        if not hasattr(self, "_secrets"):
+            from harness_python_sdk.api.secrets import SecretsApi
+
+            self._secrets = SecretsApi(self)
+        return self._secrets
+
+    @property
+    def infrastructure(self):
+        """Lazy-loaded InfrastructureApi instance."""
+        if not hasattr(self, "_infrastructure"):
+            from harness_python_sdk.api.infrastructure import InfrastructureApi
+
+            self._infrastructure = InfrastructureApi(self)
+        return self._infrastructure

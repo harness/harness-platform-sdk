@@ -5,6 +5,70 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-04-08
+
+### Added
+
+- **Branch 4.5: P1 Domain APIs** — Four production-ready API domains for Pipelines, Connectors, Secrets, and Infrastructure
+  - **Pipelines API** (`src/harness_python_sdk/api/pipelines.py`):
+    - Full CRUD operations: `list()`, `get()`, `create()`, `update()`, `delete()`
+    - Automatic pagination support via offset-based pagination
+    - Request/Response models with camelCase ↔ snake_case mapping
+  - **Connectors API** (`src/harness_python_sdk/api/connectors.py`):
+    - Full CRUD operations with support for diverse connector types
+    - Polymorphic `spec` field for connector-specific configuration
+    - Account-scoped and organization-scoped operations
+  - **Secrets API** (`src/harness_python_sdk/api/secrets.py`):
+    - Secret management across account, organization, and project scopes
+    - Support for different secret types (SecretText, SecretFile, SecretRef)
+    - Draft state support for secret management workflows
+  - **Infrastructure API** (`src/harness_python_sdk/api/infrastructure.py`):
+    - Infrastructure definition and management
+    - Support for multiple infrastructure types (Kubernetes, SSH, WinRm, etc.)
+    - Environment-scoped operations for multi-environment deployments
+  - **P1 Domain Models** (`src/harness_python_sdk/models/`):
+    - Hand-authored Pydantic models for all four P1 domains
+    - Response models for reading resources
+    - Create/Update request models for mutation operations
+    - All models inherit from `HarnessModel` with `extra="allow"` and `populate_by_name=True`
+  - **Lazy-loaded API Properties** on `HarnessClient`:
+    - `client.pipelines`, `client.connectors`, `client.secrets`, `client.infrastructure`
+    - Avoid circular imports and reduce initialization overhead
+  - **Enhanced Pagination** (`src/harness_python_sdk/client.py`):
+    - Added `unwrap_field` parameter to `_paginate()` for nested response structures
+    - Support for both direct array responses (v1 endpoints) and nested `data.content` (ng-api endpoints)
+    - Automatic pagination metadata extraction for accurate page termination
+  - **P1 API Documentation** (`docs/p1_model_fields.md`):
+    - Complete field specifications for all four P1 domains
+    - Endpoint paths, pagination styles, and field type information
+    - Request/Response field mappings with camelCase aliases
+
+### Fixed
+
+- **Pagination Response Structure Handling**:
+  - Fixed bug where Connectors and Secrets list operations failed with `TypeError: argument after ** must be a mapping, not str`
+  - Root cause: API responses use different structures (direct array vs. nested `data.content`) and wrap items in domain-specific fields
+  - Solution: Enhanced `_paginate()` to detect and extract both response patterns, added `unwrap_field` parameter to API methods
+  - Affects: All ng-api list endpoints (Connectors, Secrets, Infrastructure) now correctly parse paginated responses
+
+### Changed
+
+- **HarnessClient HTTP Method Signatures**:
+  - Enhanced `_get()`, `_post()`, `_put()`, `_delete()` to support both `body` and `response_model` parameters for consistency
+  - Maintains backward compatibility with existing code
+
+### Testing
+
+- **P1 Domain Tests** (68 new tests):
+  - 32 unit tests for P1 models: field validation, aliases, inheritance
+  - 29 integration tests: API presence, method signatures, scope validation, typed request handling
+  - 7 pagination tests: offset pagination, cursor pagination, direct arrays, nested structures
+  - All tests pass with 100% coverage of public APIs
+- **No Regressions**:
+  - Existing client_core tests continue to pass (169 tests)
+  - Drift detection tooling unchanged
+  - Pagination behavior preserved for all existing endpoints
+
 ## [0.3.0] - 2026-04-08
 
 ### Added

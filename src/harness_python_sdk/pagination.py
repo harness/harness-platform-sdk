@@ -13,3 +13,4 @@ class PaginationStyle(str, Enum):
 
     OFFSET = "offset"
     CURSOR = "cursor"
+    TODO = "todo"

@@ -65,6 +65,7 @@ class TestPaginationStyle:
     def test_pagination_style_all_members(self):
         """Test all members of PaginationStyle."""
         members = list(PaginationStyle)
-        assert len(members) == 2
+        assert len(members) == 3
         assert PaginationStyle.OFFSET in members
         assert PaginationStyle.CURSOR in members
+        assert PaginationStyle.TODO in members
