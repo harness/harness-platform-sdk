@@ -76,7 +76,7 @@ class ConnectorsApi:
             identifier=identifier,
         )
         return self._client._get(
-            url, params=None, body=None, response_model=ConnectorResponse
+            url, params=None, response_model=ConnectorResponse
         )
 
     def create(
@@ -155,4 +155,4 @@ class ConnectorsApi:
             resolved,
             identifier=identifier,
         )
-        return self._client._delete(url, params=None, body=None, response_model=None)
+        return self._client._delete(url, params=None, response_model=None)

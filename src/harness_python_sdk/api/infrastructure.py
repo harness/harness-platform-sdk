@@ -78,7 +78,7 @@ class InfrastructureApi:
             infraIdentifier=infra_identifier,
         )
         return self._client._get(
-            url, params=None, body=None, response_model=InfrastructureResponse
+            url, params=None, response_model=InfrastructureResponse
         )
 
     def create(
@@ -157,4 +157,4 @@ class InfrastructureApi:
             resolved,
             infraIdentifier=infra_identifier,
         )
-        return self._client._delete(url, params=None, body=None, response_model=None)
+        return self._client._delete(url, params=None, response_model=None)

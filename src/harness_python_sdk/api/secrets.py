@@ -76,7 +76,7 @@ class SecretsApi:
             identifier=identifier,
         )
         return self._client._get(
-            url, params=None, body=None, response_model=SecretResponse
+            url, params=None, response_model=SecretResponse
         )
 
     def create(
@@ -153,4 +153,4 @@ class SecretsApi:
             resolved,
             identifier=identifier,
         )
-        return self._client._delete(url, params=None, body=None, response_model=None)
+        return self._client._delete(url, params=None, response_model=None)

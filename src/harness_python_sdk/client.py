@@ -108,6 +108,7 @@ class HarnessClient:
             transport=transport,
             headers={
                 "x-api-key": self._config.api_key,
+                "x-account-id": self._config.account_id,
                 "Content-Type": "application/json",
             },
             verify=self._config.verify_ssl,

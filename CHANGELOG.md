@@ -5,6 +5,62 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-04-09
+
+### Added
+
+- **P1 Integration Test Suite** — Comprehensive integration tests for all P1 domains
+  - **P1 Integration Test Reference** (`docs/p1_integration_test_reference.md`):
+    - Complete reference guide for P1 API endpoints (Pipelines, Connectors, Secrets, Infrastructure)
+    - Minimal mock payload examples for all four domains
+    - Pagination pattern documentation for OFFSET-based pagination
+    - URL patterns with scope substitution (test-org/test-project)
+  - **Full Integration Tests** (`tests/integration/test_p1_integration.py`):
+    - 636 lines of comprehensive integration test coverage
+    - Six required test scenarios across all P1 domains:
+      1. 2-page auto-pagination with OFFSET style
+      2. Typed get() with URL and model confirmation
+      3. create() with x-api-key header and request body verification
+      4. ScopeNotSetError when scope not set
+      5. 429 retry via tenacity
+      6. 401 AuthError with ApiError inheritance
+    - Uses pytest-httpx mocking for full request/response flow validation
+    - Validates request bodies and response models for all four domains
+
+### Changed
+
+- **HarnessClient HTTP Header Enhancement**:
+  - Added `x-account-id` header to all HTTP requests
+  - Required for proper request routing on account-scoped operations
+  - Complements existing `x-api-key` and `Content-Type` headers
+
+- **P1 API Method Signatures** — Cleanup of unused parameters:
+  - Removed `body=None` parameter from `_get()` calls in all P1 API methods
+  - Removed `body=None` parameter from `_delete()` calls in all P1 API methods
+  - Affects: Pipelines, Connectors, Secrets, Infrastructure APIs
+  - Simplifies method signatures without changing functionality
+
+### Testing
+
+- **Integration Tests** — New comprehensive P1 test suite:
+  - Full request/response flow validation for Pipelines, Connectors, Secrets, Infrastructure
+  - pytest-httpx mocking for deterministic test execution
+  - Header validation (x-api-key, x-account-id, Content-Type)
+  - Request body verification for create operations
+  - Response model type confirmation
+  - Pagination end-of-results detection
+  - Retry behavior (429 with tenacity)
+  - Error mapping (401 AuthError)
+  - Scope validation (ScopeNotSetError)
+
+### Documentation
+
+- **P1 Integration Reference** — New reference guide for developers:
+  - Quick lookup for all P1 endpoint patterns
+  - Mock payload examples for testing
+  - Pagination style documentation
+  - Scope substitution patterns
+
 ## [0.4.0] - 2026-04-08
 
 ### Added
@@ -343,8 +399,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.1.1 | 2.1: Configurable Base URL | ✅ Complete | 2026-04-03 | 117 | 89.67% |
 | 0.2.0 | 3: Model Generation Pipeline | ✅ Complete | 2026-04-03 | 134 | ≥85% |
 | 0.3.0 | 4: Drift Detection & Cleanup | ✅ Complete | 2026-04-08 | TBD | TBD |
-| 0.4.0 | 5: Domain APIs (Organization) | ⏳ In Progress | TBD | TBD | TBD |
-| 0.5.0 | 6: Domain APIs (Workspace) | ⏳ In Progress | TBD | TBD | TBD |
+| 0.4.0 | 5: Domain APIs (P1 Production APIs) | ✅ Complete | 2026-04-08 | TBD | TBD |
+| 0.5.0 | 6: P1 Integration Test Suite | ✅ Complete | 2026-04-09 | TBD | TBD |
 | 1.0.0 | 7: Test Suite Hardening | 🔲 Planned | TBD | TBD | TBD |
 
 ---

@@ -76,7 +76,7 @@ class PipelinesApi:
             pipeline_id=pipeline_id,
         )
         return self._client._get(
-            url, params=None, body=None, response_model=PipelineResponse
+            url, params=None, response_model=PipelineResponse
         )
 
     def create(
@@ -156,4 +156,4 @@ class PipelinesApi:
             resolved,
             pipeline_id=pipeline_id,
         )
-        return self._client._delete(url, params=None, body=None, response_model=None)
+        return self._client._delete(url, params=None, response_model=None)
