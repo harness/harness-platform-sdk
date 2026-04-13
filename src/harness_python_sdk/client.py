@@ -689,3 +689,57 @@ class HarnessClient:
 
             self._infrastructure = InfrastructureApi(self)
         return self._infrastructure
+
+    @property
+    def organizations(self):
+        """Lazy-loaded OrganizationsApi instance."""
+        if not hasattr(self, "_organizations"):
+            from harness_python_sdk.api.organizations import OrganizationsApi
+
+            self._organizations = OrganizationsApi(self)
+        return self._organizations
+
+    @property
+    def projects(self):
+        """Lazy-loaded ProjectsApi instance."""
+        if not hasattr(self, "_projects"):
+            from harness_python_sdk.api.projects import ProjectsApi
+
+            self._projects = ProjectsApi(self)
+        return self._projects
+
+    @property
+    def services(self):
+        """Lazy-loaded ServicesApi instance."""
+        if not hasattr(self, "_services"):
+            from harness_python_sdk.api.services import ServicesApi
+
+            self._services = ServicesApi(self)
+        return self._services
+
+    @property
+    def roles(self):
+        """Lazy-loaded RolesApi instance."""
+        if not hasattr(self, "_roles"):
+            from harness_python_sdk.api.roles import RolesApi
+
+            self._roles = RolesApi(self)
+        return self._roles
+
+    @property
+    def resource_groups(self):
+        """Lazy-loaded ResourceGroupsApi instance."""
+        if not hasattr(self, "_resource_groups"):
+            from harness_python_sdk.api.resource_groups import ResourceGroupsApi
+
+            self._resource_groups = ResourceGroupsApi(self)
+        return self._resource_groups
+
+    @property
+    def role_assignments(self):
+        """Lazy-loaded RoleAssignmentsApi instance."""
+        if not hasattr(self, "_role_assignments"):
+            from harness_python_sdk.api.role_assignments import RoleAssignmentsApi
+
+            self._role_assignments = RoleAssignmentsApi(self)
+        return self._role_assignments

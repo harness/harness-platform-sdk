@@ -5,6 +5,81 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-04-13
+
+### Added
+
+- **P2 Domain APIs** — Six production-ready API domains for Account-level Access Control and IAM
+  - **Organizations API** (`src/harness_python_sdk/api/organizations.py`):
+    - Full CRUD operations: `list()`, `get()`, `create()`, `update()`, `delete()`
+    - Automatic pagination support with response envelope unwrapping
+    - Request/Response models with organization metadata (createdAt, lastModifiedAt, harnessManaged)
+  - **Projects API** (`src/harness_python_sdk/api/projects.py`):
+    - Complete project lifecycle management across organizations
+    - List, create, update, and delete operations with full type safety
+  - **Roles API** (`src/harness_python_sdk/api/roles.py`):
+    - Role definition and management
+    - Support for built-in and custom roles
+    - Role query and assignment capabilities
+  - **Role Assignments API** (`src/harness_python_sdk/api/role_assignments.py`):
+    - User/service account role assignment operations
+    - Scope-aware assignment (account, org, project level)
+    - Bulk assignment and removal support
+  - **Resource Groups API** (`src/harness_python_sdk/api/resource_groups.py`):
+    - Resource group creation and management
+    - Support for scoped resource filtering
+    - Integration with RBAC workflows
+  - **Services API** (`src/harness_python_sdk/api/services.py`):
+    - Service resource management (distinct from Harness Services product)
+    - List, create, update, delete operations
+  - **P2 Domain Models** (`src/harness_python_sdk/models/`):
+    - Hand-authored Pydantic models for all six P2 domains
+    - Response and Create/Update request models for each resource
+    - Full field documentation and type hints
+  - **Lazy-loaded API Properties** on `HarnessClient`:
+    - `client.organizations`, `client.projects`, `client.roles`, `client.role_assignments`, `client.resource_groups`, `client.services`
+    - Seamless integration with existing P1 APIs (pipelines, connectors, secrets, infrastructure)
+
+### Changed
+
+- **HarnessClient API Properties**:
+  - Added six new lazy-loaded P2 API properties
+  - Maintains backward compatibility with existing P1 API properties
+  - All properties initialize on first access to avoid overhead
+
+### Testing
+
+- **P2 Domain Integration Tests** (1,323 new tests):
+  - Branch 2 (B1) Integration: Organizations, Projects lifecycle (497 tests)
+  - Branch 3 (B2) Integration: Roles, Resource Groups, Role Assignments (292 tests)
+  - Branch 4 (B3) Integration: Services and advanced RBAC scenarios (534 tests)
+  - Full request/response flow validation
+  - Pagination testing across all P2 domains
+  - Error mapping and exception handling
+  - Multi-scope operations (account, org, project level)
+
+### Documentation
+
+- **P1 Endpoint Inventory** (`docs/p1_endpoint_inventory.md`):
+  - Complete P1 domain endpoint reference (Pipelines, Connectors, Secrets, Infrastructure)
+  - Endpoint patterns, request/response structures, pagination details
+  - Quick lookup guide for all P1 operations
+
+- **P2 Envelope Audit** (`docs/p2_envelope_audit.md`):
+  - Analysis of all P2 domain API response envelopes
+  - Response structure patterns across six P2 domains
+  - Envelope unwrapping strategies for each domain
+
+- **P2 Model Fields** (`docs/p2_model_fields.md`):
+  - Comprehensive field specifications for all six P2 domains
+  - Request/Response field mappings with required/optional indicators
+  - Type information and validation constraints for each field
+
+- **Pagination Inventory Update** (`docs/pagination_inventory.md`):
+  - Updated pagination patterns including all P2 domains
+  - Classification of all list endpoints as OFFSET, CURSOR, or UNKNOWN
+---
+
 ## [0.5.0] - 2026-04-09
 
 ### Added
