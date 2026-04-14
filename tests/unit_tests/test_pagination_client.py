@@ -182,9 +182,7 @@ class TestPaginationCursor:
 
     def test_paginate_cursor_list_response(self, httpx_mock: HTTPXMock):
         """Test cursor pagination when response is a list."""
-        httpx_mock.add_response(
-            json=[{"id": "1", "name": "Item1"}, {"id": "2", "name": "Item2"}]
-        )
+        httpx_mock.add_response(json=[{"id": "1", "name": "Item1"}, {"id": "2", "name": "Item2"}])
 
         client = HarnessClient(api_key="key", account_id="acc")
         items = list(

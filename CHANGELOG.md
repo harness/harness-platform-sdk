@@ -5,6 +5,119 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-04-14
+
+### Added
+
+- **SDK v5 Architecture Restructure** — Complete reorganization of API modules and models for scalability
+  - **Reorganized API Structure**:
+    - Moved P2 Authorization APIs to `src/harness_python_sdk/authz/` (roles, resource_groups, role_assignments)
+    - Moved Platform APIs to `src/harness_python_sdk/ng_api/` (connectors, secrets, environments_v2, infrastructures, organizations, projects, services, user_groups)
+    - Added new Pipeline APIs under `src/harness_python_sdk/pipeline_api/` (pipelines_v0, input_sets_v0, triggers_v0)
+    - Clear separation of concerns by API domain and version
+  - **Reorganized Model Structure**:
+    - Restructured models into domain-organized packages:
+      - `src/harness_python_sdk/models/authz/` — Authorization domain models
+      - `src/harness_python_sdk/models/ng_api/` — Platform (ng-api) domain models
+      - `src/harness_python_sdk/models/pipeline_api/` — Pipeline domain models
+    - Enhanced model organization with package __init__.py exports
+    - Improved discoverability with domain-specific model grouping
+
+- **Enhanced HarnessClient Properties**:
+  - Added new lazy-loaded resource properties: `environments_v2`, `user_groups`
+  - Updated import paths to use new module structure
+  - All 14 API resource properties now available:
+    - Auth APIs: `roles`, `resource_groups`, `role_assignments`
+    - Platform APIs: `connectors`, `secrets`, `environments_v2`, `infrastructures`, `organizations`, `projects`, `services`, `user_groups`
+    - Pipeline APIs: `pipelines_v0`, `input_sets_v0`, `triggers_v0`
+
+- **OpenAPI Specification Processing**:
+  - Added OpenAPI spec normalization and extraction tools (`scripts/extract_normalized_payload.py`)
+  - Generated normalized API payload with 499,990 lines of processed specifications
+  - Created comprehensive filtered logs for valid/rejected paths and tags
+  - Added support for mise.toml task runners for spec management
+
+- **Utility Scripts**:
+  - `scripts/generate_new_class.py` — Template generator for new resource classes
+  - `scripts/run_smoke_tests.py` — Comprehensive smoke testing framework
+  - `scripts/extract_normalized_payload.py` — OpenAPI spec extraction and normalization
+
+### Changed
+
+- **Module Organization**:
+  - Removed old flat API structure (`src/harness_python_sdk/api/`) — completely reorganized
+  - All imports in `HarnessClient` updated to reflect new module paths
+  - Enhanced client.py with updated property implementations (293+ lines changed)
+
+- **Configuration & Build**:
+  - Updated `pyproject.toml` for new package structure discovery
+  - Enhanced `mise.toml` with new task definitions and spec management tools
+  - Updated `.gitignore` with build artifacts and OpenAPI processing logs
+
+### Testing
+
+- **Comprehensive Test Suite Reorganization** (1,100+ tests added):
+  - Authorization API Tests (`tests/unit_tests/authz/`):
+    - `test_roles.py` — 188 tests covering role operations
+    - `test_resource_groups.py` — 201 tests for resource group management
+    - `test_role_assignments.py` — 176 tests for role assignment workflows
+  - Platform API Tests (`tests/unit_tests/ng_api/`):
+    - `test_connectors.py` — 173 tests for connector operations
+    - `test_secrets.py` — 187 tests for secret management
+    - `test_environments_v2.py` — 174 tests for environment management
+    - `test_infrastructures.py` — 206 tests for infrastructure resources
+    - `test_organizations.py` — 303 tests for organization operations (expanded)
+    - `test_projects.py` — 212 tests for project management
+    - `test_services.py` — 188 tests for service resources
+    - `test_user_groups.py` — 163 tests for user group operations
+  - Pipeline API Tests (`tests/unit_tests/pipeline_api/`):
+    - `test_pipelines_v0.py` — 151 tests for pipeline v0 operations
+    - `test_input_sets_v0.py` — 198 tests for input set management
+    - `test_triggers_v0.py` — 236 tests for trigger operations
+  - Smoke Tests (`tests/smoke/`):
+    - 13 smoke test modules covering all major API domains
+    - Quick validation tests for production deployment verification
+
+- **Client Test Enhancements** (`tests/unit_tests/test_client.py`):
+  - 93 new tests added, expanding coverage from 41.51% → 92.89%
+  - New test categories:
+    - Hierarchy resolution (4 tests)
+    - Response unwrapping (4 tests)
+    - Error handling edge cases (7 tests)
+    - Retry logic and exponential backoff (12 tests)
+    - HTTP methods with YAML support (5 tests)
+    - Offset-based pagination (9 tests)
+    - Cursor-based pagination (5 tests)
+    - TODO pagination style (2 tests)
+    - URL building edge cases (5 tests)
+    - Lazy-loaded properties (14 tests)
+    - HTTP method parameters (3 tests)
+    - Client configuration (4 tests)
+    - Special edge cases (11 tests)
+
+- **Removed Tests**:
+  - Old P1 integration tests (removed as part of restructuring)
+  - Legacy test modules reorganized into new structure
+
+### Infrastructure
+
+- **Package Structure**:
+  - Clear domain-based organization: `authz/`, `ng_api/`, `pipeline_api/`
+  - Each domain has dedicated API and model modules
+  - Enhanced discoverability with organized package structure
+
+- **OpenAPI Processing**:
+  - Generated 500K+ lines of processed OpenAPI specifications
+  - Created comprehensive filtering logs for spec validation
+  - Supports iterative spec validation and updates
+
+### Documentation
+
+- Updated HarnessClient lazy-loaded properties documentation
+- Added references for reorganized module structure in docstrings
+
+---
+
 ## [0.6.0] - 2026-04-13
 
 ### Added
@@ -476,7 +589,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.3.0 | 4: Drift Detection & Cleanup | ✅ Complete | 2026-04-08 | TBD | TBD |
 | 0.4.0 | 5: Domain APIs (P1 Production APIs) | ✅ Complete | 2026-04-08 | TBD | TBD |
 | 0.5.0 | 6: P1 Integration Test Suite | ✅ Complete | 2026-04-09 | TBD | TBD |
-| 1.0.0 | 7: Test Suite Hardening | 🔲 Planned | TBD | TBD | TBD |
+| 0.6.0 | 7: P2 Domain APIs (Authorization & Services) | ✅ Complete | 2026-04-13 | 1,600+ | ≥85% |
+| 0.7.0 | 8: SDK v5 Architecture Restructure | ✅ Complete | 2026-04-14 | 2,700+ | ≥85% |
+| 1.0.0 | 9: Production Release | 🔲 Planned | TBD | TBD | TBD |
 
 ---
 

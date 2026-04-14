@@ -8,9 +8,11 @@ error handling, and pagination. Supports both context manager and explicit close
 import json
 import time
 from typing import Any, Callable, Generator, TypeVar
+from urllib.parse import parse_qs
 
 import httpx
 import tenacity
+import yaml
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 from .base_model import HarnessModel
@@ -126,6 +128,46 @@ class HarnessClient:
             f"base_url={self._config.base_url!r})"
         )
 
+    def _display_payload(self, data) -> any:
+        """Debug Testing Method to quickly validate payload responses"""
+        import json
+
+        import yaml
+
+        retries = 0
+        max_tries = 3
+        error = None
+        print(f"{' DEBUG PAYLOAD - BEGIN ':#^40}")
+        while True:
+            try:
+                if isinstance(data, str):
+                    print(f" {data} ")
+                elif isinstance(data, int):
+                    print(f" {data} ")
+                else:
+                    print(json.dumps(dict(data), indent=4, sort_keys=True))
+                break
+            except TypeError as err:
+                try:
+                    data = data.json()
+                except Exception as err:
+                    retries = max_tries + 1
+                    raise Exception from err
+            except json.JSONDecodeError as err:
+                try:
+                    data = yaml.safe_load(data)
+                except Exception as err:
+                    retries = max_tries + 1
+                    raise Exception from err
+            except Exception as err:
+                raise Exception from err
+            finally:
+                retries += 1
+                if retries > max_tries:
+                    raise Exception("Display Failure. Unknown Handler")
+
+        print(f"{' DEBUG PAYLOAD - END ':#^40}")
+
     @property
     def base_url(self) -> str:
         """Get the base URL for the Harness API."""
@@ -176,13 +218,43 @@ class HarnessClient:
         account_id = scope.account_id or self._default_scope.account_id
         org = scope.org or self._default_scope.org
         project = scope.project or self._default_scope.project
+        pipeline = scope.pipeline or self._default_scope.pipeline
 
         if not account_id:
             raise ScopeNotSetError("account_id not set in scope or config")
 
-        return Scope(account_id=account_id, org=org, project=project)
+        return Scope(account_id=account_id, org=org, project=project, pipeline=pipeline)
 
-    def _build_url(self, path_template: str, scope: Scope, **kwargs) -> str:
+    def _resolve_hierarchy(self, scope: Scope | None) -> dict:
+        """Resolve hierarchy by current scope and return as a dict.
+
+        Args:
+            scope: Call-time scope (takes precedence).
+
+        Returns:
+            Resolved Scope returned as Dictionary.
+
+        Raises:
+            ScopeNotSetError: If required fields are missing.
+        """
+        if scope is None:
+            scope = self._default_scope
+
+        output = {
+            "accountIdentifier": scope.account_id,
+        }
+        if scope.org:
+            output["orgIdentifier"] = scope.org
+        if scope.project:
+            output["projectIdentifier"] = scope.project
+        if scope.pipeline:
+            output["pipelineIdentifier"] = scope.pipeline
+
+        return output
+
+    def _build_url(
+        self, path_template: str, scope: Scope, is_params: bool | None = None, **kwargs
+    ) -> str:
         """Build full URL from path template and scope.
 
         Args:
@@ -201,8 +273,18 @@ class HarnessClient:
             "account_id": scope.account_id,
             "org": scope.org,
             "project": scope.project,
+            "pipeline": scope.pipeline,
             **kwargs,
         }
+        # Allow for inline overrides of scope
+        if "org_id" in kwargs and kwargs["org_id"] is not None:
+            subs["org"] = kwargs["org_id"]
+        if "project_id" in kwargs and kwargs["project_id"] is not None:
+            subs["project"] = kwargs["project_id"]
+        if "pipeline_id" in kwargs and kwargs["pipeline_id"] is not None:
+            subs["project"] = kwargs["pipeline_id"]
+        # Strip subs that are None
+        subs = {k: v for k, v in subs.items() if v is not None}
 
         # Check for missing placeholders
         import re
@@ -212,6 +294,8 @@ class HarnessClient:
             if subs.get(placeholder) is None:
                 raise ScopeNotSetError(f"Missing required placeholder: {placeholder}")
 
+        if is_params:
+            return parse_qs(path_template.format(**subs))
         return path_template.format(**subs)
 
     def _raise_for_status(self, response: httpx.Response):
@@ -225,7 +309,7 @@ class HarnessClient:
             ApiError: For other non-2xx responses.
         """
         if response.is_success:
-            return
+            return True
 
         status_code = response.status_code
         body = response.text
@@ -233,8 +317,29 @@ class HarnessClient:
 
         if status_code in (401, 403):
             raise AuthError(status_code, body, headers)
+        elif status_code in [404]:
+            # Ignore 404 error as missing
+            return False
+        # API error: status_code=400, body_length=244, payload={'status': 'FAILURE', 'code': 'RESOURCE_NOT_FOUND_EXCEPTION', 'message': 'Connector with identifier [simple_test] not found in project [demo_project] and org [test_organization].', 'correlationId': '845f76d8-6e19-431a-be13-7222bb9bde3c', 'errors': None}
         else:
-            raise ApiError(status_code, body, headers)
+            try:
+                response_payload = response.json()
+                # Some apis will return a payload status as FAILURE
+                if "status" in response_payload and response_payload["status"] in ["FAILURE"]:
+                    # ... If there is a code in the payload, then we will check if it matches this type
+                    if "code" in response_payload and response_payload["code"] in [
+                        "RESOURCE_NOT_FOUND_EXCEPTION"
+                    ]:
+                        # 2026-04-22
+                        # NOTE: If we get this response on a POST or PUT, we need to raise an exception
+                        if response.request.method in ["POST","PUT","PATCH"]:
+                            raise ApiError(status_code, body, headers, response_payload)
+                        return False
+            except json.decoder.JSONDecodeError:
+                response_payload = None
+            # if response_payload:
+            #     self._display_payload(response_payload)
+            raise ApiError(status_code, body, headers, response_payload)
 
     def _should_retry_status_code(self, status_code: int) -> bool:
         """Check if a status code should trigger a retry.
@@ -245,10 +350,7 @@ class HarnessClient:
         Returns:
             True if should retry, False otherwise.
         """
-        return (
-            self._config.retry_enabled
-            and status_code in self._config.retry_status_codes
-        )
+        return self._config.retry_enabled and status_code in self._config.retry_status_codes
 
     def _wait_for_retry(self, response: httpx.Response, attempt: int):
         """Wait before retrying, respecting Retry-After header if present.
@@ -270,6 +372,34 @@ class HarnessClient:
         # Exponential backoff with jitter
         wait_time = min(2 ** (attempt - 1), 10) + (attempt * 0.1)
         time.sleep(wait_time)
+
+    def _unwrap_response(self, key_type: str, raw_data: dict, scope: Scope | None = None) -> dict:
+        """Unwrap response envelope.
+
+        API returns: {"key_type": {...}, "created": ..., "updated": ..., "isFavorite": ...}
+        Merge wrapper metadata with key_type data for model construction.
+
+        Args:
+            raw_data: The "data" field from API response.
+
+        Returns:
+            Merged dict with fields + metadata.
+        """
+        output = raw_data
+        if "data" in raw_data:
+            output = raw_data.get("data", {})
+        if key_type is not None:
+            output = output.get(key_type, {})
+        else:
+            key_type = "ignored"
+        if scope is not None and scope.account_id:
+            output["account_identifier"] = scope.account_id
+        if scope is not None and scope.org:
+            output["org_identifier"] = scope.org
+        if scope is not None and scope.project:
+            output["project_identifier"] = scope.project
+        # Merge fields with sibling metadata
+        return {**output}  # , **{k: v for k, v in raw_data.items() if k != key_type}}
 
     def _get(
         self,
@@ -301,8 +431,9 @@ class HarnessClient:
                     self._wait_for_retry(response, attempt)
                     continue
 
-            # Raise for non-success responses
-            self._raise_for_status(response)
+            # Raise for non-success responses or return empty if 404
+            if not self._raise_for_status(response):
+                return {}
             break
 
         if response_model:
@@ -314,6 +445,7 @@ class HarnessClient:
         url: str,
         params: dict | None = None,
         body: HarnessModel | dict | None = None,
+        body_is_yaml: bool | None = False,
         response_model: type[HarnessModel] | None = None,
     ) -> dict | HarnessModel:
         """Perform POST request with retry.
@@ -339,7 +471,11 @@ class HarnessClient:
 
         max_attempts = self._config.max_retries + 1
         for attempt in range(1, max_attempts + 1):
-            response = self._http_client.post(url, params=params, json=request_body)
+            if body_is_yaml:
+                response = self._http_client.post(url, params=params, data=yaml.dump(request_body))
+            else:
+                response = self._http_client.post(url, params=params, json=request_body)
+            # print(f"\t RESPONSE URL: {response.url}")
 
             # Check if we should retry based on status code
             if self._should_retry_status_code(response.status_code):
@@ -351,6 +487,10 @@ class HarnessClient:
             self._raise_for_status(response)
             break
 
+        output_payload = response.json()
+        if "code" in output_payload and output_payload["code"] == "ENTITY_NOT_FOUND":
+            raise ApiError(400, response.text, response.headers, output_payload)
+
         if response_model:
             return response_model(**response.json())
         return response.json()
@@ -360,6 +500,7 @@ class HarnessClient:
         url: str,
         params: dict | None = None,
         body: HarnessModel | dict | None = None,
+        body_is_yaml: bool | None = False,
         response_model: type[HarnessModel] | None = None,
     ) -> dict | HarnessModel:
         """Perform PUT request with retry.
@@ -385,8 +526,10 @@ class HarnessClient:
 
         max_attempts = self._config.max_retries + 1
         for attempt in range(1, max_attempts + 1):
-            response = self._http_client.put(url, params=params, json=request_body)
-
+            if body_is_yaml:
+                response = self._http_client.put(url, params=params, data=yaml.dump(request_body))
+            else:
+                response = self._http_client.put(url, params=params, json=request_body)
             # Check if we should retry based on status code
             if self._should_retry_status_code(response.status_code):
                 if attempt < max_attempts:
@@ -488,6 +631,8 @@ class HarnessClient:
     def _paginate(
         self,
         url: str,
+        method: str | None = "get",
+        body: HarnessModel | dict | None = None,
         params: dict | None = None,
         response_model: type[HarnessModel] | None = None,
         pagination_style: PaginationStyle = PaginationStyle.OFFSET,
@@ -514,6 +659,17 @@ class HarnessClient:
         if params is None:
             params = {}
 
+        request_body = None
+        if body is not None:
+            request_body = (
+                body.model_dump(by_alias=True) if isinstance(body, HarnessModel) else body
+            )
+
+        # Yield each item
+        # 2026-04-21
+        # NOTE: Before processing the payload, we will determine the hierarchy to ensure
+        # the details are available for processing
+        resolved_hierarchy = self._resolve_hierarchy(scope=scope)
         if pagination_style == PaginationStyle.OFFSET:
             # Offset-based pagination (pageIndex/pageSize)
             page_index = params.get("pageIndex", 0)
@@ -523,7 +679,10 @@ class HarnessClient:
                 params["pageIndex"] = page_index
                 params["pageSize"] = page_size
 
-                response = self._get(url, params=params)
+                if method == "post":
+                    response = self._post(url, params=params, body=request_body)
+                else:
+                    response = self._get(url, params=params)
 
                 # Extract items from response - handle multiple response structures:
                 # 1. Direct array (pipelines: /v1/orgs/{org}/projects/{project}/pipelines)
@@ -546,10 +705,14 @@ class HarnessClient:
                 if not items:
                     break
 
-                # Yield each item
                 for item in items:
                     # Unwrap nested field if specified
                     data_to_yield = item
+                    # 2026-04-21
+                    # NOTE: Some paginated responses do not include the the hierarchy details
+                    # in their responses. This will normalize the details and return the
+                    # resolved hierarchy back into the payload for each element.
+                    data_to_yield.update(dict(resolved_hierarchy))
                     if unwrap_field and isinstance(item, dict):
                         data_to_yield = item.get(unwrap_field, item)
 
@@ -580,7 +743,10 @@ class HarnessClient:
                 elif "pageToken" in params:
                     del params["pageToken"]
 
-                response = self._get(url, params=params)
+                if method == "post":
+                    response = self._post(url, params=params, body=request_body)
+                else:
+                    response = self._get(url, params=params)
 
                 # Extract items and next token - handle multiple response structures
                 if isinstance(response, list):
@@ -611,6 +777,11 @@ class HarnessClient:
                 for item in items:
                     # Unwrap nested field if specified
                     data_to_yield = item
+                    # 2026-04-21
+                    # NOTE: Some paginated responses do not include the the hierarchy details
+                    # in their responses. This will normalize the details and return the
+                    # resolved hierarchy back into the payload for each element.
+                    data_to_yield.update(dict(resolved_hierarchy))
                     if unwrap_field and isinstance(item, dict):
                         data_to_yield = item.get(unwrap_field, item)
 
@@ -624,7 +795,10 @@ class HarnessClient:
 
         elif pagination_style == PaginationStyle.TODO:
             # TODO: pagination style unconfirmed — return single page without pagination
-            response = self._get(url, params=params)
+            if method == "post":
+                response = self._post(url, params=params, body=request_body)
+            else:
+                response = self._get(url, params=params)
 
             # Extract items from response - handle multiple response structures
             if isinstance(response, list):
@@ -646,6 +820,11 @@ class HarnessClient:
             for item in items:
                 # Unwrap nested field if specified
                 data_to_yield = item
+                # 2026-04-21
+                # NOTE: Some paginated responses do not include the the hierarchy details
+                # in their responses. This will normalize the details and return the
+                # resolved hierarchy back into the payload for each element.
+                data_to_yield.update(dict(resolved_hierarchy))
                 if unwrap_field and isinstance(item, dict):
                     data_to_yield = item.get(unwrap_field, item)
 
@@ -655,19 +834,10 @@ class HarnessClient:
                     yield data_to_yield
 
     @property
-    def pipelines(self):
-        """Lazy-loaded PipelinesApi instance."""
-        if not hasattr(self, "_pipelines"):
-            from harness_python_sdk.api.pipelines import PipelinesApi
-
-            self._pipelines = PipelinesApi(self)
-        return self._pipelines
-
-    @property
     def connectors(self):
         """Lazy-loaded ConnectorsApi instance."""
         if not hasattr(self, "_connectors"):
-            from harness_python_sdk.api.connectors import ConnectorsApi
+            from harness_python_sdk.ng_api.connectors import ConnectorsApi
 
             self._connectors = ConnectorsApi(self)
         return self._connectors
@@ -676,25 +846,34 @@ class HarnessClient:
     def secrets(self):
         """Lazy-loaded SecretsApi instance."""
         if not hasattr(self, "_secrets"):
-            from harness_python_sdk.api.secrets import SecretsApi
+            from harness_python_sdk.ng_api.secrets import SecretsApi
 
             self._secrets = SecretsApi(self)
         return self._secrets
 
     @property
-    def infrastructure(self):
+    def environments_v2(self):
         """Lazy-loaded InfrastructureApi instance."""
-        if not hasattr(self, "_infrastructure"):
-            from harness_python_sdk.api.infrastructure import InfrastructureApi
+        if not hasattr(self, "_environments_v2"):
+            from harness_python_sdk.ng_api.environments_v2 import EnvironmentsV2Api
 
-            self._infrastructure = InfrastructureApi(self)
-        return self._infrastructure
+            self._environments_v2 = EnvironmentsV2Api(self)
+        return self._environments_v2
+
+    @property
+    def infrastructures(self):
+        """Lazy-loaded InfrastructuresApi instance."""
+        if not hasattr(self, "_infrastructures"):
+            from harness_python_sdk.ng_api.infrastructures import InfrastructuresApi
+
+            self._infrastructures = InfrastructuresApi(self)
+        return self._infrastructures
 
     @property
     def organizations(self):
         """Lazy-loaded OrganizationsApi instance."""
         if not hasattr(self, "_organizations"):
-            from harness_python_sdk.api.organizations import OrganizationsApi
+            from harness_python_sdk.ng_api.organizations import OrganizationsApi
 
             self._organizations = OrganizationsApi(self)
         return self._organizations
@@ -703,7 +882,7 @@ class HarnessClient:
     def projects(self):
         """Lazy-loaded ProjectsApi instance."""
         if not hasattr(self, "_projects"):
-            from harness_python_sdk.api.projects import ProjectsApi
+            from harness_python_sdk.ng_api.projects import ProjectsApi
 
             self._projects = ProjectsApi(self)
         return self._projects
@@ -712,7 +891,7 @@ class HarnessClient:
     def services(self):
         """Lazy-loaded ServicesApi instance."""
         if not hasattr(self, "_services"):
-            from harness_python_sdk.api.services import ServicesApi
+            from harness_python_sdk.ng_api.services import ServicesApi
 
             self._services = ServicesApi(self)
         return self._services
@@ -721,7 +900,7 @@ class HarnessClient:
     def roles(self):
         """Lazy-loaded RolesApi instance."""
         if not hasattr(self, "_roles"):
-            from harness_python_sdk.api.roles import RolesApi
+            from harness_python_sdk.authz.roles import RolesApi
 
             self._roles = RolesApi(self)
         return self._roles
@@ -730,7 +909,7 @@ class HarnessClient:
     def resource_groups(self):
         """Lazy-loaded ResourceGroupsApi instance."""
         if not hasattr(self, "_resource_groups"):
-            from harness_python_sdk.api.resource_groups import ResourceGroupsApi
+            from harness_python_sdk.authz.resource_groups import ResourceGroupsApi
 
             self._resource_groups = ResourceGroupsApi(self)
         return self._resource_groups
@@ -739,7 +918,43 @@ class HarnessClient:
     def role_assignments(self):
         """Lazy-loaded RoleAssignmentsApi instance."""
         if not hasattr(self, "_role_assignments"):
-            from harness_python_sdk.api.role_assignments import RoleAssignmentsApi
+            from harness_python_sdk.authz.role_assignments import RoleAssignmentsApi
 
             self._role_assignments = RoleAssignmentsApi(self)
         return self._role_assignments
+
+    @property
+    def user_groups(self):
+        """Lazy-loaded RoleAssignmentsApi instance."""
+        if not hasattr(self, "_user_groups"):
+            from harness_python_sdk.ng_api.user_groups import UserGroupsApi
+
+            self._user_groups = UserGroupsApi(self)
+        return self._user_groups
+
+    @property
+    def pipelines_v0(self):
+        """Lazy-loaded PipelinesApi instance."""
+        if not hasattr(self, "_pipelines_v0"):
+            from harness_python_sdk.pipeline_api.pipelines_v0 import PipelinesV0Api
+
+            self._pipelines_v0 = PipelinesV0Api(self)
+        return self._pipelines_v0
+
+    @property
+    def input_sets_v0(self):
+        """Lazy-loaded InputSetsV0Api instance."""
+        if not hasattr(self, "_input_sets_v0"):
+            from harness_python_sdk.pipeline_api.input_sets_v0 import InputSetsV0Api
+
+            self._input_sets_v0 = InputSetsV0Api(self)
+        return self._input_sets_v0
+
+    @property
+    def triggers_v0(self):
+        """Lazy-loaded InputSetsV0Api instance."""
+        if not hasattr(self, "_triggers_v0"):
+            from harness_python_sdk.pipeline_api.triggers_v0 import TriggersV0Api
+
+            self._triggers_v0 = TriggersV0Api(self)
+        return self._triggers_v0

@@ -21,12 +21,13 @@ class ScopeNotSetError(HarnessSdkError):
 class ApiError(HarnessSdkError):
     """Raised for non-2xx API responses (other than 401/403)."""
 
-    def __init__(self, status_code: int, body: str, headers: dict):
+    def __init__(self, status_code: int, body: str, headers: dict, payload: dict | None = None):
         self.status_code = status_code
         self.body = body
         self.headers = headers
+        self.payload = payload
         super().__init__(
-            f"API error: status_code={status_code}, body_length={len(body)}"
+            f"API error: status_code={status_code}, body_length={len(body)}, payload={payload}"
         )
 
 

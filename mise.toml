@@ -84,6 +84,10 @@ run = "pytest --cov=src/harness_python_sdk --cov-report=term-missing tests/"
 description = "Run tests in watch mode (re-runs on file changes)"
 run = "pytest-watch tests/ -- -v"
 
+[tasks."tests:smoke"]
+description = "Run smoke tests"
+run = "python scripts/run_smoke_tests.py"
+
 # ---------------------------------------------------------------------------
 # Development Utilities
 # ---------------------------------------------------------------------------
@@ -107,3 +111,7 @@ run = """
     mkdir -p datagen_staging && \
     touch datagen_staging/.gitkeep
 """
+
+[tasks."create:new"]
+description = "Run the Api Class Generator"
+run = "python scripts//generate_new_class.py"

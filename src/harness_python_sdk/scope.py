@@ -18,10 +18,12 @@ class Scope(BaseModel):
         account_id: Harness account identifier (required).
         org: Harness organization identifier (optional).
         project: Harness project identifier (optional).
+        pipeline: Harness pipeline identifier (optional).
     """
 
     account_id: str
     org: str | None = None
     project: str | None = None
+    pipeline: str | None = None
 
     model_config = ConfigDict(frozen=True)

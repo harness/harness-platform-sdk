@@ -141,3 +141,6 @@ rendered
 
 # large JSON file, derived artifact from the YAML — regenerated on every pipeline run; no need to track it
 openapi/harness-openapi-normalized.json
+
+# Ignore local test credentials
+.harness.yaml

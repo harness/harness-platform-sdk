@@ -1,0 +1,49 @@
+import json
+
+####################
+# {{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} Tests
+####################
+print(f"{' {{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} ':#^40}")
+pipeline_identifier = "simple_test"
+print(f"{{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} -> List")
+for list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} in [
+    elem for elem in client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.list(pipeline_identifier=pipeline_identifier)
+]:
+    # client._display_payload(list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }})
+    print(f"\t \t -> : {list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
+
+{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request = {{ (CLASS_NAME_PREFIX | title) ~ (CLASS_VERSION|upper if CLASS_VERSION else '') }}CreateRequest(
+    pipeline_identifier="simple_test",
+    identifier="simple_test",
+    name="Simple Test",
+    description="a test",
+)
+
+{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} = client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.get(
+    identifier={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request.identifier, pipeline_identifier=pipeline_identifier
+)
+# client._display_payload({{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }})
+if {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}:
+    print(f"\t -> Get : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
+    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request.description = "UPDATE from Existing"
+    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} = client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.update(identifier={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier, body={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request)
+    print(f"\t -> Updated : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
+
+else:
+    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request.description = "CREATE from New"
+    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} = client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.create({{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request)
+    print(f"\t -> Created : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
+    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request.description = "UPDATE after Creating"
+    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} = client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.update(identifier={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier, body={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request)
+    print(f"\t -> Updated : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
+print(f"{{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} -> List")
+for list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} in [
+    elem for elem in client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.list(pipeline_identifier=pipeline_identifier)
+]:
+    print(f"\t \t -> : {list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
+
+if unit_cleanup:
+    client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.delete(
+        identifier={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier, pipeline_identifier=pipeline_identifier
+    )
+    print(f"\t -> Delete : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
