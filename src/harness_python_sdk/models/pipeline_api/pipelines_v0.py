@@ -50,7 +50,7 @@ class PipelineV0ListResponse(HarnessModel):
     num_of_stages: int = Field(default=None, alias="numOfStages")
     stage_names: list[str] = Field(default=[], alias="stageNames")
     execution_summary_info: dict = Field(default={}, alias="executionSummaryInfo")
-    recent_executions_info: list[str] = Field(default=[], alias="recentExecutionsInfo")
+    recent_executions_info: list[dict] = Field(default=[], alias="recentExecutionsInfo")
     git_details: dict[str, dict] = Field(default={}, alias="gitDetails")
     entity_validity_details: dict = Field(default={}, alias="entityValidityDetails")
     is_draft: bool = Field(default=False, alias="isDraft")
@@ -74,4 +74,4 @@ class PipelineV0CreateRequest(HarnessModel):
     # Additional Response properties
     #####
     stages: list[dict]
-    variables: list[dict]
+    variables: list[dict] | None = []

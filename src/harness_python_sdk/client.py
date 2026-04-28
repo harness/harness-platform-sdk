@@ -144,6 +144,10 @@ class HarnessClient:
                     print(f" {data} ")
                 elif isinstance(data, int):
                     print(f" {data} ")
+                elif isinstance(data, list):
+                    print(json.dumps(data, indent=4, sort_keys=True))
+                elif isinstance(data, dict):
+                    print(json.dumps(data, indent=4, sort_keys=True))
                 else:
                     print(json.dumps(dict(data), indent=4, sort_keys=True))
                 break
@@ -436,9 +440,22 @@ class HarnessClient:
                 return {}
             break
 
-        if response_model:
-            return response_model(**response.json())
-        return response.json()
+        try:
+            if response_model:
+                return response_model(**response.json())
+            return response.json()
+        except Exception as err:
+            status_code = response.status_code
+            body = response.text
+            headers = dict(response.headers)
+            if status_code in [200, 204]:
+                # Sometimes, the payload returns empty on a successfull delete. So
+                # we will consider a valid 204 response and return empty. This was
+                # chosen as the right response instead of trapping on 'json.decoder.JSONDecodeError'
+                # due to the potential condition of invalid status returning the same error.
+                return {}
+            # ... Else, we need to raise an error.
+            raise ApiError(status_code, body, headers, {})
 
     def _post(
         self,
@@ -487,7 +504,10 @@ class HarnessClient:
             self._raise_for_status(response)
             break
 
-        output_payload = response.json()
+        try:
+            output_payload = response.json()
+        except json.decoder.JSONDecodeError:
+            return request_body
         if "code" in output_payload and output_payload["code"] == "ENTITY_NOT_FOUND":
             raise ApiError(400, response.text, response.headers, output_payload)
 
@@ -540,8 +560,14 @@ class HarnessClient:
             self._raise_for_status(response)
             break
 
+        try:
+            output_payload = response.json()
+        except json.decoder.JSONDecodeError:
+            return request_body
+
         if response_model:
             return response_model(**response.json())
+
         return response.json()
 
     def _patch(
@@ -594,6 +620,7 @@ class HarnessClient:
         self,
         url: str,
         params: dict | None = None,
+        body: HarnessModel | dict | None = None,
         response_model: type[HarnessModel] | None = None,
     ) -> dict | HarnessModel:
         """Perform DELETE request with retry.
@@ -601,6 +628,7 @@ class HarnessClient:
         Args:
             url: Request URL (relative to base_url).
             params: Query parameters.
+            body: Request body (BaseModel or dict).
             response_model: Pydantic model for response deserialization.
 
         Returns:
@@ -610,9 +638,22 @@ class HarnessClient:
             AuthError: For 401/403.
             ApiError: For other non-2xx.
         """
+
         max_attempts = self._config.max_retries + 1
         for attempt in range(1, max_attempts + 1):
-            response = self._http_client.delete(url, params=params)
+
+            if body is not None:
+                request_body = (
+                    body.model_dump(by_alias=True) if isinstance(body, HarnessModel) else body
+                )
+                response = self._http_client.request(
+                    "DELETE",
+                    url,
+                    params=params,
+                    json=request_body,
+                )
+            else:
+                response = self._http_client.delete(url, params=params)
 
             # Check if we should retry based on status code
             if self._should_retry_status_code(response.status_code):
@@ -624,9 +665,24 @@ class HarnessClient:
             self._raise_for_status(response)
             break
 
-        if response_model:
-            return response_model(**response.json())
-        return response.json()
+        try:
+            if response_model:
+                return response_model(**response.json())
+            return response.json()
+        except json.decoder.JSONDecodeError:
+            return request_body
+        except Exception as err:
+            status_code = response.status_code
+            body = response.text
+            headers = dict(response.headers)
+            if status_code == 204:
+                # Sometimes, the payload returns empty on a successfull delete. So
+                # we will consider a valid 204 response and return empty. This was
+                # chosen as the right response instead of trapping on 'json.decoder.JSONDecodeError'
+                # due to the potential condition of invalid status returning the same error.
+                return {}
+            # ... Else, we need to raise an error.
+            raise ApiError(status_code, body, headers, {})
 
     def _paginate(
         self,
@@ -925,7 +981,7 @@ class HarnessClient:
 
     @property
     def user_groups(self):
-        """Lazy-loaded RoleAssignmentsApi instance."""
+        """Lazy-loaded UserGroupsApi instance."""
         if not hasattr(self, "_user_groups"):
             from harness_python_sdk.ng_api.user_groups import UserGroupsApi
 
@@ -952,9 +1008,72 @@ class HarnessClient:
 
     @property
     def triggers_v0(self):
-        """Lazy-loaded InputSetsV0Api instance."""
+        """Lazy-loaded TriggersV0Api instance."""
         if not hasattr(self, "_triggers_v0"):
             from harness_python_sdk.pipeline_api.triggers_v0 import TriggersV0Api
 
             self._triggers_v0 = TriggersV0Api(self)
         return self._triggers_v0
+
+    @property
+    def templates_v0(self):
+        """Lazy-loaded TemplatesV0Api instance."""
+        if not hasattr(self, "_templates_v0"):
+            from harness_python_sdk.template_api.templates_v0 import TemplatesV0Api
+
+            self._templates_v0 = TemplatesV0Api(self)
+        return self._templates_v0
+
+    @property
+    def workspaces(self):
+        """Lazy-loaded WorkspacesApi instance."""
+        if not hasattr(self, "_workspaces"):
+            from harness_python_sdk.iacm_api.workspaces import WorkspacesApi
+
+            self._workspaces = WorkspacesApi(self)
+        return self._workspaces
+
+    @property
+    def workspace_approvals(self):
+        """Lazy-loaded WorkspaceApprovalsApi instance."""
+        if not hasattr(self, "_workspace_approvals"):
+            from harness_python_sdk.iacm_api.workspace_approvals import WorkspaceApprovalsApi
+
+            self._workspace_approvals = WorkspaceApprovalsApi(self)
+        return self._workspace_approvals
+
+    @property
+    def workspace_default_pipelines(self):
+        """Lazy-loaded WorkspaceDefaultPipelinesApi instance."""
+        if not hasattr(self, "_workspace_default_pipelines"):
+            from harness_python_sdk.iacm_api.workspace_default_pipelines import WorkspaceDefaultPipelinesApi
+
+            self._workspace_default_pipelines = WorkspaceDefaultPipelinesApi(self)
+        return self._workspace_default_pipelines
+
+    @property
+    def workspace_states(self):
+        """Lazy-loaded WorkspaceStatesApi instance."""
+        if not hasattr(self, "_workspace_states"):
+            from harness_python_sdk.iacm_api.workspace_states import WorkspaceStatesApi
+
+            self._workspace_states = WorkspaceStatesApi(self)
+        return self._workspace_states
+
+    @property
+    def workspace_variables(self):
+        """Lazy-loaded WorkspaceVariablesApi instance."""
+        if not hasattr(self, "_workspace_variables"):
+            from harness_python_sdk.iacm_api.workspace_variables import WorkspaceVariablesApi
+
+            self._workspace_variables = WorkspaceVariablesApi(self)
+        return self._workspace_variables
+
+    @property
+    def variables(self):
+        """Lazy-loaded VariablesApi instance."""
+        if not hasattr(self, "_variables"):
+            from harness_python_sdk.ng_api.variables import VariablesApi
+
+            self._variables = VariablesApi(self)
+        return self._variables

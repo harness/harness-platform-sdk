@@ -88,6 +88,14 @@ run = "pytest-watch tests/ -- -v"
 description = "Run smoke tests"
 run = "python scripts/run_smoke_tests.py"
 
+[tasks."tests:smoke:test"]
+description = "Run smoke tests on a Filtered class"
+usage = '''
+arg "<name>" help="The name of the new class to filter"
+flag "--unit-cleanup"
+'''
+run = "python scripts/run_smoke_tests.py --skip-fixtures --filter-type ${usage_name?} ${usage_unit_cleanup:+--unit-cleanup}"
+
 # ---------------------------------------------------------------------------
 # Development Utilities
 # ---------------------------------------------------------------------------

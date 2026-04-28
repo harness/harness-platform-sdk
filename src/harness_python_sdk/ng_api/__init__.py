@@ -11,6 +11,7 @@ from .projects import ProjectsApi
 from .secrets import SecretsApi
 from .services import ServicesApi
 from .user_groups import UserGroupsApi
+from .variables import VariablesApi
 
 __all__ = [
     "OrganizationsApi",
@@ -21,4 +22,5 @@ __all__ = [
     "EnvironmentsV2Api",
     "InfrastructuresApi",
     "UserGroupsApi",
+    "VariablesApi",
 ]

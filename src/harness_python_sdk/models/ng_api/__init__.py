@@ -18,6 +18,7 @@ from .secrets import SecretCreateRequest, SecretResponse
 from .services import ServiceCreateRequest, ServiceResponse
 from .user_groups import UserGroupCreateRequest, UserGroupResponse
 from .environments_v2 import EnvironmentV2CreateRequest, EnvironmentV2Response
+from .variables import VariableCreateRequest, VariableResponse, VariableSpec
 
 __all__ = [
     "OrganizationCreateRequest",
@@ -36,4 +37,7 @@ __all__ = [
     "UserGroupResponse",
     "EnvironmentV2CreateRequest",
     "EnvironmentV2Response",
+    "VariableCreateRequest",
+    "VariableResponse",
+    "VariableSpec"
 ]

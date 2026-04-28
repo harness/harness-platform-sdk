@@ -5,7 +5,7 @@ HarnessModel is the base class for all request/response models in the SDK.
 It allows extra fields and populates by name or alias.
 """
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, AliasChoices
 
 
 class HarnessModel(BaseModel):

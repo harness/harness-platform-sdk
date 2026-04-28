@@ -5,6 +5,145 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-05-18
+
+### Added
+
+- **Template API Support** — New API domain for template resource management
+  - **Templates API** (`src/harness_python_sdk/template_api/templates_v0.py`):
+    - Full CRUD operations: `get()`, `create()`, `update()`, `delete()`, `list()`
+    - Template version management and lifecycle operations
+    - Support for template entity types (Step, Stage, Pipeline)
+    - Template spec configuration with timeout and execution target settings
+  - **Template Models** (`src/harness_python_sdk/models/template_api/templates_v0.py`):
+    - TemplateV0Response and TemplateV0CreateRequest models
+    - Template entity type and configuration models
+    - Full field documentation and type hints
+
+- **Variables API Support** — Global variable management across Platform scope
+  - **Variables API** (`src/harness_python_sdk/ng_api/variables.py`):
+    - Full CRUD operations: `get()`, `create()`, `update()`, `delete()`, `list()`
+    - Variable scope management (account, org, project levels)
+    - Support for variable types and value specifications (FIXED, string, secret)
+    - Response unwrapping and scope injection helpers
+  - **Variable Models** (`src/harness_python_sdk/models/ng_api/variables.py`):
+    - VariableResponse and VariableCreateRequest models
+    - VariableSpec with value type and fixed value configuration
+    - Tag support and metadata management
+
+- **IACM Workspace Management APIs** — Complete Infrastructure-as-Code workspace lifecycle support
+  - **Workspaces API** (`src/harness_python_sdk/iacm_api/workspaces.py`):
+    - Full CRUD operations: `get()`, `create()`, `update()`, `delete()`, `list()`
+    - Workspace provisioner configuration (Terraform, OpenTofu, Terragrunt)
+    - Provider and repository connector management
+    - Environment and Terraform variable management
+    - Workspace state and status tracking
+  - **Workspace States API** (`src/harness_python_sdk/iacm_api/workspace_states.py`):
+    - Terraform state retrieval and management via terraform-backend endpoint
+    - State version tracking with serial and version fields
+    - Resource tracking and output state management
+  - **Workspace Approvals API** (`src/harness_python_sdk/iacm_api/workspace_approvals.py`):
+    - Approval status management (approved, rejected, pending)
+    - Approval action tracking with user and email information
+    - Workspace-scoped approval query and filtering
+  - **Workspace Default Pipelines API** (`src/harness_python_sdk/iacm_api/workspace_default_pipelines.py`):
+    - Default pipeline configuration per operation (plan, apply, destroy, drift, etc.)
+    - Provisioner and operation filtering
+    - Workspace-scoped default pipeline management
+  - **Workspace Variables API** (`src/harness_python_sdk/iacm_api/workspace_variables.py`):
+    - Workspace-level variable management (env, tf kinds)
+    - Value type support (string, secret)
+    - Per-workspace variable isolation and scoping
+  - **IACM Models** (`src/harness_python_sdk/models/iacm_api/`):
+    - Complete model set for all IACM workspace resources
+    - WorkspaceResponse, WorkspaceCreateRequest with validation
+    - Enum types for operations and provisioners
+    - Status enums for approval workflows
+
+- **Enhanced HarnessClient Properties**:
+  - Added new lazy-loaded resource properties: `templates`, `variables`, `workspaces`, `workspace_states`, `workspace_approvals`, `workspace_default_pipelines`, `workspace_variables`
+  - Updated import paths to use new API modules
+  - All 21 API resource properties now available:
+    - Auth APIs: `roles`, `resource_groups`, `role_assignments`
+    - Platform APIs: `connectors`, `secrets`, `environments_v2`, `infrastructures`, `organizations`, `projects`, `services`, `user_groups`, `variables`
+    - Pipeline APIs: `pipelines_v0`, `input_sets_v0`, `triggers_v0`
+    - Template APIs: `templates`
+    - IACM APIs: `workspaces`, `workspace_states`, `workspace_approvals`, `workspace_default_pipelines`, `workspace_variables`
+
+### Changed
+
+- **Module Organization**:
+  - Added new API domains: `template_api/`, `iacm_api/`
+  - Expanded model organization with template and IACM domain packages
+  - Updated `HarnessClient` with 7 new lazy-loaded properties
+
+- **Configuration & Build**:
+  - Enhanced `mise.toml` with smoke test support for new APIs
+  - Updated `scripts/run_smoke_tests.py` for IACM and template testing
+
+### Testing
+
+- **Comprehensive Unit Test Suite** (108 new tests added):
+  - Template API Tests (`tests/unit_tests/template_api/test_templates_v0.py`): 14 tests
+    - Template CRUD operations and lifecycle management
+    - Template version and entity type handling
+    - Error scenarios (404, 400, 409)
+  - Variables API Tests (`tests/unit_tests/ng_api/test_variables.py`): 15 tests
+    - Variable CRUD operations with scope injection
+    - Response unwrapping and model validation
+    - Pagination and filtering scenarios
+  - Workspaces IACM API Tests (`tests/unit_tests/iacm_api/test_workspaces.py`): 16 tests
+    - Workspace lifecycle management (create, get, update, delete, list)
+    - Workspace validation and required field checks
+    - Provisioner and connector configuration
+  - Workspace States IACM API Tests (`tests/unit_tests/iacm_api/test_workspace_states.py`): 11 tests
+    - Terraform state retrieval and management
+    - State version tracking and empty response handling
+  - Workspace Approvals IACM API Tests (`tests/unit_tests/iacm_api/test_workspace_approvals.py`): 12 tests
+    - Approval status updates and filtering
+    - Status enum validation and approval workflows
+  - Workspace Default Pipelines IACM API Tests (`tests/unit_tests/iacm_api/test_workspace_default_pipelines.py`): 12 tests
+    - Default pipeline configuration per operation
+    - Operation filtering and provisioner support
+  - Workspace Variables IACM API Tests (`tests/unit_tests/iacm_api/test_workspace_variables.py`): 14 tests
+    - Workspace-scoped variable management
+    - Variable kind and value type handling
+
+- **Smoke Tests** (8 new smoke test modules):
+  - `tests/smoke/templates_v0.py` — Template creation and lifecycle
+  - `tests/smoke/variables.py` — Variable CRUD operations
+  - `tests/smoke/workspaces.py` — Workspace management
+  - `tests/smoke/workspace_states.py` — Terraform state operations
+  - `tests/smoke/workspace_approvals.py` — Approval workflows
+  - `tests/smoke/workspace_default_pipelines.py` — Default pipeline configuration
+  - `tests/smoke/workspace_variables.py` — Workspace variable management
+  - `tests/smoke/workspace_pre_work.py` — IACM setup and helpers
+
+- **Test Results**:
+  - Total new tests: 108 unit tests + comprehensive smoke tests
+  - All tests passing with 100% success rate
+  - Comprehensive coverage of CRUD operations, error handling, and enums
+
+### Infrastructure
+
+- **API Structure**:
+  - New `template_api/` domain for template resources
+  - New `iacm_api/` domain for Infrastructure-as-Code workspace management
+  - Consistent API patterns across all domains
+
+- **Model Organization**:
+  - `models/template_api/` for template domain models
+  - `models/iacm_api/` for IACM domain models
+  - Package exports via domain __init__.py files
+
+### Documentation
+
+- Updated HarnessClient lazy-loaded properties documentation
+- Added IACM API documentation for workspace lifecycle management
+- Added template API documentation for template resource operations
+
+---
+
 ## [0.7.0] - 2026-04-14
 
 ### Added
@@ -591,7 +730,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.5.0 | 6: P1 Integration Test Suite | ✅ Complete | 2026-04-09 | TBD | TBD |
 | 0.6.0 | 7: P2 Domain APIs (Authorization & Services) | ✅ Complete | 2026-04-13 | 1,600+ | ≥85% |
 | 0.7.0 | 8: SDK v5 Architecture Restructure | ✅ Complete | 2026-04-14 | 2,700+ | ≥85% |
-| 1.0.0 | 9: Production Release | 🔲 Planned | TBD | TBD | TBD |
+| 0.8.0 | 9: Template, Variables & IACM Workspace APIs | ✅ Complete | 2026-05-18 | 3,000+ | ≥85% |
+| 1.0.0 | 10: Production Release | 🔲 Planned | TBD | TBD | TBD |
 
 ---
 

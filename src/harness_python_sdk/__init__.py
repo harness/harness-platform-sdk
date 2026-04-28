@@ -10,6 +10,8 @@ from .config import HarnessConfig
 from .exceptions import ApiError, AuthError, HarnessSdkError, ScopeNotSetError
 from .ng_api import *
 from .pipeline_api import *
+from .template_api import *
+from .iacm_api import *
 from .scope import Scope
 
 __version__ = "0.1.0"
@@ -35,4 +37,11 @@ __all__ = [
     "PipelinesV0Api",
     "InputSetsV0Api",
     "TriggersV0Api",
+    "TemplatesV0Api",
+    "WorkspacesApi",
+    "WorkspaceApprovalsApi",
+    "WorkspaceDefaultPipelineApi",
+    "WorkspaceStatesApi",
+    "WorkspaceVariablesApi",
+    "VariablesApi",
 ]
