@@ -87,6 +87,7 @@ class HarnessClient:
             org=default_org,
             project=default_project,
         )
+        self.account_id = self._config.account_id
 
     def __enter__(self):
         """Context manager entry."""
@@ -197,6 +198,8 @@ class HarnessClient:
             org: New default organization.
             project: New default project.
         """
+        if project and not org:
+            raise Exception(f"Error: Unable to create 'default_scope' for 'project' {project} as no 'org' provided.")
         self._default_scope = Scope(
             account_id=self._config.account_id,
             org=org,
@@ -255,6 +258,37 @@ class HarnessClient:
             output["pipelineIdentifier"] = scope.pipeline
 
         return output
+        return Scope(account_id=account_id, org=org, project=project, pipeline=pipeline)
+
+    def _resolve_idp_hierarchy(self, scope: Scope | None) -> dict:
+        """Resolve IDP hierarchy by current scope and return as a dict.
+
+        Args:
+            scope: Call-time scope (takes precedence).
+
+        Returns:
+            Resolved Scope returned as Dictionary.
+
+        Raises:
+            ScopeNotSetError: If required fields are missing.
+        """
+        if scope is None:
+            scope = self._default_scope
+
+        output = "account"
+        if scope.org and scope.project:
+            output = ".".join([
+                output,
+                scope.org,
+                scope.project
+            ])
+        elif scope.org:
+            output = ".".join([
+                output,
+                scope.org
+            ])
+
+        return output#.lower()
 
     def _build_url(
         self, path_template: str, scope: Scope, is_params: bool | None = None, **kwargs
@@ -286,7 +320,7 @@ class HarnessClient:
         if "project_id" in kwargs and kwargs["project_id"] is not None:
             subs["project"] = kwargs["project_id"]
         if "pipeline_id" in kwargs and kwargs["pipeline_id"] is not None:
-            subs["project"] = kwargs["pipeline_id"]
+            subs["pipeline"] = kwargs["pipeline_id"]
         # Strip subs that are None
         subs = {k: v for k, v in subs.items() if v is not None}
 
@@ -325,6 +359,7 @@ class HarnessClient:
             # Ignore 404 error as missing
             return False
         # API error: status_code=400, body_length=244, payload={'status': 'FAILURE', 'code': 'RESOURCE_NOT_FOUND_EXCEPTION', 'message': 'Connector with identifier [simple_test] not found in project [demo_project] and org [test_organization].', 'correlationId': '845f76d8-6e19-431a-be13-7222bb9bde3c', 'errors': None}
+        # harness_python_sdk.exceptions.ApiError: API error: status_code=500, body_length=180, payload={'code': 'DEFAULT_ERROR_CODE', 'level': 'ERROR', 'message': 'Entity with entityRef = resource:lab not found', 'exception': None, 'failureTypes': [], 'failureSubTypes': [], 'additionalInfo': {}}
         else:
             try:
                 response_payload = response.json()
@@ -333,6 +368,16 @@ class HarnessClient:
                     # ... If there is a code in the payload, then we will check if it matches this type
                     if "code" in response_payload and response_payload["code"] in [
                         "RESOURCE_NOT_FOUND_EXCEPTION"
+                    ]:
+                        # 2026-04-22
+                        # NOTE: If we get this response on a POST or PUT, we need to raise an exception
+                        if response.request.method in ["POST","PUT","PATCH"]:
+                            raise ApiError(status_code, body, headers, response_payload)
+                        return False
+                if "level" in response_payload and response_payload["level"] in ["ERROR"]:
+                    # ... If there is a code in the payload, then we will check if it matches this type
+                    if "code" in response_payload and response_payload["code"] in [
+                        "DEFAULT_ERROR_CODE"
                     ]:
                         # 2026-04-22
                         # NOTE: If we get this response on a POST or PUT, we need to raise an exception
@@ -492,7 +537,6 @@ class HarnessClient:
                 response = self._http_client.post(url, params=params, data=yaml.dump(request_body))
             else:
                 response = self._http_client.post(url, params=params, json=request_body)
-            # print(f"\t RESPONSE URL: {response.url}")
 
             # Check if we should retry based on status code
             if self._should_retry_status_code(response.status_code):
@@ -639,6 +683,7 @@ class HarnessClient:
             ApiError: For other non-2xx.
         """
 
+        request_body = None
         max_attempts = self._config.max_retries + 1
         for attempt in range(1, max_attempts + 1):
 
@@ -670,6 +715,8 @@ class HarnessClient:
                 return response_model(**response.json())
             return response.json()
         except json.decoder.JSONDecodeError:
+            if request_body is None:
+                return {}
             return request_body
         except Exception as err:
             status_code = response.status_code
@@ -746,14 +793,20 @@ class HarnessClient:
                 if isinstance(response, list):
                     items = response
                 elif isinstance(response, dict):
-                    data = response.get("data")
+                    data = response
+                    if "data" in response:
+                        data = response.get("data")
                     if isinstance(data, dict) and "content" in data:
                         # Nested structure: response.data.content
                         items = data.get("content", [])
                     elif isinstance(data, list):
                         # Direct data array
                         items = data
+                    elif isinstance(data, dict) and data:
+                        # Non-empty dict - treat as single item
+                        items = [data]
                     else:
+                        # Empty dict or None
                         items = []
                 else:
                     items = []
@@ -1068,6 +1121,33 @@ class HarnessClient:
 
             self._workspace_variables = WorkspaceVariablesApi(self)
         return self._workspace_variables
+
+    @property
+    def entities(self):
+        """Lazy-loaded EntityApi instance."""
+        if not hasattr(self, "_entities"):
+            from harness_python_sdk.idp_api.entities import EntityApi
+
+            self._entities = EntityApi(self)
+        return self._entities
+
+    @property
+    def catalog_custom_properties(self):
+        """Lazy-loaded CatalogCustomPropertyApi instance."""
+        if not hasattr(self, "_catalog_custom_properties"):
+            from harness_python_sdk.idp_api.catalog_custom_properties import CatalogCustomPropertyApi
+
+            self._catalog_custom_properties = CatalogCustomPropertyApi(self)
+        return self._catalog_custom_properties
+
+    @property
+    def scores(self):
+        """Lazy-loaded ScoreApi instance."""
+        if not hasattr(self, "_scores"):
+            from harness_python_sdk.idp_api.scores import ScoreApi
+
+            self._scores = ScoreApi(self)
+        return self._scores
 
     @property
     def variables(self):

@@ -12,9 +12,10 @@ from .ng_api import *
 from .pipeline_api import *
 from .template_api import *
 from .iacm_api import *
+from .idp_api import *
 from .scope import Scope
 
-__version__ = "0.1.0"
+__version__ = "0.9.0"
 
 __all__ = [
     "HarnessClient",
@@ -38,10 +39,15 @@ __all__ = [
     "InputSetsV0Api",
     "TriggersV0Api",
     "TemplatesV0Api",
+    "VariablesApi",
+    # Infrastructure as Code
     "WorkspacesApi",
     "WorkspaceApprovalsApi",
     "WorkspaceDefaultPipelineApi",
     "WorkspaceStatesApi",
     "WorkspaceVariablesApi",
-    "VariablesApi",
+    # Internal Developer Portal
+    "CatalogCustomPropertyApi",
+    "EntityApi",
+    "ScoreApi",
 ]

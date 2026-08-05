@@ -196,3 +196,161 @@ class TestInputSetsV0Api:
         )
         with pytest.raises(ApiError):
             api.create(body, scope=scope)
+
+    def test_get_forbidden(self, api, mock_client):
+        """Test get with 403 error."""
+        mock_client._get = MagicMock(side_effect=ApiError(403, "Forbidden", {}))
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        with pytest.raises(ApiError):
+            api.get("input1", "pipe1", scope=scope)
+
+    def test_update_not_found(self, api, mock_client):
+        """Test update with 404 error."""
+        mock_client._put = MagicMock(side_effect=ApiError(404, "Not found", {}))
+
+        body = InputSetV0CreateRequest(
+            identifier="input1",
+            name="Updated",
+            pipeline_identifier="pipe1",
+        )
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        with pytest.raises(ApiError):
+            api.update("nonexistent", body, scope=scope)
+
+    def test_update_forbidden(self, api, mock_client):
+        """Test update with 403 error."""
+        mock_client._put = MagicMock(side_effect=ApiError(403, "Forbidden", {}))
+
+        body = InputSetV0CreateRequest(
+            identifier="input1",
+            name="Updated",
+            pipeline_identifier="pipe1",
+        )
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        with pytest.raises(ApiError):
+            api.update("input1", body, scope=scope)
+
+    def test_delete_not_found(self, api, mock_client):
+        """Test delete with 404 error."""
+        mock_client._delete = MagicMock(side_effect=ApiError(404, "Not found", {}))
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        with pytest.raises(ApiError):
+            api.delete("nonexistent", "pipe1", scope=scope)
+
+    def test_list_with_search_term(self, api, mock_client):
+        """Test list with search term parameter."""
+        mock_client._paginate = MagicMock(return_value=iter([]))
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        results = list(api.list("pipe1", scope=scope, searchTerm="input"))
+
+        assert results == []
+        mock_client._paginate.assert_called_once()
+
+    def test_resolved_scope_property(self, api, mock_client):
+        """Test resolved_scope property setter."""
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        api.resolved_scope = scope
+
+        assert api.resolved_scope.account_id == "acc123"
+        assert api.resolved_scope.org == "org123"
+        assert api.resolved_scope.project == "proj123"
+        mock_client._resolve_scope.assert_called()
+
+    def test_default_params_property(self, api, mock_client):
+        """Test default_params property."""
+        mock_client._build_url = MagicMock(
+            return_value="accountIdentifier=acc123&orgIdentifier=org123&projectIdentifier=proj123&pipelineIdentifier=pipe1"
+        )
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        api.resolved_scope = scope
+
+        params = api.default_params
+        assert params is not None
+
+    def test_wrapped_body_wraps_inputSet(self, api, mock_client):
+        """Test _wrapped_body wraps input set properly."""
+        api._resolved_scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        body = InputSetV0CreateRequest(
+            identifier="input1",
+            name="Input Set",
+            pipeline_identifier="pipe1",
+        )
+        wrapped = api._wrapped_body(body)
+
+        assert "inputSet" in wrapped
+        assert wrapped["inputSet"]["identifier"] == "input1"
+
+    def test_get_empty_response(self, api, mock_client):
+        """Test get with empty response."""
+        mock_client._get = MagicMock(return_value=None)
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        result = api.get("input1", "pipe1", scope=scope)
+
+        assert result == {}
+
+    def test_create_conflict(self, api, mock_client):
+        """Test create with conflict (409) error."""
+        mock_client._post = MagicMock(side_effect=ApiError(409, "Conflict", {}))
+
+        body = InputSetV0CreateRequest(
+            identifier="input1",
+            name="Input Set",
+            pipeline_identifier="pipe1",
+        )
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        with pytest.raises(ApiError):
+            api.create(body, scope=scope)

@@ -10,6 +10,7 @@ from harness_python_sdk.models.authz import *
 from harness_python_sdk.models.pipeline_api import *
 from harness_python_sdk.models.template_api import *
 from harness_python_sdk.models.iacm_api import *
+from harness_python_sdk.models.idp_api import *
 
 parser = argparse.ArgumentParser(
     description="Execute Smoke Tests"

@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-08-05
+
+### Added
+
+- **Internal Developer Portal (IDP) API Support** — Three new APIs for IDP resource management
+  - **Entities API** (`src/harness_python_sdk/idp_api/entities.py`):
+    - Full CRUD operations: `get()`, `create()`, `update()`, `delete()`, `list()`
+    - Entity reference and lifecycle management
+    - Support for entity types and metadata
+  - **Catalog Custom Properties API** (`src/harness_python_sdk/idp_api/catalog_custom_properties.py`):
+    - Full CRUD operations: `get()`, `create()`, `update()`, `delete()`, `list()`
+    - Custom property definition and configuration
+    - Support for property schemas and validation
+  - **Scores API** (`src/harness_python_sdk/idp_api/scores.py`):
+    - Full CRUD operations: `get()`, `create()`, `update()`, `delete()`, `list()`
+    - Score calculation and management
+    - Support for scoring rules and aggregations
+  - **IDP Models** (`src/harness_python_sdk/models/idp_api/`):
+    - Complete model set for all IDP resources
+    - EntityResponse, CatalogCustomPropertyResponse, ScoreResponse with request models
+    - Full field documentation and type hints
+
+- **Enhanced HarnessClient Properties**:
+  - Added three new lazy-loaded resource properties: `entities`, `catalog_custom_properties`, `scores`
+  - All 24 API resource properties now available:
+    - Auth APIs: `roles`, `resource_groups`, `role_assignments`
+    - Platform APIs: `connectors`, `secrets`, `environments_v2`, `infrastructures`, `organizations`, `projects`, `services`, `user_groups`, `variables`
+    - Pipeline APIs: `pipelines_v0`, `input_sets_v0`, `triggers_v0`
+    - Template APIs: `templates`
+    - IACM APIs: `workspaces`, `workspace_states`, `workspace_approvals`, `workspace_default_pipelines`, `workspace_variables`
+    - IDP APIs: `entities`, `catalog_custom_properties`, `scores`
+
+### Testing
+
+- **Comprehensive Unit Test Suite** (85 new tests added):
+  - Entities API Tests (`tests/unit_tests/idp_api/test_entities.py`): 30 tests
+    - Entity CRUD operations and lifecycle management
+    - Entity reference handling and metadata
+  - Catalog Custom Properties API Tests (`tests/unit_tests/idp_api/test_catalog_custom_properties.py`): 27 tests
+    - Property definition and configuration operations
+    - Schema validation and metadata handling
+  - Scores API Tests (`tests/unit_tests/idp_api/test_scores.py`): 28 tests
+    - Score lifecycle management and calculations
+    - Aggregation and rule support
+
+- **Smoke Tests** (3 new smoke test modules):
+  - `tests/smoke/entities.py` — Entity management
+  - `tests/smoke/catalog_custom_properties.py` — Custom property operations
+  - `tests/smoke/scores.py` — Score operations
+
+---
+
 ## [0.8.0] - 2026-05-18
 
 ### Added
@@ -731,7 +783,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.6.0 | 7: P2 Domain APIs (Authorization & Services) | ✅ Complete | 2026-04-13 | 1,600+ | ≥85% |
 | 0.7.0 | 8: SDK v5 Architecture Restructure | ✅ Complete | 2026-04-14 | 2,700+ | ≥85% |
 | 0.8.0 | 9: Template, Variables & IACM Workspace APIs | ✅ Complete | 2026-05-18 | 3,000+ | ≥85% |
-| 1.0.0 | 10: Production Release | 🔲 Planned | TBD | TBD | TBD |
+| 0.9.0 | 10: Internal Developer Portal (IDP) APIs | ✅ Complete | 2026-08-05 | 3,085+ | ≥85% |
+| 1.0.0 | 11: Production Release | 🔲 Planned | TBD | TBD | TBD |
 
 ---
 

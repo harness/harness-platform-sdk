@@ -1048,15 +1048,16 @@ class TestBuildUrlOverrides:
         client.close()
 
     def test_build_url_pipeline_id_override(self):
-        """Test that pipeline_id kwarg overrides scope project (note: bug in original)."""
+        """Test that pipeline_id kwarg overrides scope pipeline."""
         client = HarnessClient(api_key="key", account_id="acc")
-        scope = Scope(account_id="acc-123", org="org-456", project="proj-789")
+        scope = Scope(account_id="acc-123", org="org-456", project="proj-789", pipeline="pipe-original")
         url = client._build_url(
-            "/v1/accounts/{account_id}/orgs/{org}/projects/{project}",
+            "/v1/accounts/{account_id}/orgs/{org}/projects/{project}/pipelines/{pipeline}",
             scope,
             pipeline_id="pipe-999",
         )
         assert "pipe-999" in url
+        assert "pipe-original" not in url
         client.close()
 
     def test_build_url_strips_none_values(self):

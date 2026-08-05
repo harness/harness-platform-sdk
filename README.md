@@ -17,8 +17,10 @@ client = HarnessClient(
 
 # Use context manager for automatic cleanup
 with client:
-    # Future: resource managers will be available here
-    pass
+    # Access resource APIs
+    orgs = client.organizations_api.list()
+    for org in orgs:
+        print(f"Organization: {org.identifier}")
 ```
 
 ## Installation
@@ -29,7 +31,7 @@ pip install harness-python-sdk
 
 ## Architecture
 
-### Core Modules (Branch 2)
+### Core Modules
 
 - **`HarnessClient`** — Main entry point for all API interactions
   - HTTP methods with built-in retry (429, 503)
@@ -55,6 +57,16 @@ pip install harness-python-sdk
 - **`PaginationStyle`** — Pagination type enum
   - `OFFSET` — pageIndex/pageSize pagination
   - `CURSOR` — nextPageToken pagination
+
+### Resource APIs
+
+The SDK includes typed API wrappers for Harness platform resources across multiple domains:
+
+- **Next-Gen (Core):** Organizations, Projects, Services, Connectors, Secrets, Infrastructures, Variables, User Groups, Environments
+- **Pipeline:** Pipelines (v0), Input Sets, Triggers, Templates
+- **Authorization:** Roles, Resource Groups, Role Assignments
+- **Infrastructure as Code:** Workspaces, Workspace Approvals, Workspace States, Workspace Variables, Workspace Default Pipelines
+- **Internal Developer Portal:** Entities, Catalog Custom Properties, Scores
 
 ### Design Principles
 
@@ -144,13 +156,13 @@ mise run tests
 mise run tests-cov
 
 # Run specific test file
-pytest tests/unit/test_client.py -v
+pytest tests/unit_tests/test_client.py -v
 ```
 
 ## Version
 
-- **Current:** 0.1.0 (Branch 2: Core Client)
-- **Stability:** Pre-alpha (APIs subject to change before v1.0.0)
+- **Current:** 0.9.0
+- **Stability:** Beta (APIs subject to change before v1.0.0)
 
 ## License
 
