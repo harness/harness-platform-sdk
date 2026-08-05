@@ -6,13 +6,13 @@ import pytest
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.exceptions import ApiError
+from harness_python_sdk.iacm_api.workspace_approvals import WorkspaceApprovalsApi
 from harness_python_sdk.models.iacm_api.workspace_approvals import (
     WorkspaceApprovalCreateRequest,
     WorkspaceApprovalListResponse,
     WorkspaceApprovalResponse,
     WorkspaceApprovalStatus,
 )
-from harness_python_sdk.iacm_api.workspace_approvals import WorkspaceApprovalsApi
 from harness_python_sdk.scope import Scope
 
 
@@ -23,9 +23,7 @@ class TestWorkspaceApprovalsApi:
     def mock_client(self):
         """Create mock HarnessClient."""
         client = MagicMock(spec=HarnessClient)
-        client._default_scope = MagicMock(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        client._default_scope = MagicMock(account_id="acc123", org="org123", project="proj123")
         client._resolve_scope = MagicMock(
             return_value=Scope(
                 account_id="acc123",
@@ -45,8 +43,7 @@ class TestWorkspaceApprovalsApi:
 
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         client._unwrap_response = MagicMock(
-            side_effect=lambda key_type=None, raw_data=None, scope=None: raw_data
-            or {}
+            side_effect=lambda key_type=None, raw_data=None, scope=None: raw_data or {}
         )
         client._display_payload = MagicMock()
         return client

@@ -13,8 +13,8 @@ import yaml
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.pipeline_api.triggers_v0 import (
     TriggerV0CreateRequest,
-    TriggerV0Response,
     TriggerV0ListResponse,
+    TriggerV0Response,
 )
 from harness_python_sdk.pagination import PaginationStyle
 from harness_python_sdk.scope import Scope
@@ -50,11 +50,11 @@ class TriggersV0Api:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -64,21 +64,27 @@ class TriggersV0Api:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}",
-            "targetIdentifier={pipeline}",
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                    "targetIdentifier={pipeline}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -114,8 +120,8 @@ class TriggersV0Api:
         output_body = {
             "identifier": body["identifier"],
             "name": body["name"],
-            "description": body.get("description",""),
-            "tags": body.get("tags",{}),
+            "description": body.get("description", ""),
+            "tags": body.get("tags", {}),
             "accountIdentifier": body["accountIdentifier"],
             "orgIdentifier": body["orgIdentifier"],
             "projectIdentifier": body["projectIdentifier"],
@@ -153,7 +159,9 @@ class TriggersV0Api:
             del response_obj["inputYaml"]
         return TriggerV0Response(**response_obj)
 
-    def list(self, pipeline_identifier: str, scope: Scope | None = None, **kwargs) -> Iterator[TriggerV0Response]:
+    def list(
+        self, pipeline_identifier: str, scope: Scope | None = None, **kwargs
+    ) -> Iterator[TriggerV0Response]:
         """List triggers in the specified organization.
 
         Args:
@@ -189,7 +197,9 @@ class TriggersV0Api:
 
         return iter([self._unwrapped_response(elem) for elem in outputs])
 
-    def get(self, identifier: str, pipeline_identifier: str, scope: Scope | None = None) -> TriggerV0Response:
+    def get(
+        self, identifier: str, pipeline_identifier: str, scope: Scope | None = None
+    ) -> TriggerV0Response:
         """Get a single trigger by ID.
 
         Args:
@@ -215,13 +225,10 @@ class TriggersV0Api:
             identifier=identifier,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
 
         if not response:
             return {}
-
 
         unwrapped = self._client._unwrap_response(
             key_type=None, raw_data=response, scope=self.resolved_scope
@@ -229,9 +236,7 @@ class TriggersV0Api:
 
         return self._unwrapped_response(unwrapped_response=unwrapped)
 
-    def create(
-        self, body: TriggerV0CreateRequest, scope: Scope | None = None
-    ) -> TriggerV0Response:
+    def create(self, body: TriggerV0CreateRequest, scope: Scope | None = None) -> TriggerV0Response:
         """Create a new trigger.
 
         Args:

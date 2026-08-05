@@ -6,9 +6,9 @@ Provides CRUD operations for environments_v2 resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.ng_api.environments_v2 import (
@@ -49,11 +49,11 @@ class EnvironmentsV2Api:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -63,20 +63,26 @@ class EnvironmentsV2Api:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -191,13 +197,13 @@ class EnvironmentsV2Api:
             identifier=identifier,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
 
-        unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope
+        )
         return EnvironmentV2Response(**unwrapped)
 
     def create(
@@ -253,9 +259,7 @@ class EnvironmentsV2Api:
         """
         self.resolved_scope = scope
         url = self._client._build_url(
-            "{root_api_path}",
-            self.resolved_scope,
-            root_api_path=self.root_api_path
+            "{root_api_path}", self.resolved_scope, root_api_path=self.root_api_path
         )
 
         response = self._client._put(
@@ -265,9 +269,7 @@ class EnvironmentsV2Api:
         unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response)
         return EnvironmentV2Response(**unwrapped)
 
-    def delete(
-        self, identifier: str, scope: Scope | None = None
-    ) -> dict | None:
+    def delete(self, identifier: str, scope: Scope | None = None) -> dict | None:
         """Delete a environments_v2.
 
         Args:

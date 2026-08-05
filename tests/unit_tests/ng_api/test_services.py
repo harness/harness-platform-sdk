@@ -24,6 +24,7 @@ class TestServicesApi:
         client._resolve_scope = MagicMock(
             return_value=Scope(account_id="acc123", org="org123", project="proj123")
         )
+
         def build_url_side_effect(*args, **kwargs):
             if kwargs.get("is_params"):
                 return {
@@ -32,6 +33,7 @@ class TestServicesApi:
                     "projectIdentifier": "proj123",
                 }
             return "/ng/api/services"
+
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         return client
 
@@ -54,7 +56,7 @@ class TestServicesApi:
             "tags": {"tier": "backend"},
             "createdAt": 1234567890000,
             "lastModifiedAt": 1234567890000,
-            "yaml": "service:\n  demo: test\n"
+            "yaml": "service:\n  demo: test\n",
         }
 
     def test_get_success(self, api, mock_client, sample_service_response):
@@ -110,9 +112,7 @@ class TestServicesApi:
 
     def test_list_success(self, api, mock_client, sample_service_response):
         """Test list operation."""
-        mock_client._paginate = MagicMock(
-            return_value=[sample_service_response]
-        )
+        mock_client._paginate = MagicMock(return_value=[sample_service_response])
 
         scope = Scope(account_id="acc123", org="org123", project="proj123")
         results = list(api.list(scope=scope))
@@ -162,9 +162,7 @@ class TestServicesApi:
 
     def test_wrapped_body_structure(self, api):
         """Test _wrapped_body structure."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = ServiceCreateRequest(
             identifier="backend_service",
             name="Updated Backend",

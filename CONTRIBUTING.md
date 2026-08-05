@@ -1,7 +1,38 @@
-# Contributing to this Project
-Harness values the input and feedback from our community of users.  This repository is open to fork and update via Pull Requests
+# Contributing to the Harness Python SDK
 
-## Developer's Guides
+Harness values the input and feedback from our community of users. This repository is open to fork and update via Pull Requests.
+
+## Development Setup
+
+The Harness Python SDK is built with Python 3.11+ using Pydantic v2 and httpx. Follow the development workflow documented in the SDK.
+
+## Directory Structure
+
+- **`src/harness_python_sdk/`** — Main SDK package
+  - `client.py` — HarnessClient entry point
+  - `*_api/` — Domain-organized API managers (ng_api, authz, pipeline_api, iacm_api, idp_api, template_api)
+  - `models/` — Pydantic data models for requests/responses
+  
+- **`tests/`** — Test suite
+  - `unit_tests/` — Unit tests for all APIs and models
+  - `smoke/` — Smoke tests for production verification
+  
+- **`scripts/`** — Development tools
+  - `archive/` — Legacy phase 1-3 scripts (preserved for reference, not in active use)
+  
+- **`docs/`** — Documentation
+  - `p2_*.md` — Current P2 phase documentation (active)
+  - `archive/` — Historical P1 phase documentation (reference only)
+  
+- **`datagen_staging/`** — Temporary directory for legacy model generation pipeline artifacts
+
+## Contributor's Guides
+
+### Adding a New Resource API
+
+See `.ai/specs/idp_resources_generation.md` for the pattern used to implement new resource APIs.
+
+### Developer's Guides (Terraform)
 We have included step-by-step guides to adding new templates to the repository including a full scaffold for each new template.
 
 [Adding new Templates to the Library](../scaffolds/README.md)

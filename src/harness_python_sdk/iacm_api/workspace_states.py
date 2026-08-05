@@ -6,9 +6,9 @@ Provides CRUD operations for workspacestates resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.iacm_api.workspace_states import (
@@ -49,11 +49,11 @@ class WorkspaceStatesApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -63,20 +63,26 @@ class WorkspaceStatesApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -90,7 +96,9 @@ class WorkspaceStatesApi:
         # Call out to configure the default params
         self.default_params = self._resolved_scope
 
-    def _wrapped_body(self, body: WorkspaceStateCreateRequest, is_yaml: bool | None = False) -> dict:
+    def _wrapped_body(
+        self, body: WorkspaceStateCreateRequest, is_yaml: bool | None = False
+    ) -> dict:
         """Resolve and wrap the body payload to additionally inject scope details into the payload"""
 
         body = body.model_dump(exclude_none=True)
@@ -105,7 +113,9 @@ class WorkspaceStatesApi:
 
         return response
 
-    def _unwrapped_response(self, identifier: dict, unwrapped_response: dict) -> WorkspaceStateResponse:
+    def _unwrapped_response(
+        self, identifier: dict, unwrapped_response: dict
+    ) -> WorkspaceStateResponse:
         """Resolve and wrap the body payload to additionally inject scope details into the payload"""
         # 2026-04-20
         # NOTE: This is a workaround because the payload doesn't return a completely standardized
@@ -134,9 +144,7 @@ class WorkspaceStatesApi:
             root_api_path=self.root_api_path,
             identifier=identifier,
         )
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
 
         if not response:
             return {}

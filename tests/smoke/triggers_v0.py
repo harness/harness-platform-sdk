@@ -25,24 +25,18 @@ trigger_request = TriggerV0CreateRequest(
                     "connectorRef": "account.github",
                     "headerConditions": [],
                     "payloadConditions": [],
-                    "repoName": "tmp"
+                    "repoName": "tmp",
                 },
-                "type": "Create"
+                "type": "Create",
             },
-            "type": "Github"
+            "type": "Github",
         },
-        "type": "Webhook"
+        "type": "Webhook",
     },
     inputs={
         "pipeline": {
             "identifier": "simple_test",
-            "variables": [
-                {
-                    "name": "test",
-                    "type": "String",
-                    "value": "valueME"
-                }
-            ]
+            "variables": [{"name": "test", "type": "String", "value": "valueME"}],
         }
     },
 )

@@ -6,14 +6,14 @@ import pytest
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.models.iacm_api.workspace_default_pipelines import (
-    WorkspaceDefaultPipelineCreateRequest,
-    WorkspaceDefaultPipelineResponse,
-    WorkspaceDefaultPipelineOperation,
-    WorkspaceDefaultPipelineProvisioner,
-)
 from harness_python_sdk.iacm_api.workspace_default_pipelines import (
     WorkspaceDefaultPipelinesApi,
+)
+from harness_python_sdk.models.iacm_api.workspace_default_pipelines import (
+    WorkspaceDefaultPipelineCreateRequest,
+    WorkspaceDefaultPipelineOperation,
+    WorkspaceDefaultPipelineProvisioner,
+    WorkspaceDefaultPipelineResponse,
 )
 from harness_python_sdk.scope import Scope
 
@@ -25,9 +25,7 @@ class TestWorkspaceDefaultPipelinesApi:
     def mock_client(self):
         """Create mock HarnessClient."""
         client = MagicMock(spec=HarnessClient)
-        client._default_scope = MagicMock(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        client._default_scope = MagicMock(account_id="acc123", org="org123", project="proj123")
         client._resolve_scope = MagicMock(
             return_value=Scope(
                 account_id="acc123",
@@ -74,7 +72,7 @@ class TestWorkspaceDefaultPipelinesApi:
                 "workspace": "ws1",
                 "operation": "apply",
                 "updated": 1609459200000,
-            }
+            },
         ]
         mock_client._get = MagicMock(return_value=response_data)
 

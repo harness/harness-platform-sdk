@@ -21,13 +21,13 @@ class TestOrganizationsApi:
     def mock_client(self):
         """Create mock HarnessClient."""
         client = MagicMock(spec=HarnessClient)
-        client._resolve_scope = MagicMock(
-            return_value=Scope(account_id="acc123")
-        )
+        client._resolve_scope = MagicMock(return_value=Scope(account_id="acc123"))
+
         def build_url_side_effect(*args, **kwargs):
             if kwargs.get("is_params"):
                 return {"accountIdentifier": "acc123"}
             return "/ng/api/organizations"
+
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         return client
 

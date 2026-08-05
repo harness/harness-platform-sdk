@@ -6,9 +6,9 @@ Provides CRUD operations for infrastructures resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.ng_api.infrastructures import (
@@ -49,11 +49,11 @@ class InfrastructuresApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -63,20 +63,26 @@ class InfrastructuresApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}",
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -90,7 +96,9 @@ class InfrastructuresApi:
         # Call out to configure the default params
         self.default_params = self._resolved_scope
 
-    def _wrapped_body(self, body: InfrastructureCreateRequest, is_yaml: bool | None = False) -> dict:
+    def _wrapped_body(
+        self, body: InfrastructureCreateRequest, is_yaml: bool | None = False
+    ) -> dict:
         """Resolve and wrap the body payload to additionally inject scope details into the payload"""
 
         body = body.model_dump(exclude_none=True)
@@ -109,8 +117,8 @@ class InfrastructuresApi:
         output_body = {
             "identifier": body["identifier"],
             "name": body["name"],
-            "description": body.get("description",""),
-            "tags": body.get("tags",{}),
+            "description": body.get("description", ""),
+            "tags": body.get("tags", {}),
             "environmentRef": body["environment_identifier"],
             "orgIdentifier": body["orgIdentifier"],
             "projectIdentifier": body["projectIdentifier"],
@@ -125,12 +133,14 @@ class InfrastructuresApi:
         if "spec" in body:
             output_yaml_body["spec"] = body["spec"]
         if "allow_simultaneous_deployments" in body:
-            output_yaml_body["allowSimultaneousDeployments"] = body["allow_simultaneous_deployments"]
+            output_yaml_body["allowSimultaneousDeployments"] = body[
+                "allow_simultaneous_deployments"
+            ]
 
         if self.wrap_key:
-            output_body["yaml"]= yaml.dump({self.wrap_key: output_yaml_body})
+            output_body["yaml"] = yaml.dump({self.wrap_key: output_yaml_body})
         else:
-            output_body["yaml"]= yaml.dump(output_yaml_body)
+            output_body["yaml"] = yaml.dump(output_yaml_body)
         ##########
 
         return output_body
@@ -148,11 +158,15 @@ class InfrastructuresApi:
                 response_obj["type"] = infrastructure_definition["type"]
                 response_obj["deployment_type"] = infrastructure_definition["deploymentType"]
                 response_obj["spec"] = infrastructure_definition["spec"]
-                response_obj["allowSimultaneousDeployments"] = infrastructure_definition["allowSimultaneousDeployments"]
+                response_obj["allowSimultaneousDeployments"] = infrastructure_definition[
+                    "allowSimultaneousDeployments"
+                ]
             del response_obj["yaml"]
         return InfrastructureResponse(**response_obj)
 
-    def list(self, environment_identifier: str, scope: Scope | None = None, **kwargs) -> Iterator[InfrastructureResponse]:
+    def list(
+        self, environment_identifier: str, scope: Scope | None = None, **kwargs
+    ) -> Iterator[InfrastructureResponse]:
         """List infrastructuress in the specified organization.
 
         Args:
@@ -167,7 +181,7 @@ class InfrastructuresApi:
         """
         self.resolved_scope = scope
         kwargs.update(self.default_params)
-        kwargs['environmentIdentifier'] = environment_identifier
+        kwargs["environmentIdentifier"] = environment_identifier
 
         url = self._client._build_url(
             "{root_api_path}",
@@ -186,7 +200,9 @@ class InfrastructuresApi:
 
         return iter([self._unwrapped_response(elem) for elem in outputs])
 
-    def get(self, identifier: str, environment_identifier: str, scope: Scope | None = None) -> InfrastructureResponse:
+    def get(
+        self, identifier: str, environment_identifier: str, scope: Scope | None = None
+    ) -> InfrastructureResponse:
         """Get a single infrastructures by ID.
 
         Args:
@@ -207,15 +223,15 @@ class InfrastructuresApi:
             root_api_path=self.root_api_path,
             identifier=identifier,
         )
-        self.default_params['environmentIdentifier'] = environment_identifier
+        self.default_params["environmentIdentifier"] = environment_identifier
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
 
-        unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope
+        )
         return self._unwrapped_response(unwrapped)
 
     def create(
@@ -245,7 +261,7 @@ class InfrastructuresApi:
         wrapped_body = self._wrapped_body(body=body)
         response = self._client._post(
             url,
-            params={"accountIdentifier":self.default_params["accountIdentifier"]},
+            params={"accountIdentifier": self.default_params["accountIdentifier"]},
             body=wrapped_body,
             body_is_yaml=False,
             response_model=None,
@@ -286,15 +302,13 @@ class InfrastructuresApi:
         """
         self.resolved_scope = scope
         url = self._client._build_url(
-            "{root_api_path}",
-            self.resolved_scope,
-            root_api_path=self.root_api_path
+            "{root_api_path}", self.resolved_scope, root_api_path=self.root_api_path
         )
 
         wrapped_body = self._wrapped_body(body=body)
         response = self._client._put(
             url,
-            params={"accountIdentifier":self.default_params["accountIdentifier"]},
+            params={"accountIdentifier": self.default_params["accountIdentifier"]},
             body=wrapped_body,
             body_is_yaml=False,
             response_model=None,
@@ -336,5 +350,5 @@ class InfrastructuresApi:
             root_api_path=self.root_api_path,
             identifier=identifier,
         )
-        self.default_params['environmentIdentifier'] = environment_identifier
+        self.default_params["environmentIdentifier"] = environment_identifier
         return self._client._delete(url, params=self.default_params, response_model=None)

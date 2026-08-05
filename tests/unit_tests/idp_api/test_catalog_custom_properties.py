@@ -6,12 +6,12 @@ import pytest
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.exceptions import ApiError
+from harness_python_sdk.idp_api.catalog_custom_properties import CatalogCustomPropertyApi
 from harness_python_sdk.models.idp_api.catalog_custom_properties import (
     CatalogCustomPropertyCreateRequest,
     CatalogCustomPropertyResponse,
     CatalogCustomPropertyResponseByEntity,
 )
-from harness_python_sdk.idp_api.catalog_custom_properties import CatalogCustomPropertyApi
 from harness_python_sdk.scope import Scope
 
 
@@ -269,9 +269,7 @@ class TestCatalogCustomPropertyApi:
         mock_client._get = MagicMock(return_value=response_data.copy())
 
         scope = Scope(account_id="acc123", org="org123", project="proj123")
-        results = list(
-            api.get_by_property("metadata.hsf.is_drifted", scope=scope)
-        )
+        results = list(api.get_by_property("metadata.hsf.is_drifted", scope=scope))
 
         assert len(results) >= 1
         if len(results) > 0:
@@ -304,9 +302,7 @@ class TestCatalogCustomPropertyApi:
         mock_client._get = MagicMock(return_value=response_data.copy())
 
         scope = Scope(account_id="acc123", org="org123", project="proj123")
-        results = list(
-            api.get_by_property("metadata.hsf.is_drifted", scope=scope)
-        )
+        results = list(api.get_by_property("metadata.hsf.is_drifted", scope=scope))
 
         assert len(results) >= 2
         if len(results) >= 2:
@@ -327,15 +323,11 @@ class TestCatalogCustomPropertyApi:
         mock_client._get = MagicMock(return_value=response_data)
 
         scope = Scope(account_id="acc123", org="org123", project="proj123")
-        results = list(
-            api.get_by_property("metadata.hsf.is_drifted", scope=scope)
-        )
+        results = list(api.get_by_property("metadata.hsf.is_drifted", scope=scope))
 
         assert len(results) == 0
 
-    def test_get_by_entity_success(
-        self, api, mock_client, sample_property_by_entity_response
-    ):
+    def test_get_by_entity_success(self, api, mock_client, sample_property_by_entity_response):
         """Test successful get_by_entity operation."""
         mock_client._get = MagicMock(return_value=sample_property_by_entity_response)
 
@@ -384,9 +376,7 @@ class TestCatalogCustomPropertyApi:
 
     def test_wrapped_body_injects_scope_identifiers(self, api, mock_client):
         """Test _wrapped_body injects scope identifiers."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = CatalogCustomPropertyCreateRequest(
             identifier="entity123",
             kind="resource",

@@ -6,16 +6,16 @@ Provides CRUD operations for workspacevariabless resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.iacm_api.workspace_variables import (
-    WorkspaceVariableCreateRequest,
-    WorkspaceVariableResponse,
-    WorkspaceVariableKind,
     WorkspaceValueType,
+    WorkspaceVariableCreateRequest,
+    WorkspaceVariableKind,
+    WorkspaceVariableResponse,
 )
 from harness_python_sdk.pagination import PaginationStyle
 from harness_python_sdk.scope import Scope
@@ -51,11 +51,11 @@ class WorkspaceVariablesApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -65,20 +65,26 @@ class WorkspaceVariablesApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -92,7 +98,9 @@ class WorkspaceVariablesApi:
         # Call out to configure the default params
         self.default_params = self._resolved_scope
 
-    def _wrapped_body(self, body: WorkspaceVariableCreateRequest, is_yaml: bool | None = False) -> dict:
+    def _wrapped_body(
+        self, body: WorkspaceVariableCreateRequest, is_yaml: bool | None = False
+    ) -> dict:
         """Resolve and wrap the body payload to additionally inject scope details into the payload"""
 
         body = body.model_dump(exclude_none=True)
@@ -130,10 +138,12 @@ class WorkspaceVariablesApi:
         for key_rm, key_rp in ignored_keys.items():
             if key_rm in response_obj:
                 response_obj[key_rp] = response_obj[key_rm]
-                response_obj.pop(key_rm,None)
+                response_obj.pop(key_rm, None)
         return WorkspaceVariableResponse(**response_obj)
 
-    def list(self, workspace_identifier: str, scope: Scope | None = None, **kwargs) -> Iterator[WorkspaceVariableResponse]:
+    def list(
+        self, workspace_identifier: str, scope: Scope | None = None, **kwargs
+    ) -> Iterator[WorkspaceVariableResponse]:
         """List workspacevariablesss in the specified organization.
 
         Args:
@@ -165,7 +175,13 @@ class WorkspaceVariablesApi:
         )
         return iter([self._unwrapped_response(elem) for elem in outputs])
 
-    def get(self, identifier: str, workspace_identifier: str, kind: WorkspaceVariableKind, scope: Scope | None = None) -> WorkspaceVariableResponse:
+    def get(
+        self,
+        identifier: str,
+        workspace_identifier: str,
+        kind: WorkspaceVariableKind,
+        scope: Scope | None = None,
+    ) -> WorkspaceVariableResponse:
         """Get a single workspacevariabless by ID.
 
         Args:
@@ -189,13 +205,13 @@ class WorkspaceVariablesApi:
             kind=kind.value,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
 
-        unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope
+        )
         return WorkspaceVariableResponse(**unwrapped)
 
     def create(
@@ -268,7 +284,11 @@ class WorkspaceVariablesApi:
         return WorkspaceVariableResponse(**body.model_dump(exclude_none=True))
 
     def delete(
-        self, identifier: str, workspace_identifier: str, kind: WorkspaceVariableKind, scope: Scope | None = None
+        self,
+        identifier: str,
+        workspace_identifier: str,
+        kind: WorkspaceVariableKind,
+        scope: Scope | None = None,
     ) -> dict | None:
         """Delete a workspacevariabless.
 

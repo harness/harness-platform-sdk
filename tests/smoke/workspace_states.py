@@ -20,7 +20,7 @@ workspace_states_request = WorkspaceStateCreateRequest(
             "mode": "data",
             "type": "harness_platform_organization",
             "name": "selected",
-            "provider": "provider[\"registry.opentofu.org/harness/harness\"]",
+            "provider": 'provider["registry.opentofu.org/harness/harness"]',
             "instances": [
                 {
                     "schema_version": 0,
@@ -32,15 +32,14 @@ workspace_states_request = WorkspaceStateCreateRequest(
                         "tags": [
                             "created_by:Terraform",
                             "harnessSolutionsFactory:true",
-                            "managedResource:true"
-                        ]
+                            "managedResource:true",
+                        ],
                     },
-                    "sensitive_attributes": []
+                    "sensitive_attributes": [],
                 }
-            ]
+            ],
         },
     ],
-
 )
 
 workspace_states = client.workspace_states.get(identifier=workspace_states_request.identifier)
@@ -48,11 +47,15 @@ workspace_states = client.workspace_states.get(identifier=workspace_states_reque
 if workspace_states:
     print(f"\t -> Get : { workspace_states.identifier}")
     workspace_states_request.description = "UPDATE from Existing"
-    workspace_states = client.workspace_states.create(identifier=workspace_states_request.identifier, body=workspace_states_request)
+    workspace_states = client.workspace_states.create(
+        identifier=workspace_states_request.identifier, body=workspace_states_request
+    )
     print(f"\t -> Updated : { workspace_states.identifier}")
 else:
     workspace_states_request.description = "CREATE from New"
-    workspace_states = client.workspace_states.create(identifier=workspace_states_request.identifier, body=workspace_states_request)
+    workspace_states = client.workspace_states.create(
+        identifier=workspace_states_request.identifier, body=workspace_states_request
+    )
     print(f"\t -> Created : { workspace_states.identifier}")
 # print(f"WorkspaceStates -> List")
 # for list_workspace_states in [

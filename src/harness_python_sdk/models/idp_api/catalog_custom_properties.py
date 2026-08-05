@@ -7,6 +7,7 @@ Defines request/response models for catalogcustomproperties CRUD operations.
 from __future__ import annotations
 
 from typing import Any
+
 from pydantic import Field
 
 from harness_python_sdk.base_model import HarnessModel
@@ -29,6 +30,7 @@ class CatalogCustomPropertyResponse(HarnessModel):
     mode: str
     catalog_property: str
     value: Any = Field(default=None, description="Can be anything")
+
 
 class CatalogCustomPropertyResponseByEntity(HarnessModel):
     """CatalogCustomProperty resource response model.

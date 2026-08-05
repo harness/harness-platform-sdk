@@ -24,6 +24,7 @@ class TestConnectorsApi:
         client._resolve_scope = MagicMock(
             return_value=Scope(account_id="acc123", org="org123", project="proj123")
         )
+
         def build_url_side_effect(*args, **kwargs):
             if kwargs.get("is_params"):
                 return {
@@ -32,6 +33,7 @@ class TestConnectorsApi:
                     "projectIdentifier": "proj123",
                 }
             return "/ng/api/connectors"
+
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         return client
 
@@ -155,9 +157,7 @@ class TestConnectorsApi:
 
     def test_wrapped_body_wraps_connector(self, api):
         """Test _wrapped_body wraps request correctly."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = ConnectorCreateRequest(identifier="conn1", name="Test", type="Github", spec={})
         wrapped = api._wrapped_body(body)
 

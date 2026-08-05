@@ -30,6 +30,7 @@ class TestInputSetsV0Api:
                 pipeline="pipe1",
             )
         )
+
         def build_url_side_effect(*args, **kwargs):
             if kwargs.get("is_params"):
                 return {
@@ -39,6 +40,7 @@ class TestInputSetsV0Api:
                     "pipelineIdentifier": "pipe1",
                 }
             return "/pipeline/api/inputSets"
+
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         return client
 
@@ -50,12 +52,14 @@ class TestInputSetsV0Api:
     def test_get_success(self, api, mock_client):
         """Test successful get operation."""
         response_data = {"identifier": "input1", "name": "Input Set"}
-        response_data.update({
-                    "accountIdentifier": "acc123",
-                    "orgIdentifier": "org123",
-                    "projectIdentifier": "proj123",
-                    "pipelineIdentifier": "pipe1",
-                })
+        response_data.update(
+            {
+                "accountIdentifier": "acc123",
+                "orgIdentifier": "org123",
+                "projectIdentifier": "proj123",
+                "pipelineIdentifier": "pipe1",
+            }
+        )
         mock_client._get = MagicMock(return_value=response_data)
         mock_client._unwrap_response = MagicMock(return_value=response_data)
 
@@ -185,9 +189,7 @@ class TestInputSetsV0Api:
         """Test create with validation error."""
         mock_client._post = MagicMock(side_effect=ApiError(400, "Bad request", {}))
 
-        body = InputSetV0CreateRequest(
-            identifier="i1", name="I", pipeline_identifier="pipe1"
-        )
+        body = InputSetV0CreateRequest(identifier="i1", name="I", pipeline_identifier="pipe1")
         scope = Scope(
             account_id="acc123",
             org="org123",

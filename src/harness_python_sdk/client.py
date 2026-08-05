@@ -199,7 +199,9 @@ class HarnessClient:
             project: New default project.
         """
         if project and not org:
-            raise Exception(f"Error: Unable to create 'default_scope' for 'project' {project} as no 'org' provided.")
+            raise Exception(
+                f"Error: Unable to create 'default_scope' for 'project' {project} as no 'org' provided."
+            )
         self._default_scope = Scope(
             account_id=self._config.account_id,
             org=org,
@@ -277,18 +279,11 @@ class HarnessClient:
 
         output = "account"
         if scope.org and scope.project:
-            output = ".".join([
-                output,
-                scope.org,
-                scope.project
-            ])
+            output = ".".join([output, scope.org, scope.project])
         elif scope.org:
-            output = ".".join([
-                output,
-                scope.org
-            ])
+            output = ".".join([output, scope.org])
 
-        return output#.lower()
+        return output  # .lower()
 
     def _build_url(
         self, path_template: str, scope: Scope, is_params: bool | None = None, **kwargs
@@ -371,7 +366,7 @@ class HarnessClient:
                     ]:
                         # 2026-04-22
                         # NOTE: If we get this response on a POST or PUT, we need to raise an exception
-                        if response.request.method in ["POST","PUT","PATCH"]:
+                        if response.request.method in ["POST", "PUT", "PATCH"]:
                             raise ApiError(status_code, body, headers, response_payload)
                         return False
                 if "level" in response_payload and response_payload["level"] in ["ERROR"]:
@@ -381,7 +376,7 @@ class HarnessClient:
                     ]:
                         # 2026-04-22
                         # NOTE: If we get this response on a POST or PUT, we need to raise an exception
-                        if response.request.method in ["POST","PUT","PATCH"]:
+                        if response.request.method in ["POST", "PUT", "PATCH"]:
                             raise ApiError(status_code, body, headers, response_payload)
                         return False
             except json.decoder.JSONDecodeError:
@@ -1099,7 +1094,9 @@ class HarnessClient:
     def workspace_default_pipelines(self):
         """Lazy-loaded WorkspaceDefaultPipelinesApi instance."""
         if not hasattr(self, "_workspace_default_pipelines"):
-            from harness_python_sdk.iacm_api.workspace_default_pipelines import WorkspaceDefaultPipelinesApi
+            from harness_python_sdk.iacm_api.workspace_default_pipelines import (
+                WorkspaceDefaultPipelinesApi,
+            )
 
             self._workspace_default_pipelines = WorkspaceDefaultPipelinesApi(self)
         return self._workspace_default_pipelines
@@ -1135,7 +1132,9 @@ class HarnessClient:
     def catalog_custom_properties(self):
         """Lazy-loaded CatalogCustomPropertyApi instance."""
         if not hasattr(self, "_catalog_custom_properties"):
-            from harness_python_sdk.idp_api.catalog_custom_properties import CatalogCustomPropertyApi
+            from harness_python_sdk.idp_api.catalog_custom_properties import (
+                CatalogCustomPropertyApi,
+            )
 
             self._catalog_custom_properties = CatalogCustomPropertyApi(self)
         return self._catalog_custom_properties

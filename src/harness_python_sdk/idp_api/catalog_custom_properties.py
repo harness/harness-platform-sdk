@@ -6,9 +6,9 @@ Provides CRUD operations for catalog_custom_properties resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.idp_api.catalog_custom_properties import (
@@ -50,11 +50,11 @@ class CatalogCustomPropertyApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -64,20 +64,26 @@ class CatalogCustomPropertyApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -94,9 +100,11 @@ class CatalogCustomPropertyApi:
 
     def generate_entity_ref(self, identifier: str, kind: str, **kwargs):
         """Process payload to create Entity Reference ID"""
-        return "/".join([":".join([kind,self.idp_scope]), identifier])
+        return "/".join([":".join([kind, self.idp_scope]), identifier])
 
-    def _wrapped_body(self, body: CatalogCustomPropertyCreateRequest, is_yaml: bool | None = False) -> dict:
+    def _wrapped_body(
+        self, body: CatalogCustomPropertyCreateRequest, is_yaml: bool | None = False
+    ) -> dict:
         """Resolve and wrap the body payload to additionally inject scope details into the payload"""
 
         body = body.model_dump(exclude_none=True)
@@ -145,7 +153,9 @@ class CatalogCustomPropertyApi:
         #     del response_obj["yaml"]
         return CatalogCustomPropertyResponse(**response_obj)
 
-    def _unwrapped_aggregated_response(self, unwrapped_response: dict) -> CatalogCustomPropertyResponse:
+    def _unwrapped_aggregated_response(
+        self, unwrapped_response: dict
+    ) -> CatalogCustomPropertyResponse:
         """Resolve and wrap the body payload to additionally inject scope details into the payload"""
         # 2026-07-07
         # NOTE: This is a workaround because the payload doesn't return a completely standardized
@@ -162,7 +172,9 @@ class CatalogCustomPropertyApi:
                 outputs.append(CatalogCustomPropertyResponse(**output_obj))
         return outputs
 
-    def get_by_property(self, catalog_property: str, scope: Scope | None = None, **kwargs) -> Iterator[CatalogCustomPropertyResponse]:
+    def get_by_property(
+        self, catalog_property: str, scope: Scope | None = None, **kwargs
+    ) -> Iterator[CatalogCustomPropertyResponse]:
         """Get entities by custom_property in the specified organization.
 
         Args:
@@ -186,20 +198,20 @@ class CatalogCustomPropertyApi:
             root_api_path=self.root_api_path,
         )
         # return self._client._paginate(
-        response = self._client._get(
-            url, params=kwargs, response_model=None
-        )
+        response = self._client._get(url, params=kwargs, response_model=None)
         return_wrapper = {
             "account_identifier": self.resolved_scope.account_id,
             "org_identifier": self.resolved_scope.org,
             "project_identifier": self.resolved_scope.project,
             "catalog_property": catalog_property,
         }
-        response = response|return_wrapper
+        response = response | return_wrapper
 
         return iter([elem for elem in self._unwrapped_aggregated_response(response)])
 
-    def get_by_entity(self, identifier: str, kind: str, scope: Scope | None = None, **kwargs) -> CatalogCustomPropertyResponseByEntity:
+    def get_by_entity(
+        self, identifier: str, kind: str, scope: Scope | None = None, **kwargs
+    ) -> CatalogCustomPropertyResponseByEntity:
         """Get entities by custom_property in the specified organization.
 
         Args:
@@ -215,12 +227,7 @@ class CatalogCustomPropertyApi:
         """
         self.resolved_scope = scope
         kwargs.update(self.default_params)
-        kwargs.update({"entity_ref": "/".join([
-            ":".join([
-                kind,self.idp_scope
-            ]),
-            identifier
-        ])})
+        kwargs.update({"entity_ref": "/".join([":".join([kind, self.idp_scope]), identifier])})
 
         url = self._client._build_url(
             "{root_api_path}/entity",
@@ -229,18 +236,16 @@ class CatalogCustomPropertyApi:
         )
 
         # return self._client._paginate(
-        response = self._client._get(
-            url, params=kwargs, response_model=None
-        )
+        response = self._client._get(url, params=kwargs, response_model=None)
 
         return_wrapper = {
             "account_identifier": self.resolved_scope.account_id,
             "org_identifier": self.resolved_scope.org,
             "project_identifier": self.resolved_scope.project,
             "identifier": identifier,
-            "kind": kind
+            "kind": kind,
         }
-        response = response|return_wrapper
+        response = response | return_wrapper
 
         return CatalogCustomPropertyResponseByEntity(**response)
 
@@ -248,7 +253,7 @@ class CatalogCustomPropertyApi:
         self,
         body: CatalogCustomPropertyCreateRequest,
         dry_run: bool | None = False,
-        scope: Scope | None = None
+        scope: Scope | None = None,
     ) -> CatalogCustomPropertyResponse:
         """Create a new catalog_custom_properties.
 
@@ -276,12 +281,7 @@ class CatalogCustomPropertyApi:
             "value": body.value,
             "mode": body.mode,
         }
-        payload["entity_ref"] = "/".join([
-            ":".join([
-                body.kind,self.idp_scope
-            ]),
-            body.identifier
-        ])
+        payload["entity_ref"] = "/".join([":".join([body.kind, self.idp_scope]), body.identifier])
 
         print(payload)
 
@@ -324,12 +324,7 @@ class CatalogCustomPropertyApi:
             "value": body.value,
             "mode": body.mode,
         }
-        payload["entity_ref"] = "/".join([
-            ":".join([
-                body.kind,self.idp_scope
-            ]),
-            body.identifier
-        ])
+        payload["entity_ref"] = "/".join([":".join([body.kind, self.idp_scope]), body.identifier])
 
         response = self._client._post(
             url, params=self.default_params, body=payload, response_model=None
@@ -359,19 +354,12 @@ class CatalogCustomPropertyApi:
         """
         self.resolved_scope = scope
         url = self._client._build_url(
-            "{root_api_path}/entity",
-            self.resolved_scope,
-            root_api_path=self.root_api_path
+            "{root_api_path}/entity", self.resolved_scope, root_api_path=self.root_api_path
         )
         payload = {
             "property": body.catalog_property,
         }
-        payload["entity_ref"] = "/".join([
-            ":".join([
-                body.kind,self.idp_scope
-            ]),
-            body.identifier
-        ])
+        payload["entity_ref"] = "/".join([":".join([body.kind, self.idp_scope]), body.identifier])
         return self._client._delete(
             url, params=self.default_params, body=payload, response_model=None
         )

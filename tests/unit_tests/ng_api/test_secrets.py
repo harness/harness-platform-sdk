@@ -24,6 +24,7 @@ class TestSecretsApi:
         client._resolve_scope = MagicMock(
             return_value=Scope(account_id="acc123", org="org123", project="proj123")
         )
+
         def build_url_side_effect(*args, **kwargs):
             if kwargs.get("is_params"):
                 return {
@@ -32,6 +33,7 @@ class TestSecretsApi:
                     "projectIdentifier": "proj123",
                 }
             return "/ng/api/secrets"
+
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         return client
 
@@ -145,7 +147,9 @@ class TestSecretsApi:
         """Test create with conflict error."""
         mock_client._post = MagicMock(side_effect=ApiError(409, "Conflict", {}))
 
-        body = SecretCreateRequest(identifier="db_password", name="Test", type="SecretText", spec={})
+        body = SecretCreateRequest(
+            identifier="db_password", name="Test", type="SecretText", spec={}
+        )
         scope = Scope(account_id="acc123", org="org123", project="proj123")
         with pytest.raises(ApiError):
             api.create(body, scope=scope)
@@ -169,9 +173,7 @@ class TestSecretsApi:
 
     def test_wrapped_body_structure(self, api):
         """Test _wrapped_body structure."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = SecretCreateRequest(identifier="secret1", name="Test", type="SecretText", spec={})
         wrapped = api._wrapped_body(body)
 
@@ -181,7 +183,9 @@ class TestSecretsApi:
         """Test update with 404 error."""
         mock_client._put = MagicMock(side_effect=ApiError(404, "Not found", {}))
 
-        body = SecretCreateRequest(identifier="db_password", name="Updated", type="SecretText", spec={})
+        body = SecretCreateRequest(
+            identifier="db_password", name="Updated", type="SecretText", spec={}
+        )
         scope = Scope(account_id="acc123", org="org123", project="proj123")
         with pytest.raises(ApiError):
             api.update("nonexistent", body, scope=scope)

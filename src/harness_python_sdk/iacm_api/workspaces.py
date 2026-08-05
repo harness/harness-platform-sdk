@@ -6,9 +6,9 @@ Provides CRUD operations for workspaces resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.iacm_api.workspaces import (
@@ -49,11 +49,11 @@ class WorkspacesApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -63,20 +63,26 @@ class WorkspacesApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -125,7 +131,7 @@ class WorkspacesApi:
         }
         for key_rm, key_rp in ignored_keys.items():
             response_obj[key_rp] = response_obj[key_rm]
-            response_obj.pop(key_rm,None)
+            response_obj.pop(key_rm, None)
         return WorkspaceResponse(**response_obj)
 
     def list(self, scope: Scope | None = None, **kwargs) -> Iterator[WorkspaceResponse]:
@@ -152,13 +158,14 @@ class WorkspacesApi:
         outputs = self._client._paginate(
             url,
             params=kwargs,
-            response_model=None, #WorkspaceResponse,
+            response_model=None,  # WorkspaceResponse,
             pagination_style=PaginationStyle.OFFSET,  # per pagination_inventory.md
             scope=self.resolved_scope,
             # unwrap_field=self.unwrap_key,  # API wraps each item in a "self.unwrap_key" field
         )
 
         return iter([self._unwrapped_response(elem) for elem in outputs])
+
     def get(self, identifier: str, scope: Scope | None = None) -> WorkspaceResponse:
         """Get a single workspaces by ID.
 
@@ -181,17 +188,13 @@ class WorkspacesApi:
             identifier=identifier,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
 
         return self._unwrapped_response(response)
 
-    def create(
-        self, body: WorkspaceCreateRequest, scope: Scope | None = None
-    ) -> WorkspaceResponse:
+    def create(self, body: WorkspaceCreateRequest, scope: Scope | None = None) -> WorkspaceResponse:
         """Create a new workspaces.
 
         Args:
@@ -253,9 +256,7 @@ class WorkspacesApi:
 
         return WorkspaceResponse(**self._wrapped_body(body))
 
-    def delete(
-        self, identifier: str, scope: Scope | None = None
-    ) -> dict | None:
+    def delete(self, identifier: str, scope: Scope | None = None) -> dict | None:
         """Delete a workspaces.
 
         Args:

@@ -34,9 +34,12 @@ class TriggerV0Response(HarnessModel):
     inputs: dict | None = {}
     webhook_url: str = Field(default=None, alias="webhookUrl")
     stages_to_execute: list[str] = Field(default=[], alias="stagesToExecute")
-    encrypted_webhook_secret_identifier: str = Field(default=None, alias="encryptedWebhookSecretIdentifier")
+    encrypted_webhook_secret_identifier: str = Field(
+        default=None, alias="encryptedWebhookSecretIdentifier"
+    )
     created_at: int = Field(default=None, alias="createdAt")
     updated_at: int = Field(default=None, alias="updatedAt")
+
 
 class TriggerV0ListResponse(HarnessModel):
     """Trigger resource response model.
@@ -91,4 +94,6 @@ class TriggerV0CreateRequest(HarnessModel):
     source: dict | None = {}
     inputs: dict | None = {}
     stages_to_execute: list[str] = Field(default=[], alias="stagesToExecute")
-    encrypted_webhook_secret_identifier: str = Field(default=None, alias="encryptedWebhookSecretIdentifier")
+    encrypted_webhook_secret_identifier: str = Field(
+        default=None, alias="encryptedWebhookSecretIdentifier"
+    )

@@ -63,9 +63,7 @@ class UserGroupsApi:
         if resolved.project is not None:
             path_template.append("projectIdentifier={project}")
         self._default_params = self._client._build_url(
-            "&".join(
-                path_template
-            ),
+            "&".join(path_template),
             resolved,
             is_params=True,
         )

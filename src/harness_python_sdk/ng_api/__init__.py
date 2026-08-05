@@ -4,8 +4,8 @@ Harness API resources under /ng/api/ path root.
 """
 
 from .connectors import ConnectorsApi
-from .infrastructures import InfrastructuresApi
 from .environments_v2 import EnvironmentsV2Api
+from .infrastructures import InfrastructuresApi
 from .organizations import OrganizationsApi
 from .projects import ProjectsApi
 from .secrets import SecretsApi

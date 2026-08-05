@@ -6,69 +6,6 @@
 # Covers OpenAPI spec management, model generation, testing, and development utilities.
 
 # ---------------------------------------------------------------------------
-# OpenAPI Spec Management
-# ---------------------------------------------------------------------------
-
-[tasks."fetch-spec"]
-description = "Fetch the latest OpenAPI spec from Harness"
-run = "echo 'Placeholder: fetch OpenAPI spec from Harness'"
-
-[tasks."normalize-spec"]
-description = "Normalize the raw OpenAPI spec (removes incomplete discriminators, etc.)"
-run = "python scripts/normalize_spec.py"
-
-[tasks."convert-spec"]
-description = "RETIRED 2026-04-08 — see v0_design_decisions.md"
-run = "echo 'convert-spec retired 2026-04-08 — see v0_design_decisions.md'"
-
-# ---------------------------------------------------------------------------
-# Model Generation
-#
-# Reduction flags removed:
-#   - --reuse-model: Schema identity more valuable than lower model count (PM direction)
-#   - --collapse-root-models: Causes IndexError on malformed root-type schemas with empty fields
-#   - --use-alias-generators: Not supported in datamodel-code-generator 0.55.0
-#
-# NOTE: generate-models and sort-models tasks are retired as of 2026-04-08.
-# See v0_design_decisions.md for context.
-# ---------------------------------------------------------------------------
-
-[tasks."generate-models"]
-description = "RETIRED 2026-04-08 — see v0_design_decisions.md"
-run = "echo 'generate-models retired 2026-04-08 — see v0_design_decisions.md'"
-
-[tasks."sort-models"]
-description = "RETIRED 2026-04-08 — see v0_design_decisions.md"
-run = "echo 'sort-models retired 2026-04-08 — see v0_design_decisions.md'"
-
-# ---------------------------------------------------------------------------
-# Combined Regeneration
-# ---------------------------------------------------------------------------
-
-[tasks.regenerate]
-description = "Regenerate: fetch-spec && normalize-spec only"
-run = [
-    {task = "fetch-spec"},
-    {task = "normalize-spec"},
-]
-
-# ---------------------------------------------------------------------------
-# Drift Detection and Baseline Management
-# ---------------------------------------------------------------------------
-
-[tasks."check-drift"]
-description = "Check for drift between current spec and baseline checksums"
-run = "python scripts/check_drift.py --compare"
-
-[tasks.baseline]
-description = "Generate and update baseline checksums from current spec"
-run = "python scripts/check_drift.py"
-
-[tasks."refresh-pagination"]
-description = "Regenerate pagination inventory from current spec"
-run = "python scripts/refresh_pagination.py"
-
-# ---------------------------------------------------------------------------
 # Testing
 # ---------------------------------------------------------------------------
 

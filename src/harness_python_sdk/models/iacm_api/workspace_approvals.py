@@ -7,9 +7,11 @@ Defines request/response models for workspaceapproval CRUD operations.
 from __future__ import annotations
 
 from enum import Enum
-from pydantic import Field, AliasChoices
+
+from pydantic import AliasChoices, Field
 
 from harness_python_sdk.base_model import HarnessModel
+
 
 class WorkspaceApprovalStatus(str, Enum):
     approved = "approved"
@@ -25,7 +27,9 @@ class WorkspaceApprovalListResponse(HarnessModel):
     """
 
     identifier: str = Field(default=None, alias="id")
-    account_identifier: str = Field(default=None, alias=AliasChoices("account","accountIdentifier"))
+    account_identifier: str = Field(
+        default=None, alias=AliasChoices("account", "accountIdentifier")
+    )
     org_identifier: str = Field(default=None, alias="orgIdentifier")
     project_identifier: str = Field(default=None, alias="projectIdentifier")
     description: str | None = None
@@ -41,6 +45,7 @@ class WorkspaceApprovalListResponse(HarnessModel):
     actioned_by_email: str | None = None
     created_at: int = Field(default=None, alias="created")
     updated_at: int = Field(default=None, alias="updated")
+
 
 class WorkspaceApprovalResponse(HarnessModel):
     status: WorkspaceApprovalStatus

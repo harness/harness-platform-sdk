@@ -22,10 +22,9 @@ class TestRoleAssignmentsApi:
         """Create mock HarnessClient."""
         client = MagicMock(spec=HarnessClient)
         client._resolve_scope = MagicMock(
-            return_value=Scope(
-                account_id="acc123", org="org123", project="proj123"
-            )
+            return_value=Scope(account_id="acc123", org="org123", project="proj123")
         )
+
         def build_url_side_effect(*args, **kwargs):
             if kwargs.get("is_params"):
                 return {
@@ -34,6 +33,7 @@ class TestRoleAssignmentsApi:
                     "projectIdentifier": "proj123",
                 }
             return "/authz/api/roleassignments"
+
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         return client
 
@@ -60,12 +60,8 @@ class TestRoleAssignmentsApi:
 
     def test_get_success(self, api, mock_client, sample_assignment_response):
         """Test successful get operation."""
-        mock_client._get = MagicMock(
-            return_value={"roleAssignment": sample_assignment_response}
-        )
-        mock_client._unwrap_response = MagicMock(
-            return_value=sample_assignment_response
-        )
+        mock_client._get = MagicMock(return_value={"roleAssignment": sample_assignment_response})
+        mock_client._unwrap_response = MagicMock(return_value=sample_assignment_response)
 
         scope = Scope(account_id="acc123", org="org123", project="proj123")
         result = api.get("assign_123", scope=scope)
@@ -74,12 +70,8 @@ class TestRoleAssignmentsApi:
 
     def test_create_success(self, api, mock_client, sample_assignment_response):
         """Test successful create operation."""
-        mock_client._post = MagicMock(
-            return_value={"roleAssignment": sample_assignment_response}
-        )
-        mock_client._unwrap_response = MagicMock(
-            return_value=sample_assignment_response
-        )
+        mock_client._post = MagicMock(return_value={"roleAssignment": sample_assignment_response})
+        mock_client._unwrap_response = MagicMock(return_value=sample_assignment_response)
 
         body = RoleAssignmentCreateRequest(
             role_identifier="_project_admin",
@@ -183,12 +175,8 @@ class TestRoleAssignmentsApi:
         """Test successful update operation."""
         updated_response = sample_assignment_response.copy()
         updated_response["disabled"] = True
-        mock_client._put = MagicMock(
-            return_value={"roleAssignment": updated_response}
-        )
-        mock_client._unwrap_response = MagicMock(
-            return_value=updated_response
-        )
+        mock_client._put = MagicMock(return_value={"roleAssignment": updated_response})
+        mock_client._unwrap_response = MagicMock(return_value=updated_response)
 
         body = RoleAssignmentCreateRequest(
             role_identifier="_project_admin",
@@ -239,9 +227,7 @@ class TestRoleAssignmentsApi:
 
     def test_wrapped_body_returns_body_when_not_wrapped(self, api):
         """Test _wrapped_body returns body unchanged when should_wrap is False."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = RoleAssignmentCreateRequest(
             role_identifier="_project_admin",
             resource_group_identifier="_all_project_level_resources",

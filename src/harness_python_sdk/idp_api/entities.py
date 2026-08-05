@@ -6,17 +6,17 @@ Provides CRUD operations for entitiess resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.idp_api.entities import (
-    EntityResponse,
-    EntityWorkflowCreateRequest,
     EntityComponentCreateRequest,
     EntityResourceCreateRequest,
+    EntityResponse,
     EntitySystemCreateRequest,
+    EntityWorkflowCreateRequest,
 )
 from harness_python_sdk.pagination import PaginationStyle
 from harness_python_sdk.scope import Scope
@@ -52,11 +52,11 @@ class EntityApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -66,20 +66,26 @@ class EntityApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -118,11 +124,8 @@ class EntityApi:
             body["spec"] = {"lifecycle": body["lifecycle"]}
 
         del body["description"]
-        response = {
-            "yaml": yaml.dump(body)
-        }
+        response = {"yaml": yaml.dump(body)}
         return response
-
 
         response = {self.wrap_key: body}
 
@@ -216,18 +219,16 @@ class EntityApi:
             idp_scope=self.idp_scope,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
 
-        unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope
+        )
         return EntityResponse(**unwrapped)
 
-    def create(
-        self, body: EntityCreateRequest, scope: Scope | None = None
-    ) -> EntityResponse:
+    def create(self, body: EntityCreateRequest, scope: Scope | None = None) -> EntityResponse:
         """Create a new entitiess.
 
         Args:
@@ -294,9 +295,7 @@ class EntityApi:
         unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response)
         return EntityResponse(**unwrapped)
 
-    def delete(
-        self, identifier: str, kind: str, scope: Scope | None = None
-    ) -> dict | None:
+    def delete(self, identifier: str, kind: str, scope: Scope | None = None) -> dict | None:
         """Delete a entitiess.
 
         Args:

@@ -8,12 +8,14 @@ from __future__ import annotations
 
 from pydantic import Field
 
-from harness_python_sdk.base_model import HarnessModel, BaseModel
+from harness_python_sdk.base_model import BaseModel, HarnessModel
+
 
 class VariableSpec(HarnessModel):
     value_type: str = Field(default="FIXED", alias="valueType")
-    type: str | None ="string"
+    type: str | None = "string"
     fixed_value: str = Field(..., alias="fixedValue")
+
 
 class VariableCore(HarnessModel):
     """Variable resource cor model.
@@ -34,6 +36,7 @@ class VariableCore(HarnessModel):
 
     type: str | None = "String"
     spec: VariableSpec | None = None
+
 
 class VariableResponse(VariableCore):
     """Variable resource response model.

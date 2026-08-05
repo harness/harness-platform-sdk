@@ -6,14 +6,14 @@ Provides CRUD operations for scores resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.idp_api.scores import (
-    ScoreSummaryResponse,
     ScoreResponse,
+    ScoreSummaryResponse,
 )
 from harness_python_sdk.pagination import PaginationStyle
 from harness_python_sdk.scope import Scope
@@ -49,11 +49,11 @@ class ScoreApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -63,20 +63,26 @@ class ScoreApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -132,7 +138,9 @@ class ScoreApi:
             response_obj["kind"] = response_obj["entity"]["kind"]
             response_obj["scorecard_scores"] = response_obj["entity"]["scores"]
             scores = response_obj["entity"]["scores"]
-            response_obj["overall_score"] = sum(s["score"] for s in scores) / len(scores) if scores else 0
+            response_obj["overall_score"] = (
+                sum(s["score"] for s in scores) / len(scores) if scores else 0
+            )
         del response_obj["entity"]
         return ScoreResponse(**response_obj)
 
@@ -143,8 +151,8 @@ class ScoreApi:
         owners: list[str] | None = None,
         tags: list[str] | None = None,
         lifecycle: list[str] | None = None,
-        scope: Scope | None = None
-        ) -> ScoreResponse:
+        scope: Scope | None = None,
+    ) -> ScoreResponse:
         """List scores by kind and filters
 
         Args:
@@ -169,12 +177,12 @@ class ScoreApi:
             root_api_path=self.root_api_path,
         )
 
-        payload =  {
+        payload = {
             "kind": kind,
             "type": entity_type,
             "owners": owners,
             "tags": tags,
-            "lifecycle": lifecycle
+            "lifecycle": lifecycle,
         }
         payload = {k: v for k, v in payload.items() if v}
         print(payload)
@@ -184,7 +192,7 @@ class ScoreApi:
             method="post",
             body=payload,
             params=self.default_params,
-            response_model=None, #ScoreResponse,
+            response_model=None,  # ScoreResponse,
             pagination_style=PaginationStyle.OFFSET,  # per pagination_inventory.md
             scope=self.resolved_scope,
             # unwrap_field=self.unwrap_key,  # API wraps each item in a "self.unwrap_key" field
@@ -192,7 +200,9 @@ class ScoreApi:
 
         return iter([self._unwrapped_aggregated_response(elem) for elem in output])
 
-    def get(self, identifier: str, kind: str, scope: Scope | None = None, **kwargs) -> Iterator[ScoreResponse]:
+    def get(
+        self, identifier: str, kind: str, scope: Scope | None = None, **kwargs
+    ) -> Iterator[ScoreResponse]:
         """Get a single scores by Entity Identifier and Kind.
 
         Args:
@@ -214,15 +224,11 @@ class ScoreApi:
             self.resolved_scope,
             root_api_path=self.root_api_path,
         )
-        kwargs.update({"entity_identifier": "/".join([
-            self.idp_scope,
-            kind,
-            identifier
-        ])})
+        kwargs.update({"entity_identifier": "/".join([self.idp_scope, kind, identifier])})
         outputs = self._client._paginate(
             url,
             params=kwargs,
-            response_model=None, #ScoreResponse,
+            response_model=None,  # ScoreResponse,
             pagination_style=PaginationStyle.OFFSET,  # per pagination_inventory.md
             scope=self.resolved_scope,
             # unwrap_field=self.unwrap_key,  # API wraps each item in a "self.unwrap_key" field
@@ -232,14 +238,16 @@ class ScoreApi:
             return []
 
         return_wrapper = {
-            "identifier" : identifier,
+            "identifier": identifier,
             "kind": kind,
         }
-        return_elems = [elem|return_wrapper for elem in outputs]
+        return_elems = [elem | return_wrapper for elem in outputs]
 
         return iter([self._unwrapped_response(elem) for elem in return_elems])
 
-    def get_summary(self, identifier: str, kind: str, scope: Scope | None = None) -> ScoreSummaryResponse:
+    def get_summary(
+        self, identifier: str, kind: str, scope: Scope | None = None
+    ) -> ScoreSummaryResponse:
         """Get a summary of scores by Entity Identifier and Kind.
 
         Args:
@@ -260,31 +268,27 @@ class ScoreApi:
             self.resolved_scope,
             root_api_path=self.root_api_path,
         )
-        self.default_params["entity_identifier"] = "/".join([
-            self.idp_scope,
-            kind,
-            identifier
-        ])
+        self.default_params["entity_identifier"] = "/".join([self.idp_scope, kind, identifier])
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
         if "scorecards_summary" not in response:
             return {}
         return_wrapper = {
-            "identifier" : identifier,
+            "identifier": identifier,
             "kind": kind,
             "account_identifier": self.resolved_scope.account_id,
             "org_identifier": self.resolved_scope.org,
             "project_identifier": self.resolved_scope.project,
         }
-        return_elems = [elem|return_wrapper for elem in response["scorecards_summary"]]
+        return_elems = [elem | return_wrapper for elem in response["scorecards_summary"]]
 
         return iter([ScoreSummaryResponse(**elem) for elem in return_elems])
 
-    def recalibrate(self, identifier: str, kind: str, scorecard_identifier: str, scope: Scope | None = None) -> ScoreSummaryResponse:
+    def recalibrate(
+        self, identifier: str, kind: str, scorecard_identifier: str, scope: Scope | None = None
+    ) -> ScoreSummaryResponse:
         """API for Recalibrating the score for scorecard of entity
 
         Args:
@@ -308,22 +312,16 @@ class ScoreApi:
         )
         payload = {
             "identifiers": {
-                "scorecard_identifier" : scorecard_identifier,
-                "entity_identifier" : "/".join([
-                    self.idp_scope,
-                    kind,
-                    identifier
-                ]),
+                "scorecard_identifier": scorecard_identifier,
+                "entity_identifier": "/".join([self.idp_scope, kind, identifier]),
             }
         }
 
-        response = self._client._post(
-            url, params=None, body=payload, response_model=None
-        )
+        response = self._client._post(url, params=None, body=payload, response_model=None)
         if not response:
             return {}
         return_wrapper = {
-            "identifier" : identifier,
+            "identifier": identifier,
             "kind": kind,
             "account_identifier": self.resolved_scope.account_id,
             "org_identifier": self.resolved_scope.org,

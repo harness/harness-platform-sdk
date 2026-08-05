@@ -6,15 +6,15 @@ Provides CRUD operations for workspaceapprovals resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.iacm_api.workspace_approvals import (
     WorkspaceApprovalCreateRequest,
-    WorkspaceApprovalResponse,
     WorkspaceApprovalListResponse,
+    WorkspaceApprovalResponse,
     WorkspaceApprovalStatus,
 )
 from harness_python_sdk.pagination import PaginationStyle
@@ -51,11 +51,11 @@ class WorkspaceApprovalsApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -65,20 +65,26 @@ class WorkspaceApprovalsApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -92,7 +98,9 @@ class WorkspaceApprovalsApi:
         # Call out to configure the default params
         self.default_params = self._resolved_scope
 
-    def _wrapped_body(self, body: WorkspaceApprovalCreateRequest, is_yaml: bool | None = False) -> dict:
+    def _wrapped_body(
+        self, body: WorkspaceApprovalCreateRequest, is_yaml: bool | None = False
+    ) -> dict:
         """Resolve and wrap the body payload to additionally inject scope details into the payload"""
 
         body = body.model_dump(exclude_none=True)
@@ -127,10 +135,16 @@ class WorkspaceApprovalsApi:
         }
         for key_rm, key_rp in ignored_keys.items():
             response_obj[key_rp] = response_obj[key_rm]
-            response_obj.pop(key_rm,None)
+            response_obj.pop(key_rm, None)
         return WorkspaceApprovalListResponse(**response_obj)
 
-    def list(self, workspace_identifier: str, status: WorkspaceApprovalStatus | None = None, scope: Scope | None = None, **kwargs) -> Iterator[WorkspaceApprovalListResponse]:
+    def list(
+        self,
+        workspace_identifier: str,
+        status: WorkspaceApprovalStatus | None = None,
+        scope: Scope | None = None,
+        **kwargs,
+    ) -> Iterator[WorkspaceApprovalListResponse]:
         """List workspaceapprovalss in the specified organization.
 
         Args:
@@ -145,9 +159,9 @@ class WorkspaceApprovalsApi:
         """
         self.resolved_scope = scope
         kwargs.update(self.default_params)
-        kwargs.update({"workspace":workspace_identifier})
+        kwargs.update({"workspace": workspace_identifier})
         if status is not None:
-            kwargs.update({"status_type":status})
+            kwargs.update({"status_type": status})
 
         url = self._client._build_url(
             "{root_api_path}/orgs/{org}/projects/{project}/approvals",
@@ -186,15 +200,15 @@ class WorkspaceApprovalsApi:
             identifier=identifier,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
 
         response["identifier"] = identifier
         self._client._display_payload(response)
-        unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope
+        )
 
         return WorkspaceApprovalResponse(**unwrapped)
 
@@ -268,9 +282,7 @@ class WorkspaceApprovalsApi:
 
         return WorkspaceApprovalResponse(**self._wrapped_body(body))
 
-    def delete(
-        self, identifier: str, scope: Scope | None = None
-    ) -> dict | None:
+    def delete(self, identifier: str, scope: Scope | None = None) -> dict | None:
         """Delete a workspaceapprovals.
 
         Args:

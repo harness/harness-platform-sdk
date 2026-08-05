@@ -1,4 +1,5 @@
 import json
+
 from harness_python_sdk.models.ng_api import *
 
 ####################
@@ -7,9 +8,7 @@ from harness_python_sdk.models.ng_api import *
 print(f"{' Variables ':#^40}")
 pipeline_identifier = "simple_test"
 print(f"Variables -> List")
-for list_variables in [
-    elem for elem in client.variables.list()
-]:
+for list_variables in [elem for elem in client.variables.list()]:
     # client._display_payload(list_variables)
     print(f"\t \t -> : {list_variables.identifier}")
 
@@ -45,9 +44,7 @@ else:
     variables = client.variables.update(identifier=variables.identifier, body=variables_request)
     print(f"\t -> Updated : { variables.identifier}")
 print(f"Variables -> List")
-for list_variables in [
-    elem for elem in client.variables.list()
-]:
+for list_variables in [elem for elem in client.variables.list()]:
     print(f"\t \t -> : {list_variables.identifier}")
 
 if unit_cleanup:

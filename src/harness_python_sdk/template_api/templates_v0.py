@@ -6,9 +6,9 @@ Provides CRUD operations for templates_v0 resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.template_api.templates_v0 import (
@@ -49,11 +49,11 @@ class TemplatesV0Api:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -63,20 +63,26 @@ class TemplatesV0Api:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -109,8 +115,8 @@ class TemplatesV0Api:
         output_body = {
             "identifier": body["identifier"],
             "name": body["name"],
-            "description": body.get("description",""),
-            "tags": body.get("tags",{}),
+            "description": body.get("description", ""),
+            "tags": body.get("tags", {}),
             "accountIdentifier": body["accountIdentifier"],
             "orgIdentifier": body["orgIdentifier"],
             "projectIdentifier": body["projectIdentifier"],
@@ -146,7 +152,9 @@ class TemplatesV0Api:
             del response_obj["yaml"]
         return TemplateV0Response(**response_obj)
 
-    def list(self, template_type: str | None = "All", scope: Scope | None = None, **kwargs) -> Iterator[TemplateV0ListResponse]:
+    def list(
+        self, template_type: str | None = "All", scope: Scope | None = None, **kwargs
+    ) -> Iterator[TemplateV0ListResponse]:
         """List templates_v0s in the specified organization.
 
         Args:
@@ -174,7 +182,7 @@ class TemplatesV0Api:
             params=kwargs,
             method="post",
             body=filter_body,
-            response_model=None, #TemplateV0ListResponse,
+            response_model=None,  # TemplateV0ListResponse,
             pagination_style=PaginationStyle.OFFSET,  # per pagination_inventory.md
             scope=self.resolved_scope,
             # unwrap_field=self.unwrap_key,  # API wraps each item in a "self.unwrap_key" field
@@ -204,13 +212,13 @@ class TemplatesV0Api:
             identifier=identifier,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
 
-        unwrapped = self._client._unwrap_response(key_type=None, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=None, raw_data=response, scope=self.resolved_scope
+        )
 
         return self._unwrapped_response(unwrapped_response=unwrapped)
 
@@ -239,11 +247,16 @@ class TemplatesV0Api:
         )
 
         response = self._client._post(
-            url, params=self.default_params, body=self._wrapped_body(body),
-            response_model=None, body_is_yaml=True
+            url,
+            params=self.default_params,
+            body=self._wrapped_body(body),
+            response_model=None,
+            body_is_yaml=True,
         )
 
-        unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope
+        )
         return self._unwrapped_response(unwrapped_response=unwrapped)
 
     def update(
@@ -272,19 +285,24 @@ class TemplatesV0Api:
             self.resolved_scope,
             root_api_path=self.root_api_path,
             identifier=identifier,
-            version_label=body.version_label
+            version_label=body.version_label,
         )
 
         response = self._client._put(
-            url, params=self.default_params, body=self._wrapped_body(body),
-            response_model=None, body_is_yaml=True
+            url,
+            params=self.default_params,
+            body=self._wrapped_body(body),
+            response_model=None,
+            body_is_yaml=True,
         )
 
-        unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope
+        )
         return self._unwrapped_response(unwrapped_response=unwrapped)
 
     def delete(
-        self, identifier: str, version_label:str, scope: Scope | None = None
+        self, identifier: str, version_label: str, scope: Scope | None = None
     ) -> dict | None:
         """Delete a templates_v0.
 
@@ -305,6 +323,6 @@ class TemplatesV0Api:
             self.resolved_scope,
             root_api_path=self.root_api_path,
             identifier=identifier,
-            version_label=version_label
+            version_label=version_label,
         )
         return self._client._delete(url, params=self.default_params, response_model=None)

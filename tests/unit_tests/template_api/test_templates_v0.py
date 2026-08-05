@@ -10,8 +10,8 @@ from harness_python_sdk.models.template_api.templates_v0 import (
     TemplateV0CreateRequest,
     TemplateV0Response,
 )
-from harness_python_sdk.template_api.templates_v0 import TemplatesV0Api
 from harness_python_sdk.scope import Scope
+from harness_python_sdk.template_api.templates_v0 import TemplatesV0Api
 
 
 class TestTemplatesV0Api:
@@ -30,6 +30,7 @@ class TestTemplatesV0Api:
                 pipeline="pipe1",
             )
         )
+
         def build_url_side_effect(*args, **kwargs):
             if kwargs.get("is_params"):
                 return {
@@ -39,6 +40,7 @@ class TestTemplatesV0Api:
                     "pipelineIdentifier": "pipe1",
                 }
             return "/template/api/templates"
+
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         return client
 
@@ -54,13 +56,15 @@ class TestTemplatesV0Api:
             "name": "Updated",
             "template_entity_type": "Step",
             "version": 0,
-            "version_label": "v1"
+            "version_label": "v1",
         }
-        response_data.update({
-                    "accountIdentifier": "acc123",
-                    "orgIdentifier": "org123",
-                    "projectIdentifier": "proj123",
-                })
+        response_data.update(
+            {
+                "accountIdentifier": "acc123",
+                "orgIdentifier": "org123",
+                "projectIdentifier": "proj123",
+            }
+        )
         mock_client._get = MagicMock(return_value=response_data)
         mock_client._unwrap_response = MagicMock(return_value=response_data)
 
@@ -81,7 +85,7 @@ class TestTemplatesV0Api:
             "name": "Updated",
             "template_entity_type": "Step",
             "version": 0,
-            "version_label": "v1"
+            "version_label": "v1",
         }
         mock_client._post = MagicMock(return_value=response_data)
         mock_client._unwrap_response = MagicMock(return_value=response_data)
@@ -97,17 +101,12 @@ class TestTemplatesV0Api:
                     "executionTarget": {},
                     "outputVariables": [],
                     "shell": "Bash",
-                    "source": {
-                        "spec": {
-                            "script": "echo \"hello\""
-                        },
-                        "type": "Inline"
-                    }
+                    "source": {"spec": {"script": 'echo "hello"'}, "type": "Inline"},
                 },
                 "timeout": "10m",
-                "type": "ShellScript"
+                "type": "ShellScript",
             },
-            version_label="v1"
+            version_label="v1",
         )
         scope = Scope(
             account_id="acc123",
@@ -195,7 +194,7 @@ class TestTemplatesV0Api:
             "name": "Updated",
             "template_entity_type": "Step",
             "version": 0,
-            "version_label": "v1"
+            "version_label": "v1",
         }
         mock_client._put = MagicMock(return_value=response_data)
         mock_client._unwrap_response = MagicMock(return_value=response_data)
@@ -211,17 +210,12 @@ class TestTemplatesV0Api:
                     "executionTarget": {},
                     "outputVariables": [],
                     "shell": "Bash",
-                    "source": {
-                        "spec": {
-                            "script": "echo \"hello\""
-                        },
-                        "type": "Inline"
-                    }
+                    "source": {"spec": {"script": 'echo "hello"'}, "type": "Inline"},
                 },
                 "timeout": "10m",
-                "type": "ShellScript"
+                "type": "ShellScript",
             },
-            version_label="v1"
+            version_label="v1",
         )
         scope = Scope(
             account_id="acc123",
@@ -248,17 +242,12 @@ class TestTemplatesV0Api:
                     "executionTarget": {},
                     "outputVariables": [],
                     "shell": "Bash",
-                    "source": {
-                        "spec": {
-                            "script": "echo \"hello\""
-                        },
-                        "type": "Inline"
-                    }
+                    "source": {"spec": {"script": 'echo "hello"'}, "type": "Inline"},
                 },
                 "timeout": "10m",
-                "type": "ShellScript"
+                "type": "ShellScript",
             },
-            version_label="v1"
+            version_label="v1",
         )
         scope = Scope(
             account_id="acc123",
@@ -298,17 +287,12 @@ class TestTemplatesV0Api:
                     "executionTarget": {},
                     "outputVariables": [],
                     "shell": "Bash",
-                    "source": {
-                        "spec": {
-                            "script": "echo \"hello\""
-                        },
-                        "type": "Inline"
-                    }
+                    "source": {"spec": {"script": 'echo "hello"'}, "type": "Inline"},
                 },
                 "timeout": "10m",
-                "type": "ShellScript"
+                "type": "ShellScript",
             },
-            version_label="v1"
+            version_label="v1",
         )
         scope = Scope(
             account_id="acc123",

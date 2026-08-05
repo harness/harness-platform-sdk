@@ -29,14 +29,18 @@ workspace_variables = client.workspace_variables.get(
 if workspace_variables:
     print(f"\t -> Get : { workspace_variables.identifier}")
     workspace_variables_request.description = "UPDATE from Existing"
-    workspace_variables = client.workspace_variables.update(identifier=workspace_variables.identifier, body=workspace_variables_request)
+    workspace_variables = client.workspace_variables.update(
+        identifier=workspace_variables.identifier, body=workspace_variables_request
+    )
     print(f"\t -> Updated : { workspace_variables.identifier}")
 
 else:
     workspace_variables = client.workspace_variables.create(workspace_variables_request)
     print(f"\t -> Created : { workspace_variables.identifier}")
     workspace_variables_request.description = "UPDATE after Creating"
-    workspace_variables = client.workspace_variables.update(identifier=workspace_variables.identifier, body=workspace_variables_request)
+    workspace_variables = client.workspace_variables.update(
+        identifier=workspace_variables.identifier, body=workspace_variables_request
+    )
     print(f"\t -> Updated : { workspace_variables.identifier}")
 print(f"WorkspaceVariables -> List")
 for list_workspace_variables in [

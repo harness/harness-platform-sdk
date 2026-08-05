@@ -20,14 +20,14 @@ environments_v2_request = EnvironmentV2CreateRequest(
     type="PreProduction",
 )
 
-environments_v2 = client.environments_v2.get(
-    identifier=environments_v2_request.identifier
-)
+environments_v2 = client.environments_v2.get(identifier=environments_v2_request.identifier)
 # client._display_payload(environments_v2)
 if environments_v2:
     print(f"\t -> Get : { environments_v2.identifier}")
     environments_v2_request.description = "UPDATE from Existing"
-    environments_v2 = client.environments_v2.update(identifier=environments_v2.identifier, body=environments_v2_request)
+    environments_v2 = client.environments_v2.update(
+        identifier=environments_v2.identifier, body=environments_v2_request
+    )
     print(f"\t -> Updated : { environments_v2.identifier}")
 
 else:
@@ -35,7 +35,9 @@ else:
     environments_v2 = client.environments_v2.create(environments_v2_request)
     print(f"\t -> Created : { environments_v2.identifier}")
     environments_v2_request.description = "UPDATE after Creating"
-    environments_v2 = client.environments_v2.update(identifier=environments_v2.identifier, body=environments_v2_request)
+    environments_v2 = client.environments_v2.update(
+        identifier=environments_v2.identifier, body=environments_v2_request
+    )
     print(f"\t -> Updated : { environments_v2.identifier}")
 print(f"EnvironmentsV2 -> List")
 for list_environments_v2 in [
@@ -44,7 +46,5 @@ for list_environments_v2 in [
     print(f"\t \t -> : {list_environments_v2.identifier}")
 
 if unit_cleanup:
-    client.environments_v2.delete(
-        identifier=environments_v2.identifier
-    )
+    client.environments_v2.delete(identifier=environments_v2.identifier)
     print(f"\t -> Delete : { environments_v2.identifier}")

@@ -6,9 +6,7 @@ import json
 print(f"{' Workspaces ':#^40}")
 pipeline_identifier = "simple_test"
 print(f"Workspaces -> List")
-for list_workspaces in [
-    elem for elem in client.workspaces.list()
-]:
+for list_workspaces in [elem for elem in client.workspaces.list()]:
     # client._display_payload(list_workspaces)
     print(f"\t \t -> : {list_workspaces.identifier}")
 
@@ -38,9 +36,7 @@ else:
     workspaces = client.workspaces.update(identifier=workspaces.identifier, body=workspaces_request)
     print(f"\t -> Updated : { workspaces.identifier}")
 print(f"Workspaces -> List")
-for list_workspaces in [
-    elem for elem in client.workspaces.list()
-]:
+for list_workspaces in [elem for elem in client.workspaces.list()]:
     print(f"\t \t -> : {list_workspaces.identifier}")
 
 if unit_cleanup:

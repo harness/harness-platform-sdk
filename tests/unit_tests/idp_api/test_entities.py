@@ -6,12 +6,12 @@ import pytest
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.exceptions import ApiError
+from harness_python_sdk.idp_api.entities import EntityApi
 from harness_python_sdk.models.idp_api.entities import (
     EntityCreateRequest,
     EntityResourceCreateRequest,
     EntityResponse,
 )
-from harness_python_sdk.idp_api.entities import EntityApi
 from harness_python_sdk.pagination import PaginationStyle
 from harness_python_sdk.scope import Scope
 
@@ -140,9 +140,7 @@ class TestEntityApi:
 
     def test_create_with_missing_scope(self, api, mock_client):
         """Test create without scope raises error."""
-        mock_client._resolve_scope = MagicMock(
-            side_effect=ValueError("Scope required")
-        )
+        mock_client._resolve_scope = MagicMock(side_effect=ValueError("Scope required"))
 
         body = EntityResourceCreateRequest(
             identifier="entity123",
@@ -337,9 +335,7 @@ class TestEntityApi:
 
     def test_wrapped_body_injects_scope_identifiers(self, api, mock_client):
         """Test _wrapped_body injects scope identifiers."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = EntityResourceCreateRequest(
             identifier="entity123",
             name="Test Entity",
@@ -357,9 +353,7 @@ class TestEntityApi:
 
     def test_wrapped_body_sets_api_version(self, api, mock_client):
         """Test _wrapped_body sets API version."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = EntityResourceCreateRequest(
             identifier="entity123",
             name="Test Entity",
@@ -375,9 +369,7 @@ class TestEntityApi:
 
     def test_wrapped_body_sets_metadata(self, api, mock_client):
         """Test _wrapped_body sets metadata from description."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = EntityResourceCreateRequest(
             identifier="entity123",
             name="Test Entity",
@@ -393,9 +385,7 @@ class TestEntityApi:
 
     def test_wrapped_body_sets_spec(self, api, mock_client):
         """Test _wrapped_body sets spec with lifecycle."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = EntityResourceCreateRequest(
             identifier="entity123",
             name="Test Entity",
@@ -412,9 +402,7 @@ class TestEntityApi:
 
     def test_unwrapped_response(self, api, mock_client, sample_entity_response):
         """Test _unwrapped_response returns EntityResponse."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         result = api._unwrapped_response(sample_entity_response)
 
         assert isinstance(result, EntityResponse)

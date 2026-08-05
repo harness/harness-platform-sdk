@@ -120,8 +120,8 @@ class InputSetsV0Api:
         output_body = {
             "identifier": body["identifier"],
             "name": body["name"],
-            "description": body.get("description",""),
-            "tags": body.get("tags",{}),
+            "description": body.get("description", ""),
+            "tags": body.get("tags", {}),
             "accountIdentifier": body["accountIdentifier"],
             "orgIdentifier": body["orgIdentifier"],
             "projectIdentifier": body["projectIdentifier"],

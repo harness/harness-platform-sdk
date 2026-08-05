@@ -161,7 +161,7 @@ pytest tests/unit_tests/test_client.py -v
 
 ## Version
 
-- **Current:** 0.9.0
+- **Current:** 0.10.0
 - **Stability:** Beta (APIs subject to change before v1.0.0)
 
 ## License

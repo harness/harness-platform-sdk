@@ -442,7 +442,10 @@ class TestResolveHierarchy:
     def test_resolve_hierarchy_none_scope(self):
         """Test resolving hierarchy with None scope uses default."""
         client = HarnessClient(
-            api_key="key", account_id="acc", default_org="default-org", default_project="default-proj"
+            api_key="key",
+            account_id="acc",
+            default_org="default-org",
+            default_project="default-proj",
         )
         hierarchy = client._resolve_hierarchy(None)
         assert hierarchy["accountIdentifier"] == "acc"
@@ -606,9 +609,7 @@ class TestRetryLogic:
 
     def test_should_retry_custom_status_codes(self):
         """Test custom retry status codes."""
-        config = HarnessConfig(
-            api_key="key", account_id="acc", retry_status_codes=[500, 502, 503]
-        )
+        config = HarnessConfig(api_key="key", account_id="acc", retry_status_codes=[500, 502, 503])
         client = HarnessClient(config=config)
         assert client._should_retry_status_code(500) is True
         assert client._should_retry_status_code(502) is True
@@ -668,9 +669,7 @@ class TestRetryLogic:
 
     def test_put_with_retry_on_429(self, httpx_mock: HTTPXMock):
         """Test PUT retry on 429 (custom retry config)."""
-        config = HarnessConfig(
-            api_key="key", account_id="acc", retry_status_codes=[429, 503, 504]
-        )
+        config = HarnessConfig(api_key="key", account_id="acc", retry_status_codes=[429, 503, 504])
         httpx_mock.add_response(status_code=504, text="Gateway Timeout")
         httpx_mock.add_response(json={"id": "123"})
         client = HarnessClient(config=config)
@@ -765,9 +764,7 @@ class TestPaginationOffset:
             json={"data": {"content": [{"id": "1"}, {"id": "2"}], "pageItemCount": 2}}
         )
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={}))
         assert len(items) == 2
         assert items[0]["id"] == "1"
         client.close()
@@ -818,9 +815,7 @@ class TestPaginationOffset:
         """Test pagination with direct array response."""
         httpx_mock.add_response(json=[{"id": "1"}, {"id": "2"}])
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={}))
         assert len(items) == 2
         client.close()
 
@@ -828,9 +823,7 @@ class TestPaginationOffset:
         """Test pagination with direct data array (not nested content)."""
         httpx_mock.add_response(json={"data": [{"id": "1"}, {"id": "2"}]})
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={}))
         assert len(items) == 2
         client.close()
 
@@ -862,9 +855,7 @@ class TestPaginationOffset:
 
     def test_paginate_offset_with_scope_hierarchy(self, httpx_mock: HTTPXMock):
         """Test pagination adds scope hierarchy to items."""
-        httpx_mock.add_response(
-            json={"data": {"content": [{"id": "1"}], "pageItemCount": 1}}
-        )
+        httpx_mock.add_response(json={"data": {"content": [{"id": "1"}], "pageItemCount": 1}})
         client = HarnessClient(api_key="key", account_id="acc")
         scope = Scope(account_id="acc-123", org="org-456")
         items = list(
@@ -878,9 +869,7 @@ class TestPaginationOffset:
 
     def test_paginate_offset_post_method(self, httpx_mock: HTTPXMock):
         """Test offset pagination with POST method."""
-        httpx_mock.add_response(
-            json={"data": {"content": [{"id": "1"}], "pageItemCount": 1}}
-        )
+        httpx_mock.add_response(json={"data": {"content": [{"id": "1"}], "pageItemCount": 1}})
         client = HarnessClient(api_key="key", account_id="acc")
         items = list(
             client._paginate(
@@ -904,9 +893,7 @@ class TestPaginationCursor:
             json={"data": {"content": [{"id": "1"}, {"id": "2"}]}, "pageToken": None}
         )
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={}))
         assert len(items) == 2
         client.close()
 
@@ -924,13 +911,9 @@ class TestPaginationCursor:
                 "pageToken": "token-2",
             }
         )
-        httpx_mock.add_response(
-            json={"data": {"content": [{"id": "5"}]}, "pageToken": None}
-        )
+        httpx_mock.add_response(json={"data": {"content": [{"id": "5"}]}, "pageToken": None})
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={}))
         assert len(items) == 5
         client.close()
 
@@ -944,13 +927,9 @@ class TestPaginationCursor:
                 }
             }
         )
-        httpx_mock.add_response(
-            json={"data": {"content": [{"id": "2"}]}}
-        )
+        httpx_mock.add_response(json={"data": {"content": [{"id": "2"}]}})
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={}))
         assert len(items) == 2
         client.close()
 
@@ -1001,13 +980,9 @@ class TestPaginationTodo:
 
     def test_paginate_todo_single_page(self, httpx_mock: HTTPXMock):
         """Test TODO pagination (unconfirmed style)."""
-        httpx_mock.add_response(
-            json={"data": {"content": [{"id": "1"}, {"id": "2"}]}}
-        )
+        httpx_mock.add_response(json={"data": {"content": [{"id": "1"}, {"id": "2"}]}})
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.TODO, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.TODO, params={}))
         assert len(items) == 2
         client.close()
 
@@ -1015,9 +990,7 @@ class TestPaginationTodo:
         """Test TODO pagination with direct array."""
         httpx_mock.add_response(json=[{"id": "1"}, {"id": "2"}])
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.TODO, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.TODO, params={}))
         assert len(items) == 2
         client.close()
 
@@ -1050,7 +1023,9 @@ class TestBuildUrlOverrides:
     def test_build_url_pipeline_id_override(self):
         """Test that pipeline_id kwarg overrides scope pipeline."""
         client = HarnessClient(api_key="key", account_id="acc")
-        scope = Scope(account_id="acc-123", org="org-456", project="proj-789", pipeline="pipe-original")
+        scope = Scope(
+            account_id="acc-123", org="org-456", project="proj-789", pipeline="pipe-original"
+        )
         url = client._build_url(
             "/v1/accounts/{account_id}/orgs/{org}/projects/{project}/pipelines/{pipeline}",
             scope,
@@ -1291,21 +1266,15 @@ class TestPaginationEmptyResponses:
         """Test offset pagination with no items."""
         httpx_mock.add_response(json={"data": {"content": [], "pageItemCount": 0}})
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={}))
         assert items == []
         client.close()
 
     def test_paginate_cursor_empty_response(self, httpx_mock: HTTPXMock):
         """Test cursor pagination with no items."""
-        httpx_mock.add_response(
-            json={"data": {"content": []}, "pageToken": None}
-        )
+        httpx_mock.add_response(json={"data": {"content": []}, "pageToken": None})
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={}))
         assert items == []
         client.close()
 
@@ -1317,9 +1286,7 @@ class TestPaginationEdgeCases:
         """Test pagination with invalid response structure."""
         httpx_mock.add_response(json={})  # Empty response
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.OFFSET, params={}))
         assert items == []
         client.close()
 
@@ -1327,9 +1294,7 @@ class TestPaginationEdgeCases:
         """Test cursor pagination with direct list response."""
         httpx_mock.add_response(json=[{"id": "1"}])
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.CURSOR, params={}))
         assert len(items) == 1
         client.close()
 
@@ -1408,7 +1373,9 @@ class TestConfigHandling:
 
     def test_base_url_kwarg_precedence(self):
         """Test that base_url kwarg takes precedence over config."""
-        config = HarnessConfig(api_key="key", account_id="acc", base_url="https://config.harness.io")
+        config = HarnessConfig(
+            api_key="key", account_id="acc", base_url="https://config.harness.io"
+        )
         client = HarnessClient(config=config, base_url="https://kwarg.harness.io")
         assert client.base_url == "https://kwarg.harness.io"
         client.close()
@@ -1496,13 +1463,9 @@ class TestPaginationTodoWithDifferentStructures:
 
     def test_paginate_todo_with_nested_content(self, httpx_mock: HTTPXMock):
         """Test TODO pagination with nested data.content structure."""
-        httpx_mock.add_response(
-            json={"data": {"content": [{"id": "1"}, {"id": "2"}]}}
-        )
+        httpx_mock.add_response(json={"data": {"content": [{"id": "1"}, {"id": "2"}]}})
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.TODO, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.TODO, params={}))
         assert len(items) == 2
         client.close()
 
@@ -1510,9 +1473,7 @@ class TestPaginationTodoWithDifferentStructures:
         """Test TODO pagination with empty dict."""
         httpx_mock.add_response(json={})
         client = HarnessClient(api_key="key", account_id="acc")
-        items = list(
-            client._paginate("/test", pagination_style=PaginationStyle.TODO, params={})
-        )
+        items = list(client._paginate("/test", pagination_style=PaginationStyle.TODO, params={}))
         assert len(items) == 0
         client.close()
 

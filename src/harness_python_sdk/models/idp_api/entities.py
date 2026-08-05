@@ -24,8 +24,6 @@ class EntityResponse(HarnessModel):
     project_identifier: str = Field(default=None, alias="projectIdentifier")
     description: str | None = None
     tags: list[str, str] | None = []
-    # type: str
-    # owner: str
     #####
     # Additional Response properties
     #####
@@ -46,28 +44,36 @@ class EntityCreateRequest(HarnessModel):
     type: str
     owner: str
 
+
 class EntityWorkflowCreateRequest(EntityCreateRequest):
     """Workflow Specific Spec"""
+
     kind: str = Field(default="workflow", frozen=True)
     parameters: list[dict, dict]
     steps: list[dict, dict]
     links: list[dict, dict]
     outputs: list[dict, dict]
 
+
 class EntityComponentCreateRequest(EntityCreateRequest):
     """Component Specific Spec"""
+
     kind: str = Field(default="component", frozen=True)
     lifecycle: str
     metadata: dict | None = {}
 
+
 class EntityResourceCreateRequest(EntityCreateRequest):
     """Resource Specific Spec"""
+
     kind: str = Field(default="resource", frozen=True)
     lifecycle: str
     metadata: dict | None = {}
 
+
 class EntitySystemCreateRequest(EntityCreateRequest):
     """System Specific Spec"""
+
     kind: str = Field(default="system", frozen=True)
     lifecycle: str
     metadata: dict | None = {}

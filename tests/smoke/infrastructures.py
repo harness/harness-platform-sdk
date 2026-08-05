@@ -24,7 +24,7 @@ infrastructures_request = InfrastructureCreateRequest(
         "namespace": "<+input>",
         "releaseName": "release-<+INFRA_KEY_SHORT_ID>",
     },
-    allow_simultaneous_deployments=True
+    allow_simultaneous_deployments=True,
 )
 
 infrastructures = client.infrastructures.get(
@@ -34,7 +34,9 @@ infrastructures = client.infrastructures.get(
 if infrastructures:
     print(f"\t -> Get : { infrastructures.identifier}")
     infrastructures_request.description = "UPDATE from Existing"
-    infrastructures = client.infrastructures.update(identifier=infrastructures.identifier, body=infrastructures_request)
+    infrastructures = client.infrastructures.update(
+        identifier=infrastructures.identifier, body=infrastructures_request
+    )
     print(f"\t -> Updated : { infrastructures.identifier}")
 
 else:
@@ -42,7 +44,9 @@ else:
     infrastructures = client.infrastructures.create(infrastructures_request)
     print(f"\t -> Created : { infrastructures.identifier}")
     infrastructures_request.description = "UPDATE after Creating"
-    infrastructures = client.infrastructures.update(identifier=infrastructures.identifier, body=infrastructures_request)
+    infrastructures = client.infrastructures.update(
+        identifier=infrastructures.identifier, body=infrastructures_request
+    )
     print(f"\t -> Updated : { infrastructures.identifier}")
 print(f"Infrastructures -> List")
 for list_infrastructures in [

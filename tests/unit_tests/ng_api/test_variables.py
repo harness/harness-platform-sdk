@@ -22,9 +22,7 @@ class TestVariablesApi:
     def mock_client(self):
         """Create mock HarnessClient."""
         client = MagicMock(spec=HarnessClient)
-        client._default_scope = MagicMock(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        client._default_scope = MagicMock(account_id="acc123", org="org123", project="proj123")
         client._resolve_scope = MagicMock(
             return_value=Scope(
                 account_id="acc123",
@@ -44,8 +42,7 @@ class TestVariablesApi:
 
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         client._unwrap_response = MagicMock(
-            side_effect=lambda key_type=None, raw_data=None, scope=None: raw_data
-            or {}
+            side_effect=lambda key_type=None, raw_data=None, scope=None: raw_data or {}
         )
         return client
 
@@ -103,9 +100,7 @@ class TestVariablesApi:
             identifier="var1",
             name="TestVariable",
             type="String",
-            spec=VariableSpec(
-                value_type="FIXED", type="string", fixed_value="test_value"
-            ),
+            spec=VariableSpec(value_type="FIXED", type="string", fixed_value="test_value"),
         )
         scope = Scope(
             account_id="acc123",
@@ -221,9 +216,7 @@ class TestVariablesApi:
             identifier="var1",
             name="UpdatedVariable",
             type="String",
-            spec=VariableSpec(
-                value_type="FIXED", type="string", fixed_value="updated_value"
-            ),
+            spec=VariableSpec(value_type="FIXED", type="string", fixed_value="updated_value"),
         )
         scope = Scope(
             account_id="acc123",
@@ -242,9 +235,7 @@ class TestVariablesApi:
             identifier="var1",
             name="TestVariable",
             type="String",
-            spec=VariableSpec(
-                value_type="FIXED", type="string", fixed_value="test_value"
-            ),
+            spec=VariableSpec(value_type="FIXED", type="string", fixed_value="test_value"),
         )
         scope = Scope(
             account_id="acc123",
@@ -273,9 +264,7 @@ class TestVariablesApi:
             identifier="var1",
             name="TestVariable",
             type="String",
-            spec=VariableSpec(
-                value_type="FIXED", type="string", fixed_value="test_value"
-            ),
+            spec=VariableSpec(value_type="FIXED", type="string", fixed_value="test_value"),
         )
         scope = Scope(
             account_id="acc123",

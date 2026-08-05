@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-08-05
+
+### Updated
+
+- **Type Checking Configuration** — Pragmatic mypy setup for polymorphic SDK patterns
+  - Configured mypy to suppress errors in model files and API managers
+  - Rationale: Pydantic Field() integration and polymorphic request/response handling require runtime flexibility
+  - Core infrastructure (config, scope, exceptions) remains fully typed
+
+- **Technical Debt Cleanup** — Archived legacy development artifacts
+  - Archived 7 legacy build scripts to `scripts/archive/` (phase 1-3 tooling)
+  - Archived 6 obsolete P1 documentation files to `docs/archive/` (superseded by P2 design)
+  - Documentation now clear and navigable without legacy phase artifacts
+
+- **API Export Names** — Fixed singular/plural inconsistency
+  - Corrected `WorkspaceDefaultPipelineApi` → `WorkspaceDefaultPipelinesApi` to match actual class
+  - Prevents ImportError for users importing documented API names
+
+- **Build Configuration** — Removed dead coverage configuration
+  - Removed non-existent `_legacy` directory from coverage.omit in pyproject.toml
+  - Cleaner configuration without false warnings
+
+### Added
+
+- **Contributing Guidelines** — Python SDK documentation in CONTRIBUTING.md
+  - Clear directory structure explanation
+  - Developer setup guidance
+  - References to resource API implementation patterns
+
+---
+
 ## [0.9.0] - 2026-08-05
 
 ### Added
@@ -784,7 +815,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.7.0 | 8: SDK v5 Architecture Restructure | ✅ Complete | 2026-04-14 | 2,700+ | ≥85% |
 | 0.8.0 | 9: Template, Variables & IACM Workspace APIs | ✅ Complete | 2026-05-18 | 3,000+ | ≥85% |
 | 0.9.0 | 10: Internal Developer Portal (IDP) APIs | ✅ Complete | 2026-08-05 | 3,085+ | ≥85% |
-| 1.0.0 | 11: Production Release | 🔲 Planned | TBD | TBD | TBD |
+| 0.10.0 | 11: Type Checking & Technical Debt Cleanup | ✅ Complete | 2026-08-05 | 3,085+ | ≥85% |
+| 1.0.0 | 12: Production Release | 🔲 Planned | TBD | TBD | TBD |
 
 ---
 

@@ -38,20 +38,20 @@ workspaces_request = WorkspaceCreateRequest(
         "HARNESS_ACCOUNT_ID": {
             "key": "HARNESS_ACCOUNT_ID",
             "value": client._config.account_id,
-            "value_type": "string"
+            "value_type": "string",
         },
         "HARNESS_PLATFORM_API_KEY": {
             "key": "HARNESS_PLATFORM_API_KEY",
             "value": secret.identifier,
-            "value_type": "secret"
+            "value_type": "secret",
         },
         "HARNESS_ENDPOINT": {
             "key": "HARNESS_ENDPOINT",
             "value": client._config.base_url,
-            "value_type": "string"
+            "value_type": "string",
         },
         # ""
-    }
+    },
 )
 
 workspace = client.workspaces.get(
@@ -66,97 +66,81 @@ pipeline_request = PipelineV0CreateRequest(
     name="IACM Provision",
     description="a test for IACM",
     stages=[
-    {
-        "stage": {
-            "name": "Provision",
-            "identifier": "Provision",
-            "description": "",
-            "type": "IACM",
-            "spec": {
-                "platform": {
-                    "os": "Linux",
-                    "arch": "Amd64"
+        {
+            "stage": {
+                "name": "Provision",
+                "identifier": "Provision",
+                "description": "",
+                "type": "IACM",
+                "spec": {
+                    "platform": {"os": "Linux", "arch": "Amd64"},
+                    "runtime": {"type": "Cloud", "spec": {}},
+                    "workspace": workspaces_request.identifier,
+                    "execution": {
+                        "steps": [
+                            {
+                                "step": {
+                                    "type": "Run",
+                                    "name": "Generate Provider file",
+                                    "identifier": "Generate_Provider_file",
+                                    "spec": {
+                                        "shell": "Sh",
+                                        "command": 'cd <+workspace.folderPath>\ncat << EOF > providers.tf\nterraform {\n  required_providers {\n    harness = {\n      source = "harness/harness"\n    }\n  }\n}\nprovider "harness" {}\nEOF\nls -l\n',
+                                    },
+                                }
+                            },
+                            {
+                                "step": {
+                                    "type": "IACMOpenTofuPlugin",
+                                    "name": "init",
+                                    "identifier": "init",
+                                    "timeout": "10m",
+                                    "spec": {"command": "init"},
+                                }
+                            },
+                            {
+                                "step": {
+                                    "type": "IACMOpenTofuPlugin",
+                                    "name": "plan",
+                                    "identifier": "plan",
+                                    "timeout": "10m",
+                                    "spec": {"command": "plan"},
+                                }
+                            },
+                            {
+                                "step": {
+                                    "type": "IACMApproval",
+                                    "name": "IACMApproval_1",
+                                    "identifier": "IACMApproval_1",
+                                    "spec": {"autoApprove": "false"},
+                                    "timeout": "1h",
+                                }
+                            },
+                            {
+                                "step": {
+                                    "type": "IACMOpenTofuPlugin",
+                                    "name": "apply",
+                                    "identifier": "apply",
+                                    "timeout": "10m",
+                                    "spec": {"command": "apply"},
+                                }
+                            },
+                            {
+                                "step": {
+                                    "type": "IACMOpenTofuPlugin",
+                                    "name": "destroy",
+                                    "identifier": "destroy",
+                                    "timeout": "10m",
+                                    "spec": {"command": "destroy"},
+                                }
+                            },
+                        ]
+                    },
                 },
-                "runtime": {
-                    "type": "Cloud",
-                    "spec": {}
-                },
-                "workspace": workspaces_request.identifier,
-                "execution": {
-                    "steps": [
-                        {
-                            "step": {
-                                "type": "Run",
-                                "name": "Generate Provider file",
-                                "identifier": "Generate_Provider_file",
-                                "spec": {
-                                    "shell": "Sh",
-                                    "command": "cd <+workspace.folderPath>\ncat << EOF > providers.tf\nterraform {\n  required_providers {\n    harness = {\n      source = \"harness/harness\"\n    }\n  }\n}\nprovider \"harness\" {}\nEOF\nls -l\n"
-                                }
-                            }
-                        },
-                        {
-                            "step": {
-                                "type": "IACMOpenTofuPlugin",
-                                "name": "init",
-                                "identifier": "init",
-                                "timeout": "10m",
-                                "spec": {
-                                    "command": "init"
-                                }
-                            }
-                        },
-                        {
-                            "step": {
-                                "type": "IACMOpenTofuPlugin",
-                                "name": "plan",
-                                "identifier": "plan",
-                                "timeout": "10m",
-                                "spec": {
-                                    "command": "plan"
-                                }
-                            }
-                        },
-                        {
-                            "step": {
-                                "type": "IACMApproval",
-                                "name": "IACMApproval_1",
-                                "identifier": "IACMApproval_1",
-                                "spec": {
-                                    "autoApprove": "false"
-                                },
-                                "timeout": "1h"
-                            }
-                        },
-                        {
-                            "step": {
-                                "type": "IACMOpenTofuPlugin",
-                                "name": "apply",
-                                "identifier": "apply",
-                                "timeout": "10m",
-                                "spec": {
-                                    "command": "apply"
-                                }
-                            }
-                        },
-                        {
-                            "step": {
-                                "type": "IACMOpenTofuPlugin",
-                                "name": "destroy",
-                                "identifier": "destroy",
-                                "timeout": "10m",
-                                "spec": {
-                                    "command": "destroy"
-                                }
-                            }
-                        }
-                    ]
-                }
-            },
-            "tags": {}
+                "tags": {},
+            }
         }
-    }
-    ]
+    ],
 )
 
 pipeline = client.pipelines_v0.get(identifier=pipeline_request.identifier)

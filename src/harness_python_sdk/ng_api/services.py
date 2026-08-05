@@ -49,11 +49,11 @@ class ServicesApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -63,20 +63,26 @@ class ServicesApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -112,22 +118,19 @@ class ServicesApi:
         output_body = {
             "identifier": body["identifier"],
             "name": body["name"],
-            "description": body.get("description",""),
-            "tags": body.get("tags",{}),
+            "description": body.get("description", ""),
+            "tags": body.get("tags", {}),
             # "accountIdentifier": body["accountIdentifier"],
             "orgIdentifier": body["orgIdentifier"],
-            "projectIdentifier": body["projectIdentifier"]
+            "projectIdentifier": body["projectIdentifier"],
         }
         output_yaml_body = output_body.copy()
-        output_yaml_body["serviceDefinition"] = {
-            "spec": {},
-            "type": body["type"]
-        }
+        output_yaml_body["serviceDefinition"] = {"spec": {}, "type": body["type"]}
         if "manifests" in body:
             output_yaml_body["serviceDefinition"]["spec"]["manifests"] = body["manifests"]
         if "artifacts" in body:
             output_yaml_body["serviceDefinition"]["spec"]["artifacts"] = body["artifacts"]
-        output_body["yaml"]= yaml.dump({self.wrap_key: output_yaml_body})
+        output_body["yaml"] = yaml.dump({self.wrap_key: output_yaml_body})
         ##########
 
         return output_body
@@ -214,18 +217,16 @@ class ServicesApi:
             identifier=identifier,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
 
-        unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope
+        )
         return self._unwrapped_response(unwrapped)
 
-    def create(
-        self, body: ServiceCreateRequest, scope: Scope | None = None
-    ) -> ServiceResponse:
+    def create(self, body: ServiceCreateRequest, scope: Scope | None = None) -> ServiceResponse:
         """Create a new service.
 
         Args:
@@ -304,9 +305,7 @@ class ServicesApi:
 
         return self._unwrapped_response(unwrapped_response=unwrapped)
 
-    def delete(
-        self, identifier: str, scope: Scope | None = None
-    ) -> dict | None:
+    def delete(self, identifier: str, scope: Scope | None = None) -> dict | None:
         """Delete a service.
 
         Args:

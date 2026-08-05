@@ -6,9 +6,9 @@ Provides CRUD operations for variables resources.
 
 from __future__ import annotations
 
-import yaml
-
 from collections.abc import Iterator
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.ng_api.variables import (
@@ -50,11 +50,11 @@ class VariablesApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -64,20 +64,26 @@ class VariablesApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -189,18 +195,16 @@ class VariablesApi:
             identifier=identifier,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
         if not response:
             return {}
 
-        unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope)
+        unwrapped = self._client._unwrap_response(
+            key_type=self.unwrap_key, raw_data=response, scope=self.resolved_scope
+        )
         return VariableResponse(**unwrapped)
 
-    def create(
-        self, body: VariableCreateRequest, scope: Scope | None = None
-    ) -> VariableResponse:
+    def create(self, body: VariableCreateRequest, scope: Scope | None = None) -> VariableResponse:
         """Create a new variables.
 
         Args:
@@ -263,9 +267,7 @@ class VariablesApi:
         unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response)
         return VariableResponse(**unwrapped)
 
-    def delete(
-        self, identifier: str, scope: Scope | None = None
-    ) -> dict | None:
+    def delete(self, identifier: str, scope: Scope | None = None) -> dict | None:
         """Delete a variables.
 
         Args:

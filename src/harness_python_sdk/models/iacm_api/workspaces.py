@@ -6,7 +6,7 @@ Defines request/response models for workspace CRUD operations.
 
 from __future__ import annotations
 
-from pydantic import Field, AliasChoices, model_validator, field_validator
+from pydantic import AliasChoices, Field, field_validator, model_validator
 
 from harness_python_sdk.base_model import HarnessModel
 
@@ -19,14 +19,17 @@ class WorkspaceCore(HarnessModel):
 
     identifier: str
     name: str
-    account_identifier: str = Field(default=None, alias=AliasChoices("accountId","accountIdentifier"))
+    account_identifier: str = Field(
+        default=None, alias=AliasChoices("accountId", "accountIdentifier")
+    )
     org_identifier: str = Field(default=None, alias="orgIdentifier")
     project_identifier: str = Field(default=None, alias="projectIdentifier")
     description: str | None = None
     tags: dict[str, str] | None = {}
-    created_at: int = Field(default=None, alias=AliasChoices("createdAt","created"))
-    updated_at: int = Field(default=None, alias=AliasChoices("lastUpdatedAt","updatedAt","updated"))
-
+    created_at: int = Field(default=None, alias=AliasChoices("createdAt", "created"))
+    updated_at: int = Field(
+        default=None, alias=AliasChoices("lastUpdatedAt", "updatedAt", "updated")
+    )
 
     default_pipelines: dict | None = {}
     cost_estimation_enabled: bool | None = False
@@ -49,6 +52,7 @@ class WorkspaceCore(HarnessModel):
     terraform_variable_files: list[dict] | None = []
     terraform_variables: dict | None = {}
     variable_sets: list[str] | None = []
+
 
 class WorkspaceResponse(WorkspaceCore):
     """Workspace resource response model.
@@ -75,9 +79,15 @@ class WorkspaceResponse(WorkspaceCore):
 class WorkspaceCreateRequest(WorkspaceCore):
     """Workspace creation request model."""
 
-    @model_validator(mode='after')
-    def check_at_least_one(self) -> 'WorkspaceCreateRequest':
+    @model_validator(mode="after")
+    def check_at_least_one(self) -> "WorkspaceCreateRequest":
         # Check if both fields are null
-        if self.repository_branch is None and self.repository_commit is None and self.repository_sha is None:
-            raise ValueError('One of "repository_branch", "repository_commit", or "repository_sha" must be provided.')
+        if (
+            self.repository_branch is None
+            and self.repository_commit is None
+            and self.repository_sha is None
+        ):
+            raise ValueError(
+                'One of "repository_branch", "repository_commit", or "repository_sha" must be provided.'
+            )
         return self

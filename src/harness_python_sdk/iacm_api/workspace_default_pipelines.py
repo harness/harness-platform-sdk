@@ -6,17 +6,17 @@ Provides CRUD operations for workspacedefaultpipeliness resources.
 
 from __future__ import annotations
 
-import yaml
 import time
-
 from collections.abc import Iterator
 from itertools import chain
+
+import yaml
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.iacm_api.workspace_default_pipelines import (
     WorkspaceDefaultPipelineCreateRequest,
-    WorkspaceDefaultPipelineResponse,
     WorkspaceDefaultPipelineOperation,
+    WorkspaceDefaultPipelineResponse,
 )
 from harness_python_sdk.pagination import PaginationStyle
 from harness_python_sdk.scope import Scope
@@ -52,11 +52,11 @@ class WorkspaceDefaultPipelinesApi:
     @property
     def default_params(self):
         """Get the Default Request Parameters configuration"""
-        return getattr(self, '_default_params', None)
+        return getattr(self, "_default_params", None)
 
     @default_params.setter
     def default_params(self, resolved: Scope) -> dict:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -66,20 +66,26 @@ class WorkspaceDefaultPipelinesApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
-        self._default_params = self._client._build_url("&".join([
-            "accountIdentifier={account_id}",
-            "orgIdentifier={org}",
-            "projectIdentifier={project}"
-        ]), resolved, is_params=True)
+        self._default_params = self._client._build_url(
+            "&".join(
+                [
+                    "accountIdentifier={account_id}",
+                    "orgIdentifier={org}",
+                    "projectIdentifier={project}",
+                ]
+            ),
+            resolved,
+            is_params=True,
+        )
 
     @property
     def resolved_scope(self):
         """Get the Resolved Scope configuration"""
-        return getattr(self, '_resolved_scope', None)
+        return getattr(self, "_resolved_scope", None)
 
     @resolved_scope.setter
     def resolved_scope(self, scope: Scope) -> str:
-        """ Resolve Scope Variables and Set Default Params
+        """Resolve Scope Variables and Set Default Params
         Args:
             scope: Call-time scope (takes precedence).
 
@@ -93,7 +99,9 @@ class WorkspaceDefaultPipelinesApi:
         # Call out to configure the default params
         self.default_params = self._resolved_scope
 
-    def _wrapped_body(self, body: WorkspaceDefaultPipelineCreateRequest, is_yaml: bool | None = False) -> dict:
+    def _wrapped_body(
+        self, body: WorkspaceDefaultPipelineCreateRequest, is_yaml: bool | None = False
+    ) -> dict:
         """Resolve and wrap the body payload to additionally inject scope details into the payload"""
 
         body = body.model_dump(exclude_none=True)
@@ -133,10 +141,12 @@ class WorkspaceDefaultPipelinesApi:
         for key_rm, key_rp in ignored_keys.items():
             if key_rm in response_obj:
                 response_obj[key_rp] = response_obj[key_rm]
-                response_obj.pop(key_rm,None)
+                response_obj.pop(key_rm, None)
         return WorkspaceDefaultPipelineResponse(**response_obj)
 
-    def list(self, scope: Scope | None = None, **kwargs) -> Iterator[WorkspaceDefaultPipelineResponse]:
+    def list(
+        self, scope: Scope | None = None, **kwargs
+    ) -> Iterator[WorkspaceDefaultPipelineResponse]:
         """List workspacedefaultpipelinesss in the specified organization.
 
         Args:
@@ -167,7 +177,12 @@ class WorkspaceDefaultPipelinesApi:
         )
         return iter([self._unwrapped_response(elem) for elem in outputs])
 
-    def get(self, workspace_identifier: str | None = None, operation: WorkspaceDefaultPipelineOperation | None = None, scope: Scope | None = None) -> WorkspaceDefaultPipelineResponse:
+    def get(
+        self,
+        workspace_identifier: str | None = None,
+        operation: WorkspaceDefaultPipelineOperation | None = None,
+        scope: Scope | None = None,
+    ) -> WorkspaceDefaultPipelineResponse:
         """Get a single workspacedefaultpipeliness by ID.
 
         Args:
@@ -190,9 +205,7 @@ class WorkspaceDefaultPipelinesApi:
             root_api_path=self.root_api_path,
         )
 
-        response = self._client._get(
-            url, params=self.default_params, response_model=None
-        )
+        response = self._client._get(url, params=self.default_params, response_model=None)
 
         if not response:
             return {}
@@ -297,8 +310,5 @@ class WorkspaceDefaultPipelinesApi:
             root_api_path=self.root_api_path,
         )
         return self._client._delete(
-            url,
-            params=self.default_params,
-            body=self._wrapped_body(body),
-            response_model=None
+            url, params=self.default_params, body=self._wrapped_body(body), response_model=None
         )

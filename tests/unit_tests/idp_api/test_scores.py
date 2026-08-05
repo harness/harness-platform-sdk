@@ -6,11 +6,11 @@ import pytest
 
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.exceptions import ApiError
+from harness_python_sdk.idp_api.scores import ScoreApi
 from harness_python_sdk.models.idp_api.scores import (
     ScoreResponse,
     ScoreSummaryResponse,
 )
-from harness_python_sdk.idp_api.scores import ScoreApi
 from harness_python_sdk.pagination import PaginationStyle
 from harness_python_sdk.scope import Scope
 
@@ -134,9 +134,7 @@ class TestScoreApi:
 
     def test_get_summary_success(self, api, mock_client, sample_score_summary_response):
         """Test successful get_summary operation."""
-        response_data = {
-            "scorecards_summary": [sample_score_summary_response]
-        }
+        response_data = {"scorecards_summary": [sample_score_summary_response]}
         mock_client._get = MagicMock(return_value=response_data)
 
         scope = Scope(account_id="acc123", org="org123", project="proj123")
@@ -256,9 +254,7 @@ class TestScoreApi:
         mock_client._unwrap_response = MagicMock(return_value=sample_score_summary_response)
 
         scope = Scope(account_id="acc123", org="org123", project="proj123")
-        result = api.recalibrate(
-            "entity123", "resource", "scorecard123", scope=scope
-        )
+        result = api.recalibrate("entity123", "resource", "scorecard123", scope=scope)
 
         assert isinstance(result, ScoreSummaryResponse)
         mock_client._post.assert_called_once()
@@ -343,9 +339,7 @@ class TestScoreApi:
 
     def test_wrapped_body_injects_scope_identifiers(self, api, mock_client):
         """Test _wrapped_body injects scope identifiers (if used)."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         from harness_python_sdk.models.idp_api.scores import ScoreCreateRequest
 
         body = ScoreCreateRequest(

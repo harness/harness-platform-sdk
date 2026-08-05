@@ -30,6 +30,7 @@ class TestTriggersV0Api:
                 pipeline="pipe1",
             )
         )
+
         def build_url_side_effect(*args, **kwargs):
             if kwargs.get("is_params"):
                 return {
@@ -39,6 +40,7 @@ class TestTriggersV0Api:
                     "pipelineIdentifier": "pipe1",
                 }
             return "/pipeline/api/triggers"
+
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         return client
 
@@ -50,12 +52,14 @@ class TestTriggersV0Api:
     def test_get_success(self, api, mock_client):
         """Test successful get operation."""
         response_data = {"identifier": "trigger1", "name": "Webhook Trigger"}
-        response_data.update({
-                    "accountIdentifier": "acc123",
-                    "orgIdentifier": "org123",
-                    "projectIdentifier": "proj123",
-                    "pipelineIdentifier": "pipe1",
-                })
+        response_data.update(
+            {
+                "accountIdentifier": "acc123",
+                "orgIdentifier": "org123",
+                "projectIdentifier": "proj123",
+                "pipelineIdentifier": "pipe1",
+            }
+        )
         mock_client._get = MagicMock(return_value=response_data)
         mock_client._unwrap_response = MagicMock(return_value=response_data)
 

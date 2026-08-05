@@ -24,6 +24,7 @@ class TestInfrastructuresApi:
         client._resolve_scope = MagicMock(
             return_value=Scope(account_id="acc123", org="org123", project="proj123")
         )
+
         def build_url_side_effect(*args, **kwargs):
             if kwargs.get("is_params"):
                 return {
@@ -32,6 +33,7 @@ class TestInfrastructuresApi:
                     "projectIdentifier": "proj123",
                 }
             return "/ng/api/infrastructures"
+
         client._build_url = MagicMock(side_effect=build_url_side_effect)
         return client
 
@@ -130,9 +132,7 @@ class TestInfrastructuresApi:
 
     def test_list_success(self, api, mock_client, sample_infra_response):
         """Test list operation."""
-        mock_client._paginate = MagicMock(
-            return_value=iter([sample_infra_response])
-        )
+        mock_client._paginate = MagicMock(return_value=iter([sample_infra_response]))
 
         scope = Scope(account_id="acc123", org="org123", project="proj123")
         results = list(api.list(environment_identifier="env123", scope=scope))
@@ -173,9 +173,7 @@ class TestInfrastructuresApi:
 
     def test_wrapped_body_structure(self, api):
         """Test _wrapped_body structure."""
-        api._resolved_scope = Scope(
-            account_id="acc123", org="org123", project="proj123"
-        )
+        api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
         body = InfrastructureCreateRequest(
             identifier="infra1",
             name="Test",

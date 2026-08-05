@@ -28,6 +28,7 @@ class ScoreResponse(HarnessModel):
     overall_score: int
     scorecard_scores: list[dict] | None = []
 
+
 class ScoreSummaryResponse(HarnessModel):
     """Score summary resource response model.
 
@@ -49,6 +50,7 @@ class ScoreSummaryResponse(HarnessModel):
     # overall_score: int
     checks_statuses: list[dict] | None = []
     timestamp: int
+
 
 class ScoreCreateRequest(HarnessModel):
     """Score creation request model."""
