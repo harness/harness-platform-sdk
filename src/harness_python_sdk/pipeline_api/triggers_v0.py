@@ -33,18 +33,38 @@ class TriggersV0Api:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for trigger endpoints.
+
+        Returns:
+            str: The base API path for trigger operations.
+        """
         return "/pipeline/api/triggers"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for trigger request bodies.
+
+        Returns:
+            str: The key used to wrap trigger data in API requests.
+        """
         return "trigger"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for trigger data.
+
+        Returns:
+            str: The key used to extract trigger data from API responses.
+        """
         return "trigger"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return True
 
     @property

@@ -14,6 +14,18 @@ from harness_python_sdk.base_model import HarnessModel
 
 
 class WorkspaceDefaultPipelineOperation(str, Enum):
+    """Terraform operation type for workspace pipelines.
+
+    Attributes:
+        plan: Plan (dry-run) operation.
+        apply: Apply (execute) operation.
+        destroy: Destroy (cleanup) operation.
+        drift: Drift detection operation.
+        synth: Synthesize operation.
+        diff: Diff operation.
+        deploy: Deploy operation.
+    """
+
     plan = "plan"
     apply = "apply"
     destroy = "destroy"
@@ -24,6 +36,15 @@ class WorkspaceDefaultPipelineOperation(str, Enum):
 
 
 class WorkspaceDefaultPipelineProvisioner(str, Enum):
+    """Infrastructure provisioning tool type.
+
+    Attributes:
+        terraform: Terraform provisioner.
+        opentofu: OpenTofu provisioner (Terraform fork).
+        terragrunt: Terragrunt provisioner.
+        awscdk: AWS CDK provisioner.
+    """
+
     terraform = "terraform"
     opentofu = "opentofu"
     terragrunt = "terragrunt"

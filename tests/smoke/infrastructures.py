@@ -9,7 +9,6 @@ print(f"Infrastructures -> List")
 for list_infrastructures in [
     elem for elem in client.infrastructures.list(environment_identifier=environment_identifier)
 ]:
-    # client._display_payload(list_infrastructures)
     print(f"\t \t -> : {list_infrastructures.identifier}")
 
 infrastructures_request = InfrastructureCreateRequest(
@@ -30,7 +29,6 @@ infrastructures_request = InfrastructureCreateRequest(
 infrastructures = client.infrastructures.get(
     identifier=infrastructures_request.identifier, environment_identifier=environment_identifier
 )
-# client._display_payload(infrastructures)
 if infrastructures:
     print(f"\t -> Get : { infrastructures.identifier}")
     infrastructures_request.description = "UPDATE from Existing"

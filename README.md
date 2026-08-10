@@ -18,7 +18,7 @@ client = HarnessClient(
 # Use context manager for automatic cleanup
 with client:
     # Access resource APIs
-    orgs = client.organizations_api.list()
+    orgs = client.organizations.list()
     for org in orgs:
         print(f"Organization: {org.identifier}")
 ```

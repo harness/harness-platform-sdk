@@ -7,7 +7,6 @@ print(f"{' Services ':#^40}")
 pipeline_identifier = "simple_test"
 print(f"Services -> List")
 for list_service in [elem for elem in client.services.list()]:
-    # client._display_payload(list_service)
     print(f"\t \t -> : {list_service.identifier}")
 
 service_request = ServiceCreateRequest(
@@ -62,7 +61,6 @@ service_request = ServiceCreateRequest(
 )
 
 service = client.services.get(identifier=service_request.identifier)
-# client._display_payload(service)
 if service:
     print(f"\t -> Get : { service.identifier}")
     service_request.description = "UPDATE from Existing"

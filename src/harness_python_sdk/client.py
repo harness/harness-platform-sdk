@@ -260,7 +260,6 @@ class HarnessClient:
             output["pipelineIdentifier"] = scope.pipeline
 
         return output
-        return Scope(account_id=account_id, org=org, project=project, pipeline=pipeline)
 
     def _resolve_idp_hierarchy(self, scope: Scope | None) -> dict:
         """Resolve IDP hierarchy by current scope and return as a dict.
@@ -896,46 +895,6 @@ class HarnessClient:
 
                 if not next_token:
                     break
-
-        elif pagination_style == PaginationStyle.TODO:
-            # TODO: pagination style unconfirmed — return single page without pagination
-            if method == "post":
-                response = self._post(url, params=params, body=request_body)
-            else:
-                response = self._get(url, params=params)
-
-            # Extract items from response - handle multiple response structures
-            if isinstance(response, list):
-                items = response
-            elif isinstance(response, dict):
-                data = response.get("data")
-                if isinstance(data, dict) and "content" in data:
-                    # Nested structure: response.data.content
-                    items = data.get("content", [])
-                elif isinstance(data, list):
-                    # Direct data array
-                    items = data
-                else:
-                    items = []
-            else:
-                items = []
-
-            # Yield each item
-            for item in items:
-                # Unwrap nested field if specified
-                data_to_yield = item
-                # 2026-04-21
-                # NOTE: Some paginated responses do not include the the hierarchy details
-                # in their responses. This will normalize the details and return the
-                # resolved hierarchy back into the payload for each element.
-                data_to_yield.update(dict(resolved_hierarchy))
-                if unwrap_field and isinstance(item, dict):
-                    data_to_yield = item.get(unwrap_field, item)
-
-                if response_model and not isinstance(data_to_yield, response_model):
-                    yield response_model(**data_to_yield)
-                else:
-                    yield data_to_yield
 
     @property
     def connectors(self):

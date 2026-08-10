@@ -34,18 +34,38 @@ class WorkspaceApprovalsApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for workspace approval endpoints.
+
+        Returns:
+            str: The base API path for workspace approval operations.
+        """
         return "/iacm/api"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for workspace approval request bodies.
+
+        Returns:
+            str: The key used to wrap workspace approval data in API requests, or None if not used.
+        """
         return None
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for workspace approval data.
+
+        Returns:
+            str: The key used to extract workspace approval data from API responses, or None if not used.
+        """
         return None
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: False, as workspace approval request bodies do not need wrapping.
+        """
         return False
 
     @property
@@ -211,42 +231,6 @@ class WorkspaceApprovalsApi:
         )
 
         return WorkspaceApprovalResponse(**unwrapped)
-
-    # 2026-05-13
-    # NOTE: We have disabled this endpoint due to the nature of how IACM Approvals work. At this time, the creation of an
-    # approval should be by an existing Pipeline execution and therefore, only the `update` action is viable.
-    ######################
-    # def create(
-    #     self, body: WorkspaceApprovalCreateRequest, scope: Scope | None = None
-    # ) -> WorkspaceApprovalResponse:
-    #     """Create a new workspaceapprovals.
-
-    #     Args:
-    #         body: WorkspaceApprovalCreateRequest request with required fields.
-    #         scope: Scope containing resource scope. If None, uses client default scope.
-    #         scope: Scope containing org. If None, uses client default scope.
-
-    #     Returns:
-    #         WorkspaceApprovalResponse: The created workspaceapprovals.
-
-    #     Raises:
-    #         ScopeNotSetError: If scope cannot be resolved.
-    #         ApiError: For non-2xx responses.
-    #     """
-    #     self.resolved_scope = scope
-    #     url = self._client._build_url(
-    #         "{root_api_path}",
-    #         self.resolved_scope,
-    #         root_api_path=self.root_api_path,
-    #     )
-
-    #     response = self._client._post(
-    #         url, params=self.default_params, body=self._wrapped_body(body), response_model=None
-    #     )
-
-    #     unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response)
-    #     return WorkspaceApprovalResponse(**unwrapped)
-    ######################
 
     def update(
         self,

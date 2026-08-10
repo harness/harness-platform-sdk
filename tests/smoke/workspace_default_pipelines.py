@@ -22,7 +22,6 @@ print(f"workspace_default_pipelines -> List by Project")
 for list_workspace_default_pipelines in [
     elem for elem in client.workspace_default_pipelines.list()
 ]:
-    # client._display_payload(list_workspace_default_pipelines)
     print(f"\t \t -> : {list_workspace_default_pipelines.operation}")
 
 print(f"workspace_default_pipelines -> Get Default by operation")
@@ -55,7 +54,6 @@ workspace_default_pipelines = client.workspace_default_pipelines.get(
     workspace_identifier=workspace_default_pipelines_request_by_ws.workspace_identifier,
     operation=workspace_default_pipelines_request_by_ws.operation,
 )
-# client._display_payload(workspace_default_pipelines)
 if workspace_default_pipelines:
     print(f"\t -> Get [Found]: { workspace_default_pipelines.operation}")
 else:
@@ -80,7 +78,6 @@ print(f"workspace_default_pipelines -> List by Project")
 for list_workspace_default_pipelines in [
     elem for elem in client.workspace_default_pipelines.list()
 ]:
-    # client._display_payload(list_workspace_default_pipelines)
     print(f"\t \t -> : {list_workspace_default_pipelines.operation}")
 
 if unit_cleanup:

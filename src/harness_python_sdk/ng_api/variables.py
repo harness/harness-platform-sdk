@@ -33,18 +33,38 @@ class VariablesApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for variable endpoints.
+
+        Returns:
+            str: The base API path for variable operations.
+        """
         return "/ng/api/variables"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for variable request bodies.
+
+        Returns:
+            str: The key used to wrap variable data in API requests.
+        """
         return "variable"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for variable data.
+
+        Returns:
+            str: The key used to extract variable data from API responses.
+        """
         return "variable"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return True
 
     @property

@@ -7,7 +7,6 @@ print(f"{' TemplatesV0 ':#^40}")
 pipeline_identifier = "simple_test"
 print(f"TemplatesV0 -> List")
 for list_templates_v0 in [elem for elem in client.templates_v0.list()]:
-    # client._display_payload(list_templates_v0)
     print(f"\t \t -> : {list_templates_v0.identifier}")
 
 templates_v0_request = TemplateV0CreateRequest(
@@ -32,20 +31,17 @@ templates_v0_request = TemplateV0CreateRequest(
 )
 
 templates_v0 = client.templates_v0.get(identifier=templates_v0_request.identifier)
-# client._display_payload(templates_v0)
 if templates_v0:
     print(f"\t -> Get : { templates_v0.identifier}")
     templates_v0_request.description = "UPDATE from Existing"
     templates_v0 = client.templates_v0.update(
         identifier=templates_v0.identifier, body=templates_v0_request
     )
-    # client._display_payload(templates_v0)
     print(f"\t -> Updated : { templates_v0.identifier}")
 
 else:
     templates_v0_request.description = "CREATE from New"
     templates_v0 = client.templates_v0.create(templates_v0_request)
-    # client._display_payload(templates_v0)
     print(f"\t -> Created : { templates_v0.identifier}")
     templates_v0_request.description = "UPDATE after Creating"
     templates_v0 = client.templates_v0.update(

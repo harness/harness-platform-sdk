@@ -33,18 +33,38 @@ class PipelinesV0Api:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for pipeline endpoints.
+
+        Returns:
+            str: The base API path for pipeline operations.
+        """
         return "/pipeline/api/pipelines"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for pipeline request bodies.
+
+        Returns:
+            str: The key used to wrap pipeline data in API requests.
+        """
         return "pipeline"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for pipeline data.
+
+        Returns:
+            str: The key used to extract pipeline data from API responses, or None if not needed.
+        """
         return None
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return True
 
     @property

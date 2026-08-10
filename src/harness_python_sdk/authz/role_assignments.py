@@ -30,14 +30,29 @@ class RoleAssignmentsApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for role assignment endpoints.
+
+        Returns:
+            str: The base API path for role assignment operations.
+        """
         return "/authz/api/roleassignments"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for role assignment data.
+
+        Returns:
+            str: The key used to extract role assignment data from API responses.
+        """
         return "roleAssignment"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: False, as role assignment request bodies do not need wrapping.
+        """
         return False
 
     @property

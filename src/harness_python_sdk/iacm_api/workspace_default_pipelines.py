@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import time
 from collections.abc import Iterator
-from itertools import chain
 
 import yaml
 
@@ -35,18 +34,38 @@ class WorkspaceDefaultPipelinesApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for workspace default pipeline endpoints.
+
+        Returns:
+            str: The base API path for workspace default pipeline operations.
+        """
         return "/iacm/api"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for workspace default pipeline request bodies.
+
+        Returns:
+            str: The key used to wrap workspace default pipeline data in API requests, or None if not used.
+        """
         return None
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for workspace default pipeline data.
+
+        Returns:
+            str: The key used to extract workspace default pipeline data from API responses, or None if not used.
+        """
         return None
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: False, as workspace default pipeline request bodies do not need wrapping.
+        """
         return False
 
     @property
@@ -217,41 +236,6 @@ class WorkspaceDefaultPipelinesApi:
             return {}
 
         return iter([self._unwrapped_response(elem) for elem in response])
-
-    # 2026-05-13
-    # NOTE: We have disabled this endpoint due to the nature of how IACM Approvals work. At this time, the creation of an
-    # approval should be by an existing Pipeline execution and therefore, only the `update` action is viable.
-    ######################
-    # def create(
-    #     self, body: WorkspaceDefaultPipelineCreateRequest, scope: Scope | None = None
-    # ) -> WorkspaceDefaultPipelineResponse:
-    #     """Create a new workspacedefaultpipeliness.
-
-    #     Args:
-    #         body: WorkspaceDefaultPipelineCreateRequest request with required fields.
-    #         scope: Scope containing resource scope. If None, uses client default scope.
-    #         scope: Scope containing org. If None, uses client default scope.
-
-    #     Returns:
-    #         WorkspaceDefaultPipelineResponse: The created workspacedefaultpipeliness.
-
-    #     Raises:
-    #         ScopeNotSetError: If scope cannot be resolved.
-    #         ApiError: For non-2xx responses.
-    #     """
-    #     self.resolved_scope = scope
-    #     url = self._client._build_url(
-    #         "{root_api_path}",
-    #         self.resolved_scope,
-    #         root_api_path=self.root_api_path,
-    #     )
-
-    #     response = self._client._post(
-    #         url, params=self.default_params, body=self._wrapped_body(body), response_model=None
-    #     )
-
-    #     unwrapped = self._client._unwrap_response(key_type=self.unwrap_key, raw_data=response)
-    #     return WorkspaceDefaultPipelineResponse(**unwrapped)
 
     def update(
         self,

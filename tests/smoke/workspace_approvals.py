@@ -14,7 +14,6 @@ all_workspace_approvals = [
     )
 ]
 for list_workspace_approvals in all_workspace_approvals:
-    # client._display_payload(list_workspace_approvals)
     print(f"\t \t -> : {list_workspace_approvals.identifier}")
 
 if not all_workspace_approvals:
@@ -33,7 +32,6 @@ workspace_approvals_request = WorkspaceApprovalCreateRequest(
 workspace_approvals = client.workspace_approvals.get(
     identifier=approval_identifier,
 )
-# client._display_payload(workspace_approvals)
 if workspace_approvals:
     print(f"\t -> Get : { workspace_approvals.identifier}")
     workspace_approvals_request.description = "UPDATE from Existing"

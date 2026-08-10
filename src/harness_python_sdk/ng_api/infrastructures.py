@@ -32,18 +32,38 @@ class InfrastructuresApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for infrastructure endpoints.
+
+        Returns:
+            str: The base API path for infrastructure operations.
+        """
         return "/ng/api/infrastructures"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for infrastructure request bodies.
+
+        Returns:
+            str: The key used to wrap infrastructure data in API requests.
+        """
         return "infrastructureDefinition"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for infrastructure data.
+
+        Returns:
+            str: The key used to extract infrastructure data from API responses.
+        """
         return "infrastructure"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return True
 
     @property

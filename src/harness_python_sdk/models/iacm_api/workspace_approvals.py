@@ -14,6 +14,15 @@ from harness_python_sdk.base_model import HarnessModel
 
 
 class WorkspaceApprovalStatus(str, Enum):
+    """Status of a workspace approval request.
+
+    Attributes:
+        approved: Request was approved.
+        rejected: Request was rejected.
+        pending: Approval is pending.
+        unknown: Status is unknown or unrecognized.
+    """
+
     approved = "approved"
     rejected = "rejected"
     pending = "pending"

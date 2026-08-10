@@ -32,18 +32,38 @@ class WorkspaceStatesApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for workspace state endpoints.
+
+        Returns:
+            str: The base API path for workspace state operations.
+        """
         return "/iacm/api"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for workspace state request bodies.
+
+        Returns:
+            str: The key used to wrap workspace state data in API requests, or None if not used.
+        """
         return None
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for workspace state data.
+
+        Returns:
+            str: The key used to extract workspace state data from API responses, or None if not used.
+        """
         return None
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: False, as workspace state request bodies do not need wrapping.
+        """
         return False
 
     @property

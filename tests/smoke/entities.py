@@ -7,7 +7,6 @@ print(f"{' Entities ':#^40}")
 pipeline_identifier = "simple_test"
 print(f"Entities -> List")
 for list_entities in [elem for elem in client.entities.list()]:
-    # client._display_payload(list_entities)
     print(f"\t \t -> : {list_entities.identifier}")
 
 entities_request = EntityResourceCreateRequest(
@@ -20,7 +19,6 @@ entities_request = EntityResourceCreateRequest(
 )
 
 entities = client.entities.get(identifier=entities_request.identifier, kind=entities_request.kind)
-# client._display_payload(entities)
 if entities:
     print(f"\t -> Get : { entities.identifier}")
     entities_request.description = "UPDATE from Existing"
@@ -32,7 +30,6 @@ if entities:
 else:
     entities_request.description = "CREATE from New"
     entities = client.entities.create(entities_request)
-    # client._display_payload(entities)
     print(f"\t -> Created : { entities.identifier}")
     entities_request.description = "UPDATE after Creating"
     entities = client.entities.update(

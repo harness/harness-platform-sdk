@@ -30,14 +30,29 @@ class UserGroupsApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for user group endpoints.
+
+        Returns:
+            str: The base API path for user group operations.
+        """
         return "/ng/api/user-groups"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for user group data.
+
+        Returns:
+            str: The key used to extract user group data from API responses, or None if no unwrapping needed.
+        """
         return None  # "userGroup"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: False, as user group request bodies do not need wrapping.
+        """
         return False
 
     @property

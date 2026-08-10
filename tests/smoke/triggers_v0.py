@@ -9,7 +9,6 @@ print(f"Triggers -> List")
 for list_trigger in [
     elem for elem in client.triggers_v0.list(pipeline_identifier=pipeline_identifier)
 ]:
-    # client._display_payload(list_trigger)
     print(f"\t \t -> : {list_trigger.identifier}")
 
 trigger_request = TriggerV0CreateRequest(
@@ -44,7 +43,6 @@ trigger_request = TriggerV0CreateRequest(
 trigger = client.triggers_v0.get(
     identifier=trigger_request.identifier, pipeline_identifier=pipeline_identifier
 )
-# client._display_payload(trigger)
 if trigger:
     print(f"\t -> Get : {trigger.identifier}")
     trigger_request.description = "UPDATE from Existing"

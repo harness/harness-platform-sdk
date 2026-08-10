@@ -30,14 +30,29 @@ class OrganizationsApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for organization endpoints.
+
+        Returns:
+            str: The base API path for organization operations.
+        """
         return "/ng/api/organizations"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for organization data.
+
+        Returns:
+            str: The key used to extract organization data from API responses.
+        """
         return "organization"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return True
 
     @property

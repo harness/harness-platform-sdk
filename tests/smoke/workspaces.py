@@ -7,7 +7,6 @@ print(f"{' Workspaces ':#^40}")
 pipeline_identifier = "simple_test"
 print(f"Workspaces -> List")
 for list_workspaces in [elem for elem in client.workspaces.list()]:
-    # client._display_payload(list_workspaces)
     print(f"\t \t -> : {list_workspaces.identifier}")
 
 workspaces_request = WorkspaceCreateRequest(
@@ -21,7 +20,6 @@ workspaces_request = WorkspaceCreateRequest(
 workspaces = client.workspaces.get(
     identifier=workspaces_request.identifier,
 )
-# client._display_payload(workspaces)
 if workspaces:
     print(f"\t -> Get : { workspaces.identifier}")
     workspaces_request.description = "UPDATE from Existing"

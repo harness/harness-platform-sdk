@@ -9,7 +9,6 @@ print(f"EnvironmentsV2 -> List")
 for list_environments_v2 in [
     elem for elem in client.environments_v2.list(pipeline_identifier=pipeline_identifier)
 ]:
-    # client._display_payload(list_environments_v2)
     print(f"\t \t -> : {list_environments_v2.identifier}")
 
 environments_v2_request = EnvironmentV2CreateRequest(
@@ -21,7 +20,6 @@ environments_v2_request = EnvironmentV2CreateRequest(
 )
 
 environments_v2 = client.environments_v2.get(identifier=environments_v2_request.identifier)
-# client._display_payload(environments_v2)
 if environments_v2:
     print(f"\t -> Get : { environments_v2.identifier}")
     environments_v2_request.description = "UPDATE from Existing"

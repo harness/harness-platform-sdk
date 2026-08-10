@@ -17,7 +17,6 @@ for list_catalog_custom_properties in [
         catalog_property="metadata.hsf.is_drifted", scope=default_scope
     )
 ]:
-    # client._display_payload(list_catalog_custom_properties)
     print(
         f"\t \t -> : {list_catalog_custom_properties.identifier} = {list_catalog_custom_properties.value}"
     )
@@ -25,7 +24,6 @@ print(f"CatalogCustomProperty -> Get Properties for a given entity")
 list_catalog_custom_properties = client.catalog_custom_properties.get_by_entity(
     identifier=default_identifier, kind=default_kind, scope=default_scope
 )
-# client._display_payload(list_catalog_custom_properties)
 print(
     f"\t \t -> : {list_catalog_custom_properties.identifier} = {list_catalog_custom_properties.properties}"
 )

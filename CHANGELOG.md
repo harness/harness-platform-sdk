@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2026-08-12
+
+### Updated
+
+- **Documentation Enhancement & Standardization** — Comprehensive docstring improvements across all API resource modules
+  - Added Google-style docstrings to all @property decorators (54+ properties) in 24 API resource client classes
+  - Enhanced PaginationStyle enum with member documentation (OFFSET, CURSOR)
+  - Documented 6 Enum classes with comprehensive member descriptions and type information:
+    - WorkspaceVariableKind (env, tf scope types)
+    - WorkspaceValueType (string, secret value types)
+    - WorkspaceDefaultPipelineOperation (plan, apply, destroy, drift, synth, diff, deploy)
+    - WorkspaceDefaultPipelineProvisioner (terraform, opentofu, terragrunt, awscdk)
+    - WorkspaceApprovalStatus (approved, rejected, pending, unknown)
+  - Improved IDE tooltip support and developer experience across all resource APIs
+  - Affected modules: ng_api, authz, iacm_api, idp_api, pipeline_api, template_api
+
+- **README.md** — Corrected Quick Start example
+  - Fixed property name in Quick Start code example: `client.organizations_api.list()` → `client.organizations.list()`
+  - Ensures documentation matches actual API property names
+
+---
+
 ## [0.10.0] - 2026-08-05
 
 ### Updated

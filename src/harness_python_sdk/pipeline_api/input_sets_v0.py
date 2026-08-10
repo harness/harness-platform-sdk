@@ -33,18 +33,38 @@ class InputSetsV0Api:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for input set endpoints.
+
+        Returns:
+            str: The base API path for input set operations.
+        """
         return "/pipeline/api/inputSets"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for input set request bodies.
+
+        Returns:
+            str: The key used to wrap input set data in API requests.
+        """
         return "inputSet"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for input set data.
+
+        Returns:
+            str: The key used to extract input set data from API responses.
+        """
         return "inputSet"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return True
 
     @property

@@ -13,14 +13,12 @@ default_scope = Scope(
 # for list_scores in [
 #     elem for elem in client.scores.list(kind="resource", scope=default_scope)
 # ]:
-#     # client._display_payload(list_scores)
 #     print(f"\t \t -> : {list_scores.identifier} = {list_scores.overall_score}")
 
 print(f"Scores -> ScoreCards for Entity")
 for entity_score in [
     elem for elem in client.scores.get(identifier="lab", kind="resource", scope=default_scope)
 ]:
-    # client._display_payload(entity_score)
     print(f"\t \t -> : {entity_score.identifier} = {entity_score.overall_score}")
 
 print(f"Scores -> ScoreCard Summaries for Entity")
@@ -28,7 +26,6 @@ for score_summary in [
     elem
     for elem in client.scores.get_summary(identifier="lab", kind="resource", scope=default_scope)
 ]:
-    # client._display_payload(score_summary)
     print(
         f"\t \t -> : {score_summary.identifier}.{score_summary.scorecard_identifier} = {score_summary.score}"
     )
@@ -41,5 +38,4 @@ scores = client.scores.recalibrate(
     scope=default_scope,
 )
 if scores:
-    # client._display_payload(scores)
     print(f"\t \t -> : {scores.identifier}.{scores.scorecard_identifier} = {scores.score}")

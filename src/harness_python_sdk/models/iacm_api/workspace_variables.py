@@ -14,11 +14,25 @@ from harness_python_sdk.base_model import HarnessModel
 
 
 class WorkspaceVariableKind(str, Enum):
+    """Variable kind/scope for workspace variables.
+
+    Attributes:
+        env: Environment variable scope.
+        tf: Terraform variable scope.
+    """
+
     env = "env"
     tf = "tf"
 
 
 class WorkspaceValueType(str, Enum):
+    """Value type for workspace variables.
+
+    Attributes:
+        string: Plain string value.
+        secret: Secret/sensitive value (redacted from logs).
+    """
+
     string = "string"
     secret = "secret"
 

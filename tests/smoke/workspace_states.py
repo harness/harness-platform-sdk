@@ -8,7 +8,6 @@ print(f"{' WorkspaceStates ':#^40}")
 # for list_workspace_states in [
 #     elem for elem in client.workspace_states.list(pipeline_identifier=pipeline_identifier)
 # ]:
-#     # client._display_payload(list_workspace_states)
 #     print(f"\t \t -> : {list_workspace_states.identifier}")
 
 workspace_states_request = WorkspaceStateCreateRequest(
@@ -43,7 +42,6 @@ workspace_states_request = WorkspaceStateCreateRequest(
 )
 
 workspace_states = client.workspace_states.get(identifier=workspace_states_request.identifier)
-# client._display_payload(workspace_states)
 if workspace_states:
     print(f"\t -> Get : { workspace_states.identifier}")
     workspace_states_request.description = "UPDATE from Existing"

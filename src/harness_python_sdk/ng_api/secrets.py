@@ -30,14 +30,29 @@ class SecretsApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for secret endpoints.
+
+        Returns:
+            str: The base API path for secret operations.
+        """
         return "/ng/api/v2/secrets"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for secret data.
+
+        Returns:
+            str: The key used to extract secret data from API responses.
+        """
         return "secret"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return True
 
     @property

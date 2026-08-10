@@ -978,22 +978,6 @@ class TestPaginationCursor:
 class TestPaginationTodo:
     """Test TODO pagination style."""
 
-    def test_paginate_todo_single_page(self, httpx_mock: HTTPXMock):
-        """Test TODO pagination (unconfirmed style)."""
-        httpx_mock.add_response(json={"data": {"content": [{"id": "1"}, {"id": "2"}]}})
-        client = HarnessClient(api_key="key", account_id="acc")
-        items = list(client._paginate("/test", pagination_style=PaginationStyle.TODO, params={}))
-        assert len(items) == 2
-        client.close()
-
-    def test_paginate_todo_direct_array(self, httpx_mock: HTTPXMock):
-        """Test TODO pagination with direct array."""
-        httpx_mock.add_response(json=[{"id": "1"}, {"id": "2"}])
-        client = HarnessClient(api_key="key", account_id="acc")
-        items = list(client._paginate("/test", pagination_style=PaginationStyle.TODO, params={}))
-        assert len(items) == 2
-        client.close()
-
 
 class TestBuildUrlOverrides:
     """Test URL building with scope overrides."""
@@ -1460,22 +1444,6 @@ class TestPaginationWithAlreadyTypedData:
 
 class TestPaginationTodoWithDifferentStructures:
     """Test TODO pagination with various structures."""
-
-    def test_paginate_todo_with_nested_content(self, httpx_mock: HTTPXMock):
-        """Test TODO pagination with nested data.content structure."""
-        httpx_mock.add_response(json={"data": {"content": [{"id": "1"}, {"id": "2"}]}})
-        client = HarnessClient(api_key="key", account_id="acc")
-        items = list(client._paginate("/test", pagination_style=PaginationStyle.TODO, params={}))
-        assert len(items) == 2
-        client.close()
-
-    def test_paginate_todo_empty_dict(self, httpx_mock: HTTPXMock):
-        """Test TODO pagination with empty dict."""
-        httpx_mock.add_response(json={})
-        client = HarnessClient(api_key="key", account_id="acc")
-        items = list(client._paginate("/test", pagination_style=PaginationStyle.TODO, params={}))
-        assert len(items) == 0
-        client.close()
 
 
 class TestResolveHierarchyEdgeCases:

@@ -9,7 +9,6 @@ print(f"WorkspaceVariables -> List")
 for list_workspace_variables in [
     elem for elem in client.workspace_variables.list(workspace_identifier=workspace_identifier)
 ]:
-    # client._display_payload(list_workspace_variables)
     print(f"\t \t -> : {list_workspace_variables.identifier}")
 
 workspace_variables_request = WorkspaceVariableCreateRequest(
@@ -25,7 +24,6 @@ workspace_variables = client.workspace_variables.get(
     identifier=workspace_variables_request.identifier,
     kind=workspace_variables_request.kind,
 )
-# client._display_payload(workspace_variables)
 if workspace_variables:
     print(f"\t -> Get : { workspace_variables.identifier}")
     workspace_variables_request.description = "UPDATE from Existing"

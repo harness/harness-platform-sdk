@@ -30,14 +30,29 @@ class ProjectsApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for project endpoints.
+
+        Returns:
+            str: The base API path for project operations.
+        """
         return "/ng/api/projects"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for project data.
+
+        Returns:
+            str: The key used to extract project data from API responses.
+        """
         return "project"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return True
 
     @property

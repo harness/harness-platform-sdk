@@ -9,7 +9,6 @@ print(f"{' Variables ':#^40}")
 pipeline_identifier = "simple_test"
 print(f"Variables -> List")
 for list_variables in [elem for elem in client.variables.list()]:
-    # client._display_payload(list_variables)
     print(f"\t \t -> : {list_variables.identifier}")
 
 variables_request = VariableCreateRequest(
@@ -28,7 +27,6 @@ variables_request = VariableCreateRequest(
 variables = client.variables.get(
     identifier=variables_request.identifier,
 )
-# client._display_payload(variables)
 if variables:
     print(f"\t -> Get : { variables.identifier}")
     variables_request.description = "UPDATE from Existing"

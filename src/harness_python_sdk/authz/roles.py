@@ -30,14 +30,29 @@ class RolesApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for role endpoints.
+
+        Returns:
+            str: The base API path for role operations.
+        """
         return "/authz/api/roles"
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for role data.
+
+        Returns:
+            str: The key used to extract role data from API responses.
+        """
         return "role"
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return False
 
     @property

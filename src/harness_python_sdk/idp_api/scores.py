@@ -32,18 +32,38 @@ class ScoreApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for score endpoints.
+
+        Returns:
+            str: The base API path for score operations.
+        """
         return "/v1/scores"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for score request bodies.
+
+        Returns:
+            str: The key used to wrap score data in API requests, or None if not used.
+        """
         return None
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for score data.
+
+        Returns:
+            str: The key used to extract score data from API responses, or None if not needed.
+        """
         return None
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return False
 
     @property

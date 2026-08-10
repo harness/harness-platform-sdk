@@ -33,18 +33,38 @@ class CatalogCustomPropertyApi:
 
     @property
     def root_api_path(self) -> str:
+        """Get the root API path for catalog custom property endpoints.
+
+        Returns:
+            str: The base API path for catalog custom property operations.
+        """
         return "/v1/catalog/custom-properties"
 
     @property
     def wrap_key(self) -> str:
+        """Get the wrap key for catalog custom property request bodies.
+
+        Returns:
+            str: The key used to wrap catalog custom property data in API requests, or None if not used.
+        """
         return None
 
     @property
     def unwrap_key(self) -> str:
+        """Get the response unwrap key for catalog custom property data.
+
+        Returns:
+            str: The key used to extract catalog custom property data from API responses, or None if not needed.
+        """
         return None
 
     @property
     def should_wrap(self) -> bool:
+        """Check if request bodies should be wrapped.
+
+        Returns:
+            bool: True if request bodies need to be wrapped before sending to API.
+        """
         return False
 
     @property
