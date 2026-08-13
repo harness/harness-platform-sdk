@@ -1,0 +1,7 @@
+bash
+curl
+jq
+which
+sqlite-libs
+openssl
+ca-certificates

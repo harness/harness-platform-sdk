@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.12.0] - 2026-08-13
+
+### Added
+
+- **Docker Support** — Production-ready Docker configuration for containerized deployment
+  - Added `Dockerfile` with Alpine Linux base image (Python 3.14.6)
+  - Multi-stage build with optimized layers for SDK package
+  - Security hardening with CVE patches (curl, busybox edge repositories)
+  - Added `os_packages.txt` for declarative OS dependency management
+  - Environment variables for SSL/TLS verification and Python path configuration
+
+- **SSL Certificate Verification Override** — Utility script for X.509 strict mode handling
+  - Added `scripts/python_ssl_verify_x509_strict_override.py` for environment setup
+  - Allows selective SSL certificate verification bypass when needed for development/testing
+
+### Updated
+
+- **Mise Configuration** — Enhanced task runner environment and Docker integration
+  - Added environment variables block for build flags, staging, Docker command, image naming
+  - Configured Python version pinning (3.13) for tool management
+  - Added Docker-related environment variables (command, image, tag, mounts, workdir)
+  - Improved project directory and module path configuration
+
+- **PyProject Configuration** — Refined Python package setup
+  - Updated setuptools package directory configuration for better src layout support
+  - Removed deprecated Apache license classifier
+
+- **Smoke Test Script** — Improved code organization and maintainability
+  - Extracted `load_smoke_test_module()` helper function to reduce code duplication
+  - Replaced inline `exec(open().read())` patterns with centralized function
+  - Enhanced readability and consistency across module loading operations
+
+---
+
 ## [0.11.0] - 2026-08-12
 
 ### Updated

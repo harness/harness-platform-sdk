@@ -153,7 +153,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
 mise run tests
 
 # Run with coverage report
-mise run tests-cov
+mise run tests:cov
 
 # Run specific test file
 pytest tests/unit_tests/test_client.py -v
@@ -161,7 +161,7 @@ pytest tests/unit_tests/test_client.py -v
 
 ## Version
 
-- **Current:** 0.10.0
+- **Current:** 0.12.0
 - **Stability:** Beta (APIs subject to change before v1.0.0)
 
 ## License

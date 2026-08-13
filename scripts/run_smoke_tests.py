@@ -38,6 +38,11 @@ parser.add_argument(
     help='Should skip the default fixtures?'
 )
 
+def load_smoke_test_module(module_path, globals_dict):
+    with open(module_path, 'r') as f:
+        code = f.read()
+    exec(compile(code, str(module_path), 'exec'), globals_dict)
+
 args = parser.parse_args()
 cleanup = args.cleanup
 unit_cleanup = args.unit_cleanup
@@ -61,20 +66,17 @@ with HarnessClient(config) as client:
 
     if not args.skip_fixtures:
         # Load Organizations
-        with open(Path(smoke_test_dir).joinpath("organizations.py")) as f:
-            exec(f.read())
+        load_smoke_test_module(Path(smoke_test_dir).joinpath("organizations.py"), globals())
 
         client.set_default_scope(org=global_org_id)
 
         # Load Projects
-        with open(Path(smoke_test_dir).joinpath("projects.py")) as f:
-            exec(f.read())
+        load_smoke_test_module(Path(smoke_test_dir).joinpath("projects.py"), globals())
 
     client.set_default_scope(org=global_org_id,project=global_project_id)
     if not args.skip_fixtures:
         # Load Pipelines
-        with open(Path(smoke_test_dir).joinpath("pipelines_v0.py")) as f:
-            exec(f.read())
+        load_smoke_test_module(Path(smoke_test_dir).joinpath("pipelines_v0.py"), globals())
 
 
     glob_files = sorted(smoke_test_dir.glob("*.py"))
@@ -94,18 +96,15 @@ with HarnessClient(config) as client:
     if args.filter_type is not None:
         glob_files = [elem for elem in glob_files if elem.name == f"{args.filter_type}.py"]
         for file_path in glob_files:
-            with open(Path(smoke_test_dir).joinpath(file_path.name)) as f:
-                exec(f.read())
+            load_smoke_test_module(Path(smoke_test_dir).joinpath(file_path.name), globals())
     else:
         print("Processing Tier 1 List")
         for file_path in tier_1_files:
-            with open(Path(smoke_test_dir).joinpath(file_path.name)) as f:
-                exec(f.read())
+            load_smoke_test_module(Path(smoke_test_dir).joinpath(file_path.name), globals())
 
         print("Processing Tier 2 List")
         for file_path in tier_2_files:
-            with open(Path(smoke_test_dir).joinpath(file_path.name)) as f:
-                exec(f.read())
+            load_smoke_test_module(Path(smoke_test_dir).joinpath(file_path.name), globals())
 
 
     if cleanup:

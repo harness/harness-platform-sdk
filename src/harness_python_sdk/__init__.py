@@ -15,7 +15,7 @@ from .pipeline_api import *
 from .scope import Scope
 from .template_api import *
 
-__version__ = "0.10.0"
+__version__ = "0.12.0"
 
 __all__ = [
     "HarnessClient",

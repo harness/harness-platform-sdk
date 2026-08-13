@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "harness-python-sdk"
-version = "0.10.0"
+version = "0.12.0"
 description = "Python SDK for Harness API"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -16,7 +16,6 @@ keywords = ["harness", "api", "sdk", "iac"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -27,6 +26,7 @@ dependencies = [
     "httpx>=0.25.0",
     "pydantic>=2.0",
     "tenacity>=8.2.0",
+    "PyYAML==6.0.3",
 ]
 
 [project.optional-dependencies]
@@ -44,12 +44,11 @@ Homepage = "https://github.com/harness/harness-python-sdk"
 Repository = "https://github.com/harness/harness-python-sdk"
 Issues = "https://github.com/harness/harness-python-sdk/issues"
 
-[tool.setuptools]
-packages = ["harness_python_sdk"]
-
 [tool.setuptools.package-dir]
-where = "src"
-"models" = "models"
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

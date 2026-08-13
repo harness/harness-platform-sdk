@@ -5,6 +5,66 @@
 # Task runner for the Harness Python SDK project.
 # Covers OpenAPI spec management, model generation, testing, and development utilities.
 
+[env]
+# Default environment variables
+ROOT_DIR = "{{cwd}}"
+BUILD_FLAGS = ""
+STAGE = "release"
+DOCKER_COMMAND = "docker"
+DOCKERFILE = "Dockerfile"
+DOCKER_IMAGE = "harness-python-sdk"
+DOCKER_TAG = "latest"
+DOCKER_ENV = ""
+DOCKER_MOUNTS = ""
+PROJECT_DIR = "{{cwd}}/tests/"
+MODULE = "harness_python_sdk"
+WORKSPACE = "."
+WORKDIR = "/harness"
+DRONE_OUTPUT = "{{env.PROJECT_DIR}}DRONE_OUTPUT.env"
+
+[tools]
+python = "3.13"
+
+# ---------------------------------------------------------------------------
+# Testing
+# ---------------------------------------------------------------------------
+
+# Tasks
+[tasks.help]
+description = "Show all available tasks with descriptions"
+run = "mise tasks"
+
+[tasks."docker:build"]
+description = "Builds the Container Image"
+run = """
+BUILD_STAGE=""
+if [ -n "${STAGE}" ]; then
+  BUILD_STAGE="--target ${STAGE}"
+fi
+${DOCKER_COMMAND} build ${BUILD_FLAGS} ${BUILD_STAGE} -f ${WORKSPACE}/${DOCKERFILE} ${DOCKER_ARGS_CMD:-} -t ${DOCKER_IMAGE}:${DOCKER_TAG} ${WORKSPACE}
+"""
+
+[tasks."docker:push"]
+description = "Pushes the Container Image to the remote repository"
+run = "${DOCKER_COMMAND} push --all-platforms ${DOCKER_IMAGE}:${DOCKER_TAG}"
+
+[tasks."docker:debug"]
+description = "Loads the current directory into the container to allow running commands locally"
+run = "${DOCKER_COMMAND} run --rm -it ${DOCKER_ENV} -v ${PROJECT_DIR}:/${WORKDIR} ${DOCKER_MOUNTS} -w ${WORKDIR} --entrypoint sh ${DOCKER_IMAGE}:${DOCKER_TAG}"
+
+[tasks."docker:run"]
+description = "Runs a local test of the container image"
+run = [
+  "echo '' > ${DRONE_OUTPUT}",
+  "${DOCKER_COMMAND} run --rm -it ${DOCKER_ENV} -v ${PROJECT_DIR}:/${WORKDIR} ${DOCKER_MOUNTS} -w ${WORKDIR} ${DOCKER_IMAGE}:${DOCKER_TAG}",
+  "cat ${DRONE_OUTPUT}"
+]
+
+[tasks."docker:clean"]
+description = "Cleans up all images associated with the DOCKER_IMAGE"
+run = "${DOCKER_COMMAND} images --format '{{.Repository}}:{{.Tag}}' | grep ${DOCKER_IMAGE} | xargs ${DOCKER_COMMAND} rmi || true"
+
+
 # ---------------------------------------------------------------------------
 # Testing
 # ---------------------------------------------------------------------------
