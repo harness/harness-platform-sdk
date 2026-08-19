@@ -62,8 +62,8 @@ pip install harness-python-sdk
 
 The SDK includes typed API wrappers for Harness platform resources across multiple domains:
 
-- **Next-Gen (Core):** Organizations, Projects, Services, Connectors, Secrets, Infrastructures, Variables, User Groups, Environments
-- **Pipeline:** Pipelines (v0), Input Sets, Triggers, Templates
+- **Next-Gen (Core):** Organizations, Projects, Services, Connectors, Secrets, Infrastructures, Variables, User Groups, Environments V2
+- **Pipeline:** Pipelines (v0), Input Sets, Triggers, Templates (v0)
 - **Authorization:** Roles, Resource Groups, Role Assignments
 - **Infrastructure as Code:** Workspaces, Workspace Approvals, Workspace States, Workspace Variables, Workspace Default Pipelines
 - **Internal Developer Portal:** Entities, Catalog Custom Properties, Scores
@@ -161,7 +161,7 @@ pytest tests/unit_tests/test_client.py -v
 
 ## Version
 
-- **Current:** 0.12.0
+- **Current:** 0.13.0
 - **Stability:** Beta (APIs subject to change before v1.0.0)
 
 ## License

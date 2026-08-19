@@ -13,6 +13,7 @@ import yaml
 from harness_python_sdk.client import HarnessClient
 from harness_python_sdk.models.idp_api.entities import (
     EntityComponentCreateRequest,
+    EntityCreateRequest,
     EntityResourceCreateRequest,
     EntityResponse,
     EntitySystemCreateRequest,
@@ -86,14 +87,13 @@ class EntityApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
+        scope_url = ["accountIdentifier={account_id}"]
+        if resolved.org is not None:
+            scope_url.append("orgIdentifier={org}")
+        if resolved.project is not None:
+            scope_url.append("projectIdentifier={project}")
         self._default_params = self._client._build_url(
-            "&".join(
-                [
-                    "accountIdentifier={account_id}",
-                    "orgIdentifier={org}",
-                    "projectIdentifier={project}",
-                ]
-            ),
+            "&".join(scope_url),
             resolved,
             is_params=True,
         )
@@ -125,7 +125,11 @@ class EntityApi:
 
         # Get the current object Class Name to handle the YAML constructs
         current_object_class_name = body.__class__.__name__
-        body = body.model_dump(exclude_none=True)
+        if isinstance(body, EntityCreateRequest):
+            body = body.model_dump(exclude_none=True)
+
+        if "yaml" in body:
+            body = yaml.safe_load(body["yaml"])
 
         if "accountIdentifier" not in body or body["accountIdentifier"] is None:
             body["accountIdentifier"] = self.resolved_scope.account_id
@@ -143,7 +147,8 @@ class EntityApi:
         if "spec" not in body:
             body["spec"] = {"lifecycle": body["lifecycle"]}
 
-        del body["description"]
+        if "description" in body:
+            del body["description"]
         response = {"yaml": yaml.dump(body)}
         return response
 
@@ -159,32 +164,12 @@ class EntityApi:
 
     def _unwrapped_response(self, unwrapped_response: dict) -> EntityResponse:
         """Resolve and wrap the body payload to additionally inject scope details into the payload"""
-        # 2026-04-20
-        # NOTE: This is a workaround because the payload doesn't return a completely standardized
-        # response. Therefore, we need to construct one.
         response_obj = unwrapped_response
-        # if "yaml" in unwrapped_response:
-        #     raw_response_yaml = yaml.safe_load(unwrapped_response["yaml"])
-        #     if "service" in raw_response_yaml:
-        #         if "serviceDefinition" in raw_response_yaml["service"]:
-        #             service_definition = raw_response_yaml["service"]["serviceDefinition"]
-        #             response_obj["type"] = service_definition["type"]
-        #             if "spec" in service_definition:
-        #                 spec_definition = service_definition["spec"]
-        #                 if "manifests" in spec_definition:
-        #                     if not spec_definition["manifests"]:
-        #                         response_obj["manifests"] = []
-        #                     else:
-        #                         response_obj["manifests"] = spec_definition["manifests"]
-        #                 if "artifacts" in spec_definition:
-        #                     if not spec_definition["artifacts"]:
-        #                         response_obj["artifacts"] = []
-        #                     else:
-        #                         response_obj["artifacts"] = spec_definition["artifacts"]
-        #     del response_obj["yaml"]
         return EntityResponse(**response_obj)
 
-    def list(self, scope: Scope | None = None, **kwargs) -> Iterator[EntityResponse]:
+    def list(
+        self, scope: Scope | None = None, recursive=False, **kwargs
+    ) -> Iterator[EntityResponse]:
         """List entitiesss in the specified organization.
 
         Args:
@@ -211,7 +196,7 @@ class EntityApi:
             params=kwargs,
             response_model=EntityResponse,
             pagination_style=PaginationStyle.OFFSET,  # per pagination_inventory.md
-            scope=self.resolved_scope,
+            # scope=self.resolved_scope,
             unwrap_field=self.unwrap_key,  # API wraps each item in a "self.unwrap_key" field
         )
 

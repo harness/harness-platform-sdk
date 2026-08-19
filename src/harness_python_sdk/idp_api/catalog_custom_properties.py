@@ -84,14 +84,13 @@ class CatalogCustomPropertyApi:
         Raises:
             ScopeNotSetError: If required fields are missing.
         """
+        scope_url = ["accountIdentifier={account_id}"]
+        if resolved.org is not None:
+            scope_url.append("orgIdentifier={org}")
+        if resolved.project is not None:
+            scope_url.append("projectIdentifier={project}")
         self._default_params = self._client._build_url(
-            "&".join(
-                [
-                    "accountIdentifier={account_id}",
-                    "orgIdentifier={org}",
-                    "projectIdentifier={project}",
-                ]
-            ),
+            "&".join(scope_url),
             resolved,
             is_params=True,
         )

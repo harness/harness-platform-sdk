@@ -6,6 +6,8 @@ Defines request/response models for entities CRUD operations.
 
 from __future__ import annotations
 
+from typing import Optional
+
 from pydantic import Field
 
 from harness_python_sdk.base_model import HarnessModel
@@ -20,8 +22,8 @@ class EntityResponse(HarnessModel):
     identifier: str
     name: str
     account_identifier: str = Field(default=None, alias="accountIdentifier")
-    org_identifier: str = Field(default=None, alias="orgIdentifier")
-    project_identifier: str = Field(default=None, alias="projectIdentifier")
+    org_identifier: Optional[str] = Field(default=None, alias="orgIdentifier")
+    project_identifier: Optional[str] = Field(default=None, alias="projectIdentifier")
     description: str | None = None
     tags: list[str, str] | None = []
     #####

@@ -21,6 +21,7 @@ MODULE = "harness_python_sdk"
 WORKSPACE = "."
 WORKDIR = "/harness"
 DRONE_OUTPUT = "{{env.PROJECT_DIR}}DRONE_OUTPUT.env"
+_.python.venv = { path = ".venv", create = true }
 
 [tools]
 python = "3.13"
@@ -71,7 +72,12 @@ run = "${DOCKER_COMMAND} images --format '{{.Repository}}:{{.Tag}}' | grep ${DOC
 
 [tasks.tests]
 description = "Run the full test suite"
-run = "pytest tests/"
+run = [
+    { task = "lint" },
+    { task = "type-check" },
+    { task = "tests:cov" },
+    { task = "tests:integration --cleanup"},
+]
 
 [tasks."tests:cov"]
 description = "Run the test suite with coverage report"
@@ -81,12 +87,21 @@ run = "pytest --cov=src/harness_python_sdk --cov-report=term-missing tests/"
 description = "Run tests in watch mode (re-runs on file changes)"
 run = "pytest-watch tests/ -- -v"
 
-[tasks."tests:smoke"]
-description = "Run smoke tests"
-run = "python scripts/run_smoke_tests.py"
+[tasks."tests:integration"]
+description = "Run integration tests"
+usage = '''
+flag "--cleanup" help="Run full provision and delete tests"
+'''
+run = '''
+if [ "${usage_cleanup:-false}" = "true" ]; then
+  python scripts/run_smoke_tests.py --cleanup
+else
+  python scripts/run_smoke_tests.py
+fi
+'''
 
-[tasks."tests:smoke:test"]
-description = "Run smoke tests on a Filtered class"
+[tasks."tests:integration:single"]
+description = "Run integration tests on a Filtered class"
 usage = '''
 arg "<name>" help="The name of the new class to filter"
 flag "--unit-cleanup"

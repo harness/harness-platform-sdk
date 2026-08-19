@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.0] - 2026-08-19
+
+### Updated
+
+- **Internal Developer Portal (IDP) API Fixes** — Bug fixes for IDP resource handling
+  - Fixed scope URL parameter building in Entities and Catalog Custom Properties APIs to conditionally include org and project identifiers
+  - Enhanced Entity API request body handling to support YAML input format and handle optional description field
+  - Fixed Entity model to properly mark org_identifier and project_identifier as optional fields
+  - Added EntityCreateRequest import to Entities API for improved request model support
+
+---
+
 ## [0.12.0] - 2026-08-13
 
 ### Added
