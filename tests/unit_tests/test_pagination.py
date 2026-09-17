@@ -1,6 +1,6 @@
 """Unit tests for pagination support."""
 
-from harness_python_sdk.pagination import PaginationStyle
+from harness_platform_sdk.pagination import PaginationStyle
 
 
 class TestPaginationStyle:

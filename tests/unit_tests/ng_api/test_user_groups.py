@@ -4,14 +4,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.models.ng_api.user_groups import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.models.ng_api.user_groups import (
     UserGroupCreateRequest,
     UserGroupResponse,
 )
-from harness_python_sdk.ng_api.user_groups import UserGroupsApi
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.ng_api.user_groups import UserGroupsApi
+from harness_platform_sdk.scope import Scope
 
 
 class TestUserGroupsApi:

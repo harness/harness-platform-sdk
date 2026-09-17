@@ -1,6 +1,6 @@
 """Regression tests for client lifecycle."""
 
-from harness_python_sdk.client import HarnessClient
+from harness_platform_sdk.client import HarnessClient
 
 
 class TestClientLifecycle:

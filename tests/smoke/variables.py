@@ -1,6 +1,6 @@
 import json
 
-from harness_python_sdk.models.ng_api import *
+from harness_platform_sdk.models.ng_api import *
 
 ####################
 # Variables Tests

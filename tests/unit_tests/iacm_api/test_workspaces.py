@@ -4,14 +4,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.iacm_api.workspaces import WorkspacesApi
-from harness_python_sdk.models.iacm_api.workspaces import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.iacm_api.workspaces import WorkspacesApi
+from harness_platform_sdk.models.iacm_api.workspaces import (
     WorkspaceCreateRequest,
     WorkspaceResponse,
 )
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.scope import Scope
 
 
 class TestWorkspacesApi:
@@ -95,6 +95,7 @@ class TestWorkspacesApi:
             name="TestWorkspace",
             provisioner="terraform",
             provider_connector="aws_connector",
+            repository="https://github.com/test/repo",
             repository_branch="main",
         )
         scope = Scope(
@@ -204,6 +205,7 @@ class TestWorkspacesApi:
             name="UpdatedWorkspace",
             provisioner="terraform",
             provider_connector="aws_connector",
+            repository="https://github.com/test/repo",
             repository_branch="main",
         )
         scope = Scope(
@@ -224,6 +226,7 @@ class TestWorkspacesApi:
             name="TestWorkspace",
             provisioner="terraform",
             provider_connector="aws_connector",
+            repository="https://github.com/test/repo",
             repository_branch="main",
         )
         scope = Scope(
@@ -264,6 +267,7 @@ class TestWorkspacesApi:
             name="TestWorkspace",
             provisioner="terraform",
             provider_connector="aws_connector",
+            repository="https://github.com/test/repo",
             repository_branch="main",
         )
         scope = Scope(

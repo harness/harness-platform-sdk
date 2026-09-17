@@ -4,16 +4,16 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.idp_api.entities import EntityApi
-from harness_python_sdk.models.idp_api.entities import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.idp_api.entities import EntityApi
+from harness_platform_sdk.models.idp_api.entities import (
     EntityCreateRequest,
     EntityResourceCreateRequest,
     EntityResponse,
 )
-from harness_python_sdk.pagination import PaginationStyle
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.pagination import PaginationStyle
+from harness_platform_sdk.scope import Scope
 
 
 class TestEntityApi:

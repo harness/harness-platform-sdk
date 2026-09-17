@@ -2,7 +2,7 @@
 
 import pytest
 
-from harness_python_sdk.config import HarnessConfig
+from harness_platform_sdk.config import HarnessConfig
 
 
 class TestHarnessConfig:

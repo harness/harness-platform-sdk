@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from pydantic import Field
 
-from harness_python_sdk.base_model import HarnessModel
+from harness_platform_sdk.base_model import HarnessModel
 
 
 class {{ (CLASS_NAME_PREFIX | title) ~ (CLASS_VERSION|upper if CLASS_VERSION else '') }}Response(HarnessModel):

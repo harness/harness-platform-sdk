@@ -52,6 +52,29 @@ print(f"TemplatesV0 -> List")
 for list_templates_v0 in [elem for elem in client.templates_v0.list()]:
     print(f"\t \t -> : {list_templates_v0.identifier}")
 
+print(f"TemplatesV0 -> GetEntityUsage")
+try:
+    usage = client.templates_v0.get_entity_usage(identifier=templates_v0.identifier)
+    print(f"\t -> GetEntityUsage : {usage}")
+except Exception as e:
+    print(f"\t -> GetEntityUsage FAILED: {e}")
+
+print(f"TemplatesV0 -> GetLabels")
+try:
+    labels = client.templates_v0.get_labels(identifier=templates_v0.identifier)
+    print(f"\t -> GetLabels : {labels}")
+except Exception as e:
+    print(f"\t -> GetLabels FAILED: {e}")
+
+print(f"TemplatesV0 -> RefreshAndGet")
+try:
+    refreshed = client.templates_v0.refresh_and_get(
+        identifier=templates_v0.identifier, branch="main"
+    )
+    print(f"\t -> RefreshAndGet : {refreshed.identifier}")
+except Exception as e:
+    print(f"\t -> RefreshAndGet FAILED: {e}")
+
 if unit_cleanup:
     client.templates_v0.delete(
         identifier=templates_v0.identifier, version_label=templates_v0_request.version_label

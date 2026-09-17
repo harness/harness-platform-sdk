@@ -146,7 +146,7 @@ def main() -> None:
     config = Config()
     template_dir = Path(config.workdir).joinpath("templates")
 
-    root_output_dir = Path(config.workdir).joinpath("src","harness_python_sdk")
+    root_output_dir = Path(config.workdir).joinpath("src","harness_platform_sdk")
 
     data = {
         "base_api_class.py.j2": {

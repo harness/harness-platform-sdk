@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-09-14
+
+### BREAKING CHANGE
+
+- **Module Rename: harness-python-sdk → harness-platform-sdk**
+  - Package name changed from `harness-python-sdk` to `harness-platform-sdk`
+  - Module name changed from `harness_python_sdk` to `harness_platform_sdk`
+  - All imports must be updated: `from harness_python_sdk import ...` → `from harness_platform_sdk import ...`
+  - This is a major breaking change reflecting the SDK's expanded scope to cover the entire Harness platform
+  - **Migration:** Users upgrading from v0.13.0 must update all import statements and reinstall the package
+
+### Added
+
+- **GitHub Actions PyPI Publish Workflow** — Automated package publishing to PyPI
+  - Added `.github/workflows/publish.yml` for release automation
+  - Triggered on GitHub releases with trusted OIDC authentication
+  - Python 3.12 build environment with build/twine/wheel tooling
+
+- **API Documentation Infrastructure** — Complete generated markdown reference documentation
+  - Added `docs/DOCSTRING_STYLE.md` with comprehensive Google-style docstring guide
+  - Generated 76 API documentation files covering all SDK modules (authz, iacm_api, idp_api, ng_api, pipeline_api, template_api)
+  - Complete reference for API clients, models, and core SDK components
+
+- **PyPI Publishing Dependencies** — New optional dependency group for package distribution
+  - Added `[publish]` optional dependency group with build>=1.0.0, twine>=5.0.0, wheel>=0.41.0
+  - Enhanced project URLs with Changelog, Documentation, and AI-Agent Docs links in pyproject.toml
+
+- **Documentation Build Tooling** — Enhanced documentation generation and validation
+  - Added `mise build:docs` task for generating complete markdown API documentation
+  - Added `scripts/BUILD_DOCS_README.md` with documentation build guide
+  - Added `scripts/validate_llms_txt.py` for LLM-friendly documentation validation
+
+- **Modular Lint Tasks** — Improved code quality workflow organization
+  - Split `mise lint` into subtasks: `lint:black`, `lint:isort`, `lint:type-check`, `lint:docstrings`
+  - Added `tests:docstrings` for docstring example validation via pytest
+
+- **SDK Sample Scripts** — Production-ready example implementations demonstrating SDK usage patterns
+  - Added `tests/sdk/list_pipelines.py` — Hierarchical pipeline discovery across organizations and projects
+  - Added `tests/sdk/list_workspaces.py` — Workspace filtering with case-insensitive matching
+  - Added `tests/sdk/create_pipeline_from_template.py` — Pipeline creation with snake_case conversion and project auto-creation
+  - All scripts include full type hints, Google-style docstrings, and comprehensive error handling
+
+### Updated
+
+- **Python Requirement** — Reverted from >=3.14 to >=3.11 for production compatibility
+- **Package Metadata** — Updated description to "Python SDK for the Harness Platform API" and added comprehensive project URLs
+- **GitHub URLs** — Updated repository URLs to reflect new package name
+- **CONTRIBUTING.md** — Added comprehensive Python Code Style section with Google-style docstring requirements and validation examples
+- **.gitignore** — Added `*.local` pattern for local configuration files
+- **SDK Module Docstrings** — Enhanced all API modules with Google-style docstrings for improved IDE support and developer experience (71 files updated across all API clients and models)
+- **Mise Task Organization** — Reorganized lint workflow into modular subtasks for better maintainability and clarity
+
+---
+
 ## [0.13.0] - 2026-08-19
 
 ### Updated
@@ -884,7 +938,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.8.0 | 9: Template, Variables & IACM Workspace APIs | ✅ Complete | 2026-05-18 | 3,000+ | ≥85% |
 | 0.9.0 | 10: Internal Developer Portal (IDP) APIs | ✅ Complete | 2026-08-05 | 3,085+ | ≥85% |
 | 0.10.0 | 11: Type Checking & Technical Debt Cleanup | ✅ Complete | 2026-08-05 | 3,085+ | ≥85% |
-| 1.0.0 | 12: Production Release | 🔲 Planned | TBD | TBD | TBD |
+| 1.0.0 | 12: Production Release | ✅ Complete | 2026-08-19 | 3,085+ | ≥85% |
 
 ---
 

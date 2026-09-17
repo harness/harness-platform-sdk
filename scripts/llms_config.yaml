@@ -1,0 +1,197 @@
+---
+# Configuration for generating llms.md from SDK introspection
+
+domains:
+  ng_api:
+    display_name: "Next Generation API (NG)"
+  authz:
+    display_name: "Authorization (AuthZ)"
+  pipeline_api:
+    display_name: "Pipeline Execution"
+  iacm_api:
+    display_name: "Infrastructure as Code (IACM)"
+  idp_api:
+    display_name: "Internal Developer Portal (IDP)"
+  template_api:
+    display_name: "Templates"
+
+# Header content
+summary: |
+  Python SDK for the Harness Platform API. Full-featured client library with authentication, scope management, pagination, retry handling, and comprehensive type hints for accurate code generation.
+
+# Quick Start section
+quick_start:
+  - title: "Installation & Setup"
+    link: "/docs/generated/index.md#installation"
+  - title: "Authentication"
+    link: "/docs/generated/index.md#authentication"
+  - title: "Basic Usage Example"
+    link: "/docs/generated/index.md#basic-usage"
+
+# Core Concepts section
+core_concepts:
+  - title: "Scope Management"
+    link: "/docs/generated/index.md#scope"
+    description: "Account, Organization, Project hierarchy"
+  - title: "HTTP Methods"
+    link: "/docs/generated/index.md#http-methods"
+    description: "GET, POST, PUT, PATCH, DELETE with retry"
+  - title: "Error Handling"
+    link: "/docs/generated/index.md#error-handling"
+    description: "Exception types and scenarios"
+  - title: "Pagination"
+    link: "/docs/generated/index.md#pagination"
+    description: "Offset and cursor-based pagination"
+
+# Client Initialization reference
+client_init:
+  - title: "HarnessClient"
+    link: "/docs/generated/index.md#harnessclient"
+    description: "Main entry point"
+  - title: "HarnessConfig"
+    link: "/docs/generated/index.md#harnessconfig"
+    description: "Configuration object"
+  - title: "Scope"
+    link: "/docs/generated/index.md#scope"
+    description: "Scope definition"
+
+# Error Handling section
+error_handling:
+  exception_types:
+    - title: "HarnessSdkError"
+      link: "/docs/generated/index.md#harnessdkerror"
+      description: "Base exception"
+    - title: "ScopeNotSetError"
+      link: "/docs/generated/index.md#scopenotset"
+      description: "Missing scope error"
+    - title: "ApiError"
+      link: "/docs/generated/index.md#apierror"
+      description: "API error (non-auth)"
+    - title: "AuthError"
+      link: "/docs/generated/index.md#autherror"
+      description: "Authentication/authorization error"
+
+  common_scenarios:
+    - "401/403 Authentication failures — Raises `AuthError`"
+    - "404 Not found — Returns empty dict or False (doesn't raise)"
+    - "429/503 Rate limit/service unavailable — Auto-retries with exponential backoff"
+    - "400/500 Other errors — Raises `ApiError` with status/body/headers"
+
+# Pagination section
+pagination:
+  - title: "Offset Pagination"
+    link: "/docs/generated/index.md#offset-pagination"
+    description: "Page index + size"
+  - title: "Cursor Pagination"
+    link: "/docs/generated/index.md#cursor-pagination"
+    description: "Token-based pagination"
+
+# Authentication section
+authentication:
+  - "API Key based (x-api-key header)"
+  - "Account ID required (x-account-id header)"
+  - "Optional Organization/Project scope"
+
+# Code Examples
+examples:
+  - title: "Initialize Client"
+    code: |
+      from harness_platform_sdk import HarnessClient
+
+      client = HarnessClient(
+          api_key="YOUR_API_KEY",
+          account_id="YOUR_ACCOUNT_ID"
+      )
+
+  - title: "List Organizations"
+    code: |
+      orgs = client.organizations.list()
+      for org in orgs:
+          print(f"{org.get('identifier')}: {org.get('name')}")
+
+  - title: "Get Organization with Scope"
+    code: |
+      from harness_platform_sdk import Scope
+
+      scope = Scope(account_id="MY_ACCOUNT", org="MY_ORG")
+      org = client.organizations.get(
+          org_id="MY_ORG",
+          scope=scope
+      )
+
+  - title: "Handle Errors"
+    code: |
+      from harness_platform_sdk import (
+          HarnessClient,
+          ApiError,
+          AuthError,
+          ScopeNotSetError
+      )
+
+      try:
+          client = HarnessClient(api_key="KEY", account_id="ACCT")
+          org = client.organizations.get("org_id")
+      except AuthError as e:
+          print(f"Auth failed: {e.status_code}")
+      except ApiError as e:
+          print(f"API error: {e.status_code}, {e.body}")
+      except ScopeNotSetError as e:
+          print(f"Scope error: {e}")
+
+# Configuration parameters
+configuration:
+  - key: "api_key"
+    required: true
+    description: "API key for authentication"
+  - key: "account_id"
+    required: true
+    description: "Harness account ID"
+  - key: "base_url"
+    required: false
+    description: "API base URL, defaults to https://app.harness.io"
+  - key: "timeout"
+    required: false
+    description: "Request timeout in seconds, defaults to 30"
+  - key: "max_retries"
+    required: false
+    description: "Max retry attempts, defaults to 3"
+  - key: "retry_status_codes"
+    required: false
+    description: "HTTP codes to retry, defaults to [429, 503]"
+  - key: "retry_enabled"
+    required: false
+    description: "Enable retry, defaults to True"
+  - key: "verify_ssl"
+    required: false
+    description: "Verify SSL certificates, defaults to True"
+
+# Type Hints section
+type_hints:
+  - "Parameter types documented"
+  - "Return types documented"
+  - "Exception types documented"
+  - "Compatible with type checkers (mypy, pyright)"
+  - "See `py.typed` marker in package for PEP 561 compliance"
+
+# Testing section
+testing:
+  commands:
+    - command: "python -m pytest tests/ -v"
+      description: "Run tests"
+    - command: "mypy src/harness_platform_sdk"
+      description: "Check type hints"
+    - command: "ruff check --select D src/harness_platform_sdk"
+      description: "Lint docstrings"
+
+# Contributing and links
+contributing: "See [CONTRIBUTING.md](../CONTRIBUTING.md) for development setup, docstring style requirements, type hint expectations, and testing guidelines"
+
+license: "BUSL-1.1 (Business Source License)"
+
+links:
+  - title: "GitHub Repository"
+    url: "https://github.com/anthropics/harness-platform-sdk"
+  - title: "Python Package Index (PyPI)"
+    url: "https://pypi.org/project/harness-platform-sdk/"
+  - title: "Harness Platform Documentation"
+    url: "https://docs.harness.io/"

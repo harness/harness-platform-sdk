@@ -1,1 +1,1 @@
-"""Test suite for harness-python-sdk"""
+"""Test suite for harness-platform-sdk"""

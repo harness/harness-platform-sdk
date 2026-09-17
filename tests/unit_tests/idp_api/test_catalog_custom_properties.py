@@ -4,15 +4,15 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.idp_api.catalog_custom_properties import CatalogCustomPropertyApi
-from harness_python_sdk.models.idp_api.catalog_custom_properties import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.idp_api.catalog_custom_properties import CatalogCustomPropertyApi
+from harness_platform_sdk.models.idp_api.catalog_custom_properties import (
     CatalogCustomPropertyCreateRequest,
     CatalogCustomPropertyResponse,
     CatalogCustomPropertyResponseByEntity,
 )
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.scope import Scope
 
 
 class TestCatalogCustomPropertyApi:

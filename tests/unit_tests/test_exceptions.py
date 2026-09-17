@@ -2,7 +2,7 @@
 
 import pytest
 
-from harness_python_sdk.exceptions import (
+from harness_platform_sdk.exceptions import (
     ApiError,
     AuthError,
     HarnessSdkError,

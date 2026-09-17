@@ -2,7 +2,7 @@
 
 import pytest
 
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.scope import Scope
 
 
 class TestScope:

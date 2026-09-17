@@ -10,13 +10,13 @@ import yaml
 
 from collections.abc import Iterator
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.models.{{ ENDPOINT_TARGET | lower }}.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.models.{{ ENDPOINT_TARGET | lower }}.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} import (
     {{ (CLASS_NAME_PREFIX | title) ~ (CLASS_VERSION|upper if CLASS_VERSION else '') }}CreateRequest,
     {{ (CLASS_NAME_PREFIX | title) ~ (CLASS_VERSION|upper if CLASS_VERSION else '') }}Response,
 )
-from harness_python_sdk.pagination import PaginationStyle
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.pagination import PaginationStyle
+from harness_platform_sdk.scope import Scope
 
 
 class {{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }}Api:

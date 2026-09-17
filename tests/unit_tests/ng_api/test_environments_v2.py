@@ -4,14 +4,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.models.ng_api.environments_v2 import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.models.ng_api.environments_v2 import (
     EnvironmentV2CreateRequest,
     EnvironmentV2Response,
 )
-from harness_python_sdk.ng_api.environments_v2 import EnvironmentsV2Api
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.ng_api.environments_v2 import EnvironmentsV2Api
+from harness_platform_sdk.scope import Scope
 
 
 class TestEnvironmentsV2Api:

@@ -2,9 +2,9 @@
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ScopeNotSetError
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ScopeNotSetError
+from harness_platform_sdk.scope import Scope
 
 
 class TestScopeResolutionDecisionTree:

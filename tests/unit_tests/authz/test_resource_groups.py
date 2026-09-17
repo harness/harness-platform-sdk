@@ -4,14 +4,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from harness_python_sdk.authz.resource_groups import ResourceGroupsApi
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.models.authz.resource_groups import (
+from harness_platform_sdk.authz.resource_groups import ResourceGroupsApi
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.models.authz.resource_groups import (
     ResourceGroupCreateRequest,
     ResourceGroupResponse,
 )
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.scope import Scope
 
 
 class TestResourceGroupsApi:

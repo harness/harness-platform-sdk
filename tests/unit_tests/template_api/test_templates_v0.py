@@ -4,14 +4,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.models.template_api.templates_v0 import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.models.template_api.templates_v0 import (
     TemplateV0CreateRequest,
     TemplateV0Response,
 )
-from harness_python_sdk.scope import Scope
-from harness_python_sdk.template_api.templates_v0 import TemplatesV0Api
+from harness_platform_sdk.scope import Scope
+from harness_platform_sdk.template_api.templates_v0 import TemplatesV0Api
 
 
 class TestTemplatesV0Api:
@@ -302,3 +302,201 @@ class TestTemplatesV0Api:
         )
         with pytest.raises(ApiError):
             api.create(body, scope=scope)
+
+    def test_get_entity_usage_success(self, api, mock_client):
+        """Test successful get_entity_usage operation."""
+        response_data = {
+            "pageIndex": 0,
+            "pageSize": 10,
+            "totalItems": 2,
+            "entitySetupUsageDTOs": [
+                {"entityId": "pipeline1", "entityName": "Pipeline 1"},
+                {"entityId": "stage1", "entityName": "Stage 1"},
+            ],
+        }
+        mock_client._get = MagicMock(return_value=response_data)
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        result = api.get_entity_usage("trigger1", scope=scope, page_index=0, page_size=10)
+
+        assert result["totalItems"] == 2
+        assert len(result["entitySetupUsageDTOs"]) == 2
+        mock_client._get.assert_called_once()
+
+    def test_get_entity_usage_error(self, api, mock_client):
+        """Test get_entity_usage with error."""
+        mock_client._get = MagicMock(side_effect=ApiError(404, "Not found", {}))
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        with pytest.raises(ApiError):
+            api.get_entity_usage("nonexistent", scope=scope)
+
+    def test_get_labels_success(self, api, mock_client):
+        """Test successful get_labels operation."""
+        response_data = {
+            "v1": ["label1", "label2"],
+            "v2": ["label3"],
+        }
+        mock_client._get = MagicMock(return_value=response_data)
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        result = api.get_labels("trigger1", scope=scope)
+
+        assert "v1" in result
+        assert len(result["v1"]) == 2
+        mock_client._get.assert_called_once()
+
+    def test_get_labels_error(self, api, mock_client):
+        """Test get_labels with error."""
+        mock_client._get = MagicMock(side_effect=ApiError(403, "Forbidden", {}))
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        with pytest.raises(ApiError):
+            api.get_labels("trigger1", scope=scope)
+
+    def test_refresh_and_get_success(self, api, mock_client):
+        """Test successful refresh_and_get operation."""
+        response_data = {
+            "identifier": "trigger1",
+            "name": "Refreshed",
+            "template_entity_type": "Step",
+            "version": 1,
+            "version_label": "v2",
+        }
+        response_data.update(
+            {
+                "accountIdentifier": "acc123",
+                "orgIdentifier": "org123",
+                "projectIdentifier": "proj123",
+            }
+        )
+        mock_client._get = MagicMock(return_value=response_data)
+        mock_client._unwrap_response = MagicMock(return_value=response_data)
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        result = api.refresh_and_get("trigger1", "main", scope=scope)
+
+        assert result.identifier == "trigger1"
+        mock_client._get.assert_called_once()
+
+    def test_refresh_and_get_error(self, api, mock_client):
+        """Test refresh_and_get with error."""
+        mock_client._get = MagicMock(side_effect=ApiError(500, "Internal server error", {}))
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        with pytest.raises(ApiError):
+            api.refresh_and_get("trigger1", "main", scope=scope)
+
+    def test_apply_templates_success(self, api, mock_client):
+        """Test successful apply_templates operation."""
+        yaml_input = "template:\n  identifier: test\n  ref: template1"
+        response_data = {
+            "status": "SUCCESS",
+            "data": {
+                "resolvedYaml": "template:\n  identifier: test\n  spec: {...}",
+                "mergedYaml": "merged content",
+            },
+        }
+        mock_client._post = MagicMock(return_value=response_data)
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        result = api.apply_templates(yaml_input, scope=scope)
+
+        assert result["status"] == "SUCCESS"
+        assert "data" in result
+        mock_client._post.assert_called_once()
+
+    def test_apply_templates_with_options(self, api, mock_client):
+        """Test apply_templates with optional parameters."""
+        yaml_input = "template:\n  identifier: test"
+        response_data = {"status": "SUCCESS", "data": {"resolvedYaml": "resolved"}}
+        mock_client._post = MagicMock(return_value=response_data)
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        result = api.apply_templates(
+            yaml_input,
+            scope=scope,
+            check_for_access=True,
+            get_merged_yaml_with_template_field=True,
+            yaml_version="v2",
+        )
+
+        assert result["status"] == "SUCCESS"
+        call_args = mock_client._post.call_args
+        assert call_args is not None
+        body = call_args[1]["body"]
+        assert body["checkForAccess"] is True
+        assert body["getMergedYamlWithTemplateField"] is True
+        assert body["yamlVersion"] == "v2"
+
+    def test_apply_templates_error(self, api, mock_client):
+        """Test apply_templates with validation error."""
+        mock_client._post = MagicMock(side_effect=ApiError(400, "Invalid YAML", {}))
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        with pytest.raises(ApiError):
+            api.apply_templates("invalid: yaml: content", scope=scope)
+
+    def test_apply_templates_with_kwargs(self, api, mock_client):
+        """Test apply_templates with additional kwargs."""
+        yaml_input = "template:\n  identifier: test"
+        response_data = {"status": "SUCCESS", "data": {}}
+        mock_client._post = MagicMock(return_value=response_data)
+
+        scope = Scope(
+            account_id="acc123",
+            org="org123",
+            project="proj123",
+            pipeline="pipe1",
+        )
+        result = api.apply_templates(yaml_input, scope=scope, branch="dev")
+
+        assert result["status"] == "SUCCESS"
+        call_args = mock_client._post.call_args
+        params = call_args[1]["params"]
+        assert params["branch"] == "dev"

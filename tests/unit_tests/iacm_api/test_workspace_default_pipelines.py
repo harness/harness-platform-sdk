@@ -4,18 +4,18 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.iacm_api.workspace_default_pipelines import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.iacm_api.workspace_default_pipelines import (
     WorkspaceDefaultPipelinesApi,
 )
-from harness_python_sdk.models.iacm_api.workspace_default_pipelines import (
+from harness_platform_sdk.models.iacm_api.workspace_default_pipelines import (
     WorkspaceDefaultPipelineCreateRequest,
     WorkspaceDefaultPipelineOperation,
     WorkspaceDefaultPipelineProvisioner,
     WorkspaceDefaultPipelineResponse,
 )
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.scope import Scope
 
 
 class TestWorkspaceDefaultPipelinesApi:

@@ -4,15 +4,15 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.idp_api.scores import ScoreApi
-from harness_python_sdk.models.idp_api.scores import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.idp_api.scores import ScoreApi
+from harness_platform_sdk.models.idp_api.scores import (
     ScoreResponse,
     ScoreSummaryResponse,
 )
-from harness_python_sdk.pagination import PaginationStyle
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.pagination import PaginationStyle
+from harness_platform_sdk.scope import Scope
 
 
 class TestScoreApi:
@@ -340,7 +340,7 @@ class TestScoreApi:
     def test_wrapped_body_injects_scope_identifiers(self, api, mock_client):
         """Test _wrapped_body injects scope identifiers (if used)."""
         api._resolved_scope = Scope(account_id="acc123", org="org123", project="proj123")
-        from harness_python_sdk.models.idp_api.scores import ScoreCreateRequest
+        from harness_platform_sdk.models.idp_api.scores import ScoreCreateRequest
 
         body = ScoreCreateRequest(
             identifier="score123",

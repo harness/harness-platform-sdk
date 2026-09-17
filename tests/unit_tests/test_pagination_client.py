@@ -2,9 +2,9 @@
 
 from pytest_httpx import HTTPXMock
 
-from harness_python_sdk.base_model import HarnessModel
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.pagination import PaginationStyle
+from harness_platform_sdk.base_model import HarnessModel
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.pagination import PaginationStyle
 
 
 class ItemModel(HarnessModel):

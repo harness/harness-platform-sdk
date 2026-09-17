@@ -1,0 +1,75 @@
+# Harness Platform SDK API Reference
+
+This documentation is auto-generated from the SDK's docstrings.
+
+## Modules
+
+- `__init__` — Harness Platform SDK.
+- `authz.__init__` — Harness Authorization API resources.
+- `authz.resource_groups` — ResourceGroups API client for Harness SDK.
+- `authz.role_assignments` — RoleAssignments API client for Harness SDK.
+- `authz.roles` — Roles API client for Harness SDK.
+- `base_model` — Base model for all Harness SDK domain models.
+- `client` — Harness SDK client — main entry point for API interactions.
+- `config` — Harness SDK configuration.
+- `exceptions` — Harness SDK exception hierarchy.
+- `iacm_api.__init__` — Infrastructure as Code Module (IACM) API resources.
+- `iacm_api.workspace_approvals` — WorkspaceApprovals API client for Harness SDK.
+- `iacm_api.workspace_default_pipelines` — WorkspaceDefaultPipeline API client for Harness SDK.
+- `iacm_api.workspace_states` — Workspacestates API client for Harness SDK.
+- `iacm_api.workspace_variables` — WorkspaceVariables API client for Harness SDK.
+- `iacm_api.workspaces` — Workspaces API client for Harness SDK.
+- `idp_api.__init__` — Internal Developer Portal (IDP) API resources.
+- `idp_api.catalog_custom_properties` — Catalogcustompropertiess API client for Harness SDK.
+- `idp_api.entities` — Entitiess API client for Harness SDK.
+- `idp_api.scores` — Scoress API client for Harness SDK.
+- `models.authz.__init__` — Harness models for /authz/ resources.
+- `models.authz.resource_groups` — Resource Group resource models for Harness SDK.
+- `models.authz.role_assignments` — Role Assignment resource models for Harness SDK.
+- `models.authz.roles` — Role resource models for Harness SDK.
+- `models.iacm_api.__init__` — Harness models for /ng/api/ resources.
+- `models.iacm_api.workspace_approvals` — WorkspaceApproval resource models for Harness SDK.
+- `models.iacm_api.workspace_default_pipelines` — WorkspaceDefaultPipeline resource models for Harness SDK.
+- `models.iacm_api.workspace_states` — Workspacestate resource models for Harness SDK.
+- `models.iacm_api.workspace_variables` — WorkspaceVariable resource models for Harness SDK.
+- `models.iacm_api.workspaces` — Workspace resource models for Harness SDK.
+- `models.idp_api.__init__` — Harness models for /v1/idp_api resources.
+- `models.idp_api.catalog_custom_properties` — CatalogCustomProperty resource models for Harness SDK.
+- `models.idp_api.entities` — Entity resource models for Harness SDK.
+- `models.idp_api.scores` — Score resource models for Harness SDK.
+- `models.ng_api.__init__` — Harness models for /ng/api/ resources.
+- `models.ng_api.connectors` — Connector resource models for Harness SDK.
+- `models.ng_api.environments_v2` — EnvironmentV2 resource models for Harness SDK.
+- `models.ng_api.infrastructures` — Infrastructure resource models for Harness SDK.
+- `models.ng_api.organizations` — Organization resource models for Harness SDK.
+- `models.ng_api.projects` — Project resource models for Harness SDK.
+- `models.ng_api.secrets` — Secret resource models for Harness SDK.
+- `models.ng_api.service_overrides` — ServiceOverride resource models for Harness SDK.
+- `models.ng_api.services` — Service resource models for Harness SDK.
+- `models.ng_api.user_groups` — UserGroup resource models for Harness SDK.
+- `models.ng_api.variables` — Variable resource models for Harness SDK.
+- `models.pipeline_api.__init__` — Harness models for /pipeline/ resources.
+- `models.pipeline_api.input_sets_v0` — Inputset resource models for Harness SDK.
+- `models.pipeline_api.pipelines_v0` — Pipeline resource models for Harness SDK.
+- `models.pipeline_api.triggers_v0` — Trigger resource models for Harness SDK.
+- `models.template_api.__init__` — Harness models for /pipeline/ resources.
+- `models.template_api.templates_v0` — TemplateV0 resource models for Harness SDK.
+- `ng_api.__init__` — Next Generation API resources.
+- `ng_api.connectors` — Connectors API client for Harness SDK.
+- `ng_api.environments_v2` — EnvironmentsV2 API client for Harness SDK.
+- `ng_api.infrastructures` — Infrastructures API client for Harness SDK.
+- `ng_api.organizations` — Organizations API client for Harness SDK.
+- `ng_api.projects` — Projects API client for Harness SDK.
+- `ng_api.secrets` — Secrets API client for Harness SDK.
+- `ng_api.service_overrides` — ServiceOverrides API client for Harness SDK.
+- `ng_api.services` — Services API client for Harness SDK.
+- `ng_api.user_groups` — UserGroups API client for Harness SDK.
+- `ng_api.variables` — Variables API client for Harness SDK.
+- `pagination` — Pagination support for Harness SDK.
+- `pipeline_api.__init__` — Pipeline Execution API resources.
+- `pipeline_api.input_sets_v0` — Inputsets API client for Harness SDK.
+- `pipeline_api.pipelines_v0` — Pipelines API client for Harness SDK.
+- `pipeline_api.triggers_v0` — Triggers API client for Harness SDK.
+- `scope` — Scope management for Harness SDK.
+- `template_api.__init__` — Template Management API resources.
+- `template_api.templates_v0` — TemplatesV0 API client for Harness SDK.

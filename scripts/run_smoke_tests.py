@@ -3,14 +3,14 @@ from pathlib import Path
 import argparse
 import yaml
 
-from harness_python_sdk import HarnessClient, HarnessConfig, Scope, ApiError
-# from harness_python_sdk.api import PipelinesApi,ConnectorsApi,SecretsApi
-from harness_python_sdk.models.ng_api import *
-from harness_python_sdk.models.authz import *
-from harness_python_sdk.models.pipeline_api import *
-from harness_python_sdk.models.template_api import *
-from harness_python_sdk.models.iacm_api import *
-from harness_python_sdk.models.idp_api import *
+from harness_platform_sdk import HarnessClient, HarnessConfig, Scope, ApiError
+# from harness_platform_sdk.api import PipelinesApi,ConnectorsApi,SecretsApi
+from harness_platform_sdk.models.ng_api import *
+from harness_platform_sdk.models.authz import *
+from harness_platform_sdk.models.pipeline_api import *
+from harness_platform_sdk.models.template_api import *
+from harness_platform_sdk.models.iacm_api import *
+from harness_platform_sdk.models.idp_api import *
 
 parser = argparse.ArgumentParser(
     description="Execute Smoke Tests"
@@ -83,10 +83,10 @@ with HarnessClient(config) as client:
     tier_0_file_list = ["organizations.py","projects.py","pipelines_v0.py"]
     tier_2_file_list = [
         "input_sets_v0.py","triggers_v0.py","infrastructures.py",
-        "workspace_states.py", "workspace_pre_work", "workspace_default_pipelines",
+        "workspace_pre_work", "workspace_default_pipelines",
         "workspace_variables",
     ]
-    tier_3_file_list = ["workspace_approvals.py"]
+    tier_3_file_list = ["workspace_states.py", "workspace_approvals.py"]
     tiers = [tier_0_file_list, tier_2_file_list, tier_3_file_list]
     ignored_files = [item for sublist in tiers for item in sublist]
 

@@ -6,12 +6,12 @@ import httpx
 import pytest
 from pytest_httpx import HTTPXMock
 
-from harness_python_sdk.base_model import HarnessModel
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.config import HarnessConfig
-from harness_python_sdk.exceptions import ApiError, AuthError, ScopeNotSetError
-from harness_python_sdk.pagination import PaginationStyle
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.base_model import HarnessModel
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.config import HarnessConfig
+from harness_platform_sdk.exceptions import ApiError, AuthError, ScopeNotSetError
+from harness_platform_sdk.pagination import PaginationStyle
+from harness_platform_sdk.scope import Scope
 
 
 class SampleModel(HarnessModel):
@@ -311,7 +311,8 @@ class TestRaiseForStatus:
     def test_raise_for_status_404(self):
         """Test that 404 raises ApiError."""
         client = HarnessClient(api_key="key", account_id="acc")
-        response = httpx.Response(404, text="Not Found")
+        request = httpx.Request("GET", "http://test")
+        response = httpx.Response(404, text="Not Found", request=request)
         client._raise_for_status(response)
         client.close()
 
@@ -575,7 +576,8 @@ class TestRaiseForStatusEdgeCases:
     def test_raise_for_status_404_returns_false(self):
         """Test that 404 returns False."""
         client = HarnessClient(api_key="key", account_id="acc")
-        response = httpx.Response(404, text="Not Found")
+        request = httpx.Request("GET", "http://test")
+        response = httpx.Response(404, text="Not Found", request=request)
         result = client._raise_for_status(response)
         assert result is False
         client.close()

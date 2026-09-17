@@ -1,68 +1,138 @@
-# Contributing to the Harness Python SDK
+# Contributing to the Harness Platform SDK
 
 Harness values the input and feedback from our community of users. This repository is open to fork and update via Pull Requests.
 
 ## Development Setup
 
-The Harness Python SDK is built with Python 3.11+ using Pydantic v2 and httpx. Follow the development workflow documented in the SDK.
+The Harness Platform SDK is built with Python 3.11+ using Pydantic v2 and httpx. Follow the development workflow documented in the SDK.
 
 ## Directory Structure
 
-- **`src/harness_python_sdk/`** — Main SDK package
+- **`src/harness_platform_sdk/`** — Main SDK package
   - `client.py` — HarnessClient entry point
   - `*_api/` — Domain-organized API managers (ng_api, authz, pipeline_api, iacm_api, idp_api, template_api)
   - `models/` — Pydantic data models for requests/responses
-  
+
 - **`tests/`** — Test suite
   - `unit_tests/` — Unit tests for all APIs and models
   - `smoke/` — Smoke tests for production verification
-  
+
 - **`scripts/`** — Development tools
-  - `archive/` — Legacy phase 1-3 scripts (preserved for reference, not in active use)
-  
+  - Build, testing, and documentation utilities
+
 - **`docs/`** — Documentation
-  - `p2_*.md` — Current P2 phase documentation (active)
-  - `archive/` — Historical P1 phase documentation (reference only)
-  
-- **`datagen_staging/`** — Temporary directory for legacy model generation pipeline artifacts
+  - Generated API reference and style guides
 
 ## Contributor's Guides
 
 ### Adding a New Resource API
 
-See `.ai/specs/idp_resources_generation.md` for the pattern used to implement new resource APIs.
-
-### Developer's Guides (Terraform)
-We have included step-by-step guides to adding new templates to the repository including a full scaffold for each new template.
-
-[Adding new Templates to the Library](../scaffolds/README.md)
+See [CONTRIBUTING_NEW_CLASSES.md](CONTRIBUTING_NEW_CLASSES.md) for the pattern used to implement new resource APIs.
 
 ## Style Guidelines
-This project includes support for the auto-formatting tool known as [EditorConfig](https://EditorConfig.org) (File://.editorconfig).  This is a plugin for most modern IDE platforms such as Visual Studio Code (preferred by the maintainers) among others.  It is highly suggested to leverage this tool as part of your contributions as it will help to ensure proper and clear spacing and formatting of files for consistency.
+
+### Python Code Style
+
+This project uses **Google-style docstrings** for all Python code. See [docs/DOCSTRING_STYLE.md](docs/DOCSTRING_STYLE.md) for the complete guide.
+
+**Docstring Requirements:**
+- All modules, classes, functions, and methods must have docstrings
+- Use Google-style format with Args, Returns, Raises, and Example sections
+- Docstring compliance is enforced via `ruff check --select D` in CI
+- Examples in docstrings must be runnable and tested via doctest
+
+**Quick Example:**
+```python
+def get_organization(self, org_id: str, scope: Scope | None = None) -> Organization:
+    """Retrieve an organization by ID.
+
+    Args:
+        org_id: The organization identifier.
+        scope: Scope for authentication (uses default if not provided).
+
+    Returns:
+        Organization object with full details.
+
+    Raises:
+        ScopeNotSetError: If scope cannot be resolved.
+        ApiError: If the API request fails.
+
+    Example:
+        >>> client = HarnessClient(api_key="key", account_id="acct")
+        >>> org = client.organizations.get_organization("my-org-id")
+        >>> print(org.name)
+    """
+```
+
+**Check locally before committing:**
+```bash
+# Lint docstrings
+ruff check --select D src/harness_platform_sdk
+
+# Run docstring examples
+pytest --doctest-modules src/harness_platform_sdk -v
+```
+
+### Docstring Examples
+
+**Requirements for examples in docstrings:**
+- Must be executable (imports available, realistic parameters)
+- Must use correct API (not pseudocode)
+- Should demonstrate primary use case
+- Can use `...` for output or long results
+
+**Example:**
+```python
+>>> from harness_platform_sdk import HarnessClient
+>>> client = HarnessClient(api_key="your_key", account_id="your_account")
+>>> org = client.organizations.get_organization("org_id")
+>>> print(org.name)  # doctest: +SKIP (requires real credentials)
+```
+
+**Note:** Use `# doctest: +SKIP` for examples requiring real credentials or external state
+
+---
+
+### General Style Guidelines
+
+This project includes support for the auto-formatting tool known as [EditorConfig](https://EditorConfig.org) (File://.editorconfig). This is a plugin for most modern IDE platforms such as Visual Studio Code (preferred by the maintainers) and others. It is highly suggested to leverage this tool as part of your contributions as it will help ensure proper and clear spacing and formatting of files for consistency.
 
 When contributing to this project, please adhere to the following guidelines:
-* Indentation Guidelines per file type
 
-    | File Type | Indentation Type | Indentation Size |
-    | --- | --- | --- |
-    | `.tf` | Spaces | 2 |
-    | `.yml` | Spaces | 2 |
-    | `.yaml` | Spaces | 2 |
-    | `Makefile`| Tab | 4 |
-    | `*.*` | Spaces | 4 |
+- **Indentation:** 4 spaces for all Python files (enforced by ruff/black)
+- **File endings:** Use linux-style line endings (`lf`) for all commits
+- **Character set:** UTF-8 for all text files
+- **Python formatting:** Run `ruff format` before committing
 
-* Use linux-style file endings (`lf`) for all git commits to ensure consistency across platforms
-* Character Set should be `utf-8`
-* Leverage the [terraform fmt](https://developer.hashicorp.com/terraform/cli/commands/fmt) command to auto-format Terraform files to help automatically align Terraform file indentation for consistency.
+**Check locally before committing:**
+```bash
+# Format code
+ruff format src/harness_platform_sdk tests
 
-## Documentation Requirements
-Each module and associated variables need to be clearly and descriptively documented indicating their purpose and expected value types.  In addition, example snippets should be shared to show how the module can be leveraged in Terraform templates.
+# Lint
+ruff check src/harness_platform_sdk tests
 
-## Use of additional Providers
-If required, then additional providers can be leveraged in this project.  However, the use of those providers must confirm to the open source project licensing guidelines and be clearly documented within the module code and README files.  Approval of external Providers is contingent on the review of the repository maintainers team as part of the Pull Request.
+# Type check
+mypy src/harness_platform_sdk
+```
 
-## Use of external Modules
-In an effort to maintain consistency and prevent unintended dependencies, no external modules should be used directly within this module.
+## Code Quality
 
-## Additional information about Hashicorp Terraform Modules
-If you are just starting out or a seasoned veteran, please take time to review the updated [Hashicorp documentation on Module Development](https://developer.hashicorp.com/terraform/language/modules)
+- **No external dependencies** without maintainer approval (keep the dependency tree minimal)
+- **All code must be tested** — aim for ≥85% coverage
+- **Type hints required** for all public APIs
+- **Docstrings required** — use Google style (see `docs/DOCSTRING_STYLE.md`)
+
+## Pull Request Process
+
+1. Fork the repository and create a feature branch
+2. Make your changes following the style guidelines
+3. Write tests for new functionality
+4. Run the full test suite: `pytest tests/ -v`
+5. Ensure docstrings and type hints are complete
+6. Submit a PR with a clear description of changes
+7. Maintainers will review and merge when ready
+
+## Questions?
+
+If you have questions about contributing, please open an issue or reach out to the maintainers. We're here to help!

@@ -4,14 +4,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.exceptions import ApiError
-from harness_python_sdk.models.pipeline_api.pipelines_v0 import (
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.exceptions import ApiError
+from harness_platform_sdk.models.pipeline_api.pipelines_v0 import (
     PipelineV0CreateRequest,
     PipelineV0Response,
 )
-from harness_python_sdk.pipeline_api.pipelines_v0 import PipelinesV0Api
-from harness_python_sdk.scope import Scope
+from harness_platform_sdk.pipeline_api.pipelines_v0 import PipelinesV0Api
+from harness_platform_sdk.scope import Scope
 
 
 class TestPipelinesV0Api:

@@ -12,19 +12,16 @@ BUILD_FLAGS = ""
 STAGE = "release"
 DOCKER_COMMAND = "docker"
 DOCKERFILE = "Dockerfile"
-DOCKER_IMAGE = "harness-python-sdk"
+DOCKER_IMAGE = "harness-platform-sdk"
 DOCKER_TAG = "latest"
 DOCKER_ENV = ""
 DOCKER_MOUNTS = ""
-PROJECT_DIR = "{{cwd}}/tests/"
-MODULE = "harness_python_sdk"
+PROJECT_DIR = "{{cwd}}/"
+MODULE = "harness_platform_sdk"
 WORKSPACE = "."
 WORKDIR = "/harness"
 DRONE_OUTPUT = "{{env.PROJECT_DIR}}DRONE_OUTPUT.env"
 _.python.venv = { path = ".venv", create = true }
-
-[tools]
-python = "3.13"
 
 # ---------------------------------------------------------------------------
 # Testing
@@ -35,8 +32,24 @@ python = "3.13"
 description = "Show all available tasks with descriptions"
 run = "mise tasks"
 
+[tasks.build]
+description = "Build Module Wheel"
+run = """
+python -m pip install ".[publish]"
+python -m build
+"""
+
+[tasks."build:docs"]
+description = "Generate complete markdown for all symbols in the SDK."
+run = """
+python3 scripts/generate_llms.py
+python3 scripts/build_docs.py
+python3 -m pdoc -o docs/generated harness_platform_sdk --force
+"""
+
 [tasks."docker:build"]
 description = "Builds the Container Image"
+depends = ["build"]
 run = """
 BUILD_STAGE=""
 if [ -n "${STAGE}" ]; then
@@ -55,15 +68,14 @@ run = "${DOCKER_COMMAND} run --rm -it ${DOCKER_ENV} -v ${PROJECT_DIR}:/${WORKDIR
 
 [tasks."docker:run"]
 description = "Runs a local test of the container image"
-run = [
-  "echo '' > ${DRONE_OUTPUT}",
-  "${DOCKER_COMMAND} run --rm -it ${DOCKER_ENV} -v ${PROJECT_DIR}:/${WORKDIR} ${DOCKER_MOUNTS} -w ${WORKDIR} ${DOCKER_IMAGE}:${DOCKER_TAG}",
-  "cat ${DRONE_OUTPUT}"
-]
+usage = """
+arg "<file_path>" help="Pass the script to run"
+"""
+run = "${DOCKER_COMMAND} run --rm -it ${DOCKER_ENV} -v ${PROJECT_DIR}:/${WORKDIR} ${DOCKER_MOUNTS} -w ${WORKDIR} ${DOCKER_IMAGE}:${DOCKER_TAG} ${usage_file_path}"
 
 [tasks."docker:clean"]
 description = "Cleans up all images associated with the DOCKER_IMAGE"
-run = "${DOCKER_COMMAND} images --format '{{.Repository}}:{{.Tag}}' | grep ${DOCKER_IMAGE} | xargs ${DOCKER_COMMAND} rmi || true"
+run = "${DOCKER_COMMAND} images --format '{{ \"{{\" }}.Repository}}:{{ \"{{\" }}.Tag}}' | grep ${DOCKER_IMAGE} | xargs ${DOCKER_COMMAND} rmi || true"
 
 
 # ---------------------------------------------------------------------------
@@ -74,14 +86,13 @@ run = "${DOCKER_COMMAND} images --format '{{.Repository}}:{{.Tag}}' | grep ${DOC
 description = "Run the full test suite"
 run = [
     { task = "lint" },
-    { task = "type-check" },
     { task = "tests:cov" },
     { task = "tests:integration --cleanup"},
 ]
 
 [tasks."tests:cov"]
 description = "Run the test suite with coverage report"
-run = "pytest --cov=src/harness_python_sdk --cov-report=term-missing tests/"
+run = "pytest --cov=src/harness_platform_sdk --cov-report=term-missing tests/"
 
 [tasks."tests:watch"]
 description = "Run tests in watch mode (re-runs on file changes)"
@@ -113,12 +124,34 @@ run = "python scripts/run_smoke_tests.py --skip-fixtures --filter-type ${usage_n
 # ---------------------------------------------------------------------------
 
 [tasks.lint]
-description = "Format source and test files with black and isort"
-run = "black src/ tests/ && isort src/ tests/"
+description = "Lint Validation"
+run = [
+    {task = "lint:black"},
+    {task = "lint:isort"},
+    {task = "lint:type-check"},
+    {task = "lint:docstrings"},
+    {task = "tests:docstrings"}
+]
 
-[tasks."type-check"]
+[tasks."lint:black"]
+description = "Format source and test files with black"
+run = "black src/ tests/"
+
+[tasks."lint:isort"]
+description = "Format source and test files with isort"
+run = "isort src/ tests/"
+
+[tasks."lint:type-check"]
 description = "Run mypy static type checking over the SDK source"
-run = "mypy src/harness_python_sdk"
+run = "mypy src/${MODULE}"
+
+[tasks."lint:docstrings"]
+description = "Lint docstrings"
+run = "ruff check --select D src/${MODULE}"
+
+[tasks."tests:docstrings"]
+description = "Pytest docstrings"
+run = "pytest --doctest-modules src/${MODULE} -v"
 
 [tasks.clean]
 description = "Remove build artifacts, caches, and coverage data"

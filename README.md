@@ -1,11 +1,11 @@
-# Harness Python SDK
+# Harness Platform SDK
 
 A production-grade Python SDK for the Harness platform API. Built with Pydantic v2, httpx, and comprehensive test coverage.
 
 ## Quick Start
 
 ```python
-from harness_python_sdk import HarnessClient
+from harness_platform_sdk import HarnessClient
 
 # Create a client
 client = HarnessClient(
@@ -26,7 +26,7 @@ with client:
 ## Installation
 
 ```bash
-pip install harness-python-sdk
+pip install harness-platform-sdk
 ```
 
 ## Architecture
@@ -62,8 +62,8 @@ pip install harness-python-sdk
 
 The SDK includes typed API wrappers for Harness platform resources across multiple domains:
 
-- **Next-Gen (Core):** Organizations, Projects, Services, Connectors, Secrets, Infrastructures, Variables, User Groups, Environments V2
-- **Pipeline:** Pipelines (v0), Input Sets, Triggers, Templates (v0)
+- **Next-Gen (Core):** Organizations, Projects, Services, Service Overrides, Connectors, Secrets, Infrastructures, Variables, User Groups, Environments V2
+- **Pipeline:** Pipelines (v0), Input Sets (v0), Triggers (v0), Templates (v0)
 - **Authorization:** Roles, Resource Groups, Role Assignments
 - **Infrastructure as Code:** Workspaces, Workspace Approvals, Workspace States, Workspace Variables, Workspace Default Pipelines
 - **Internal Developer Portal:** Entities, Catalog Custom Properties, Scores
@@ -80,7 +80,7 @@ The SDK includes typed API wrappers for Harness platform resources across multip
 ## Configuration
 
 ```python
-from harness_python_sdk import HarnessClient, HarnessConfig
+from harness_platform_sdk import HarnessClient, HarnessConfig
 
 # Option 1: Keyword arguments
 client = HarnessClient(
@@ -106,7 +106,7 @@ client = HarnessClient(config=config)
 ## Error Handling
 
 ```python
-from harness_python_sdk import HarnessClient, AuthError, ApiError
+from harness_platform_sdk import HarnessClient, AuthError, ApiError
 
 client = HarnessClient(api_key="key", account_id="acc")
 
@@ -125,7 +125,7 @@ finally:
 ## Scope Management
 
 ```python
-from harness_python_sdk import HarnessClient, Scope
+from harness_platform_sdk import HarnessClient, Scope
 
 # Set default scope at construction
 client = HarnessClient(
@@ -161,9 +161,9 @@ pytest tests/unit_tests/test_client.py -v
 
 ## Version
 
-- **Current:** 0.13.0
-- **Stability:** Beta (APIs subject to change before v1.0.0)
+- **Current:** 1.0.0
+- **Stability:** Production-ready (v1.0.0 release)
 
 ## License
 
-Apache 2.0 — See [LICENSE](LICENSE) for details.
+Business Source License 1.1 (BUSL-1.1) — See [License](License) for details.

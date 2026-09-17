@@ -3,9 +3,9 @@
 import pytest
 from pytest_httpx import HTTPXMock
 
-from harness_python_sdk.client import HarnessClient
-from harness_python_sdk.config import HarnessConfig
-from harness_python_sdk.exceptions import ApiError
+from harness_platform_sdk.client import HarnessClient
+from harness_platform_sdk.config import HarnessConfig
+from harness_platform_sdk.exceptions import ApiError
 
 
 class TestRetryBehavior:

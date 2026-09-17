@@ -130,6 +130,7 @@ dmypy.json
 .DS_Store
 
 # Local configuration
+*.local
 *.local.*
 settings.local.json
 !settings.local.json.example
@@ -144,3 +145,5 @@ openapi/harness-openapi-normalized.json
 
 # Ignore local test credentials
 .harness.yaml
+DRONE_OUTPUT.ENV
+
