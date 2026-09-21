@@ -151,7 +151,7 @@ run = "ruff check --select D src/${MODULE}"
 
 [tasks."tests:docstrings"]
 description = "Pytest docstrings"
-run = "pytest --doctest-modules src/${MODULE} -v"
+run = "pytest tests/test_docstrings.py --doctest-modules src/${MODULE} -v"
 
 [tasks.clean]
 description = "Remove build artifacts, caches, and coverage data"
