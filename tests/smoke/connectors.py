@@ -1,14 +1,15 @@
 ####################
-# Connector Tests
+# Connectors Tests
 ####################
-print(f"{' Connectors ':#^40}")
-print(f"Connectors -> List")
-for list_connector in [elem for elem in client.connectors.list()]:
-    print(f"\t \t -> : {list_connector.identifier}")
 
-connector_request = ConnectorCreateRequest(
-    identifier="simple_test",
-    name="Simple Test",
+# Test Suite Control Connectors
+SUITE_NAME = "Connectors"
+SUITE_TEST_ID = "SDK_Test_Connectors"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.connectors
+SUITE_CREATE_OBJECT = ConnectorCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
     description="a test",
     type="K8sCluster",
     spec={
@@ -18,25 +19,36 @@ connector_request = ConnectorCreateRequest(
     },
 )
 
-connector = client.connectors.get(identifier=connector_request.identifier)
-# print(connector)
-if connector:
-    print(f"\t -> Get : {connector.identifier}")
-    connector_request.description = "UPDATE from Existing"
-    connector = client.connectors.update(identifier=connector.identifier, body=connector_request)
-    print(f"\t -> Updated : {connector.identifier}")
+LIST_KWARGS = {}
+GET_KWARGS = {}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
+    )
+    print(f"\t -> Updated : {validation_object.identifier}")
 
 else:
-    connector_request.description = "CREATE from New"
-    connector = client.connectors.create(connector_request)
-    print(f"\t -> Created : {connector.identifier}")
-    connector = client.connectors.update(identifier=connector.identifier, body=connector_request)
-    connector_request.description = "UPDATE after Creating"
-    print(f"\t -> Updated : {connector.identifier}")
-print(f"Connectors -> List")
-for list_connector in [elem for elem in client.connectors.list()]:
-    print(f"\t \t -> : {list_connector.identifier}")
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
+    )
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
 
 if cleanup:
-    client.connectors.delete(identifier=connector.identifier)
-    print(f"\t -> Delete : {connector.identifier}")
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier)
+    print(f"\t -> Delete : {validation_object.identifier}")

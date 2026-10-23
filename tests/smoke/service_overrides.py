@@ -1,46 +1,50 @@
-from harness_platform_sdk.models.ng_api.service_overrides import ServiceOverrideCreateRequest
-
 ####################
 # ServiceOverrides Tests
 ####################
-print(f"{' ServiceOverrides ':#^40}")
-environment_identifier = "simple_test"
-print(f"ServiceOverrides -> List")
-for list_service_overrides in [
-    elem for elem in client.service_overrides.list(override_type="ENV_GLOBAL_OVERRIDE")
-]:
-    # client._display_payload(list_service_overrides)
-    print(f"\t \t -> : {list_service_overrides.identifier}")
 
-service_overrides_request = ServiceOverrideCreateRequest(
-    environment_identifier="simple_test",
+# Test Suite Control ServiceOverrides
+SUITE_NAME = "ServiceOverrides"
+SUITE_TEST_ID = "SDK_Test_ServiceOverrides"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.service_overrides
+SUITE_CREATE_OBJECT = ServiceCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
+    environment_identifier=global_project_environment_id,
     variables=[{"name": "this", "type": "String", "value": "is_it"}],
     type="ENV_GLOBAL_OVERRIDE",
 )
 
-service_overrides = client.service_overrides.get(environment_identifier=environment_identifier)
-# client._display_payload(service_overrides)
-if service_overrides:
-    print(f"\t -> Get : {service_overrides.identifier}")
-    service_overrides.variables += [{"name": "jeremy", "value": "runs", "type": "String"}]
-    service_overrides = client.service_overrides.update(
-        identifier=service_overrides.identifier, body=service_overrides
+LIST_KWARGS = {"override_type": "ENV_GLOBAL_OVERRIDE"}
+GET_KWARGS = {"environment_identifier": global_project_environment_id}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : {service_overrides.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
 
 else:
-    service_overrides = client.service_overrides.create(service_overrides_request)
-    print(f"\t -> Created : {service_overrides.identifier}")
-    service_overrides = client.service_overrides.update(
-        identifier=service_overrides.identifier, body=service_overrides_request
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : {service_overrides.identifier}")
-print(f"ServiceOverrides -> List")
-for list_service_overrides in [
-    elem for elem in client.service_overrides.list(override_type="ENV_GLOBAL_OVERRIDE")
-]:
-    print(f"\t \t -> : {list_service_overrides.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
 
-if unit_cleanup:
-    client.service_overrides.delete(identifier=service_overrides.identifier)
-    print(f"\t -> Delete : {service_overrides.identifier}")
+if cleanup:
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier)
+    print(f"\t -> Delete : {validation_object.identifier}")

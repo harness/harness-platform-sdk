@@ -1,18 +1,15 @@
-import json
-
 ####################
 # TemplatesV0 Tests
 ####################
-print(f"{' TemplatesV0 ':#^40}")
-pipeline_identifier = "simple_test"
-print(f"TemplatesV0 -> List")
-for list_templates_v0 in [elem for elem in client.templates_v0.list()]:
-    print(f"\t \t -> : {list_templates_v0.identifier}")
 
-templates_v0_request = TemplateV0CreateRequest(
-    pipeline_identifier="simple_test",
-    identifier="simple_test",
-    name="Simple Test",
+# Test Suite Control TemplatesV0
+SUITE_NAME = "TemplatesV0"
+SUITE_TEST_ID = "SDK_Test_TemplatesV0"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.templates_v0
+SUITE_CREATE_OBJECT = TemplateV0CreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
     description="a test",
     template_entity_type="Step",
     template_spec={
@@ -30,53 +27,37 @@ templates_v0_request = TemplateV0CreateRequest(
     version_label="v1",
 )
 
-templates_v0 = client.templates_v0.get(identifier=templates_v0_request.identifier)
-if templates_v0:
-    print(f"\t -> Get : { templates_v0.identifier}")
-    templates_v0_request.description = "UPDATE from Existing"
-    templates_v0 = client.templates_v0.update(
-        identifier=templates_v0.identifier, body=templates_v0_request
+LIST_KWARGS = {}
+GET_KWARGS = {}
+DELETE_KWARGS = {"version_label": "v1"}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : { templates_v0.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
 
 else:
-    templates_v0_request.description = "CREATE from New"
-    templates_v0 = client.templates_v0.create(templates_v0_request)
-    print(f"\t -> Created : { templates_v0.identifier}")
-    templates_v0_request.description = "UPDATE after Creating"
-    templates_v0 = client.templates_v0.update(
-        identifier=templates_v0.identifier, body=templates_v0_request
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : { templates_v0.identifier}")
-print(f"TemplatesV0 -> List")
-for list_templates_v0 in [elem for elem in client.templates_v0.list()]:
-    print(f"\t \t -> : {list_templates_v0.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
 
-print(f"TemplatesV0 -> GetEntityUsage")
-try:
-    usage = client.templates_v0.get_entity_usage(identifier=templates_v0.identifier)
-    print(f"\t -> GetEntityUsage : {usage}")
-except Exception as e:
-    print(f"\t -> GetEntityUsage FAILED: {e}")
-
-print(f"TemplatesV0 -> GetLabels")
-try:
-    labels = client.templates_v0.get_labels(identifier=templates_v0.identifier)
-    print(f"\t -> GetLabels : {labels}")
-except Exception as e:
-    print(f"\t -> GetLabels FAILED: {e}")
-
-print(f"TemplatesV0 -> RefreshAndGet")
-try:
-    refreshed = client.templates_v0.refresh_and_get(
-        identifier=templates_v0.identifier, branch="main"
-    )
-    print(f"\t -> RefreshAndGet : {refreshed.identifier}")
-except Exception as e:
-    print(f"\t -> RefreshAndGet FAILED: {e}")
-
-if unit_cleanup:
-    client.templates_v0.delete(
-        identifier=templates_v0.identifier, version_label=templates_v0_request.version_label
-    )
-    print(f"\t -> Delete : { templates_v0.identifier}")
+if cleanup:
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier, **DELETE_KWARGS)
+    print(f"\t -> Delete : {validation_object.identifier}")

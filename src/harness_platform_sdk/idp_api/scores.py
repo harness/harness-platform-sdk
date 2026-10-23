@@ -206,8 +206,7 @@ class ScoreApi:
             "lifecycle": lifecycle,
         }
         payload = {k: v for k, v in payload.items() if v}
-        print(payload)
-        print(url)
+
         output = self._client._paginate(
             url,
             method="post",
@@ -255,9 +254,6 @@ class ScoreApi:
             scope=self.resolved_scope,
             # unwrap_field=self.unwrap_key,  # API wraps each item in a "self.unwrap_key" field
         )
-
-        if len(list(outputs)) <= 0:
-            return []
 
         return_wrapper = {
             "identifier": identifier,

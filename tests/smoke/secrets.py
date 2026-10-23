@@ -1,43 +1,51 @@
 ####################
 # Secrets Tests
 ####################
-print(f"{' Secrets ':#^40}")
-print(f"Secrets -> List")
-for secret in [elem for elem in client.secrets.list()]:
-    print(f"\t \t -> : {secret.identifier}")
-# print(secrets[0].identifier)
-spec = {
-    # "type": "SecretTextSpec1",
-    "secretManagerIdentifier": "harnessSecretManager",
-    "valueType": "Inline",
-    "value": "changeme",
-}
-secret_request = SecretCreateRequest(
-    identifier="simple_test",
-    name="Simple Test",
+
+# Test Suite Control Secrets
+SUITE_NAME = "Secrets"
+SUITE_TEST_ID = "SDK_Test_Secret"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.secrets
+SUITE_CREATE_OBJECT = SecretCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
     type="SecretText",
     description="Initial",
-    spec=spec,
+    spec={
+        "secretManagerIdentifier": "harnessSecretManager",
+        "valueType": "Inline",
+        "value": "changeme",
+    },
 )
-secret = client.secrets.get(identifier=secret_request.identifier)
-# print(secret)
-if secret:
-    print(f"\t -> Get : {secret_request.identifier}")
-    secret_request.description = "UPDATE from Existing"
-    secret = client.secrets.update(identifier=secret.identifier, body=secret_request)
-    print(f"\t -> Updated : {secret.identifier}")
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list()]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
+    )
+    print(f"\t -> Updated : {validation_object.identifier}")
+
 else:
-    secret_request.description = "CREATE from New"
-    secret = client.secrets.create(secret_request)
-    print(f"\t -> Created : {secret.identifier}")
-    secret = client.secrets.update(identifier=secret.identifier, body=secret_request)
-    # print(secret)
-    secret.description = "UPDATE after Creating"
-    print(f"\t -> Updated : {secret.identifier}")
-print(f"secrets -> List")
-for secret in [elem for elem in client.secrets.list()]:
-    print(f"\t \t -> : {secret.identifier}")
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
+    )
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list()]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
 
 if cleanup:
-    client.secrets.delete(identifier=secret.identifier)
-    print(f"\t -> Delete : {secret.identifier}")
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier)
+    print(f"\t -> Delete : {validation_object.identifier}")

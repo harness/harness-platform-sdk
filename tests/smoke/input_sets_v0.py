@@ -1,21 +1,16 @@
-import json
-
 ####################
-# InputSet Tests
+# InputSetV0 Tests
 ####################
-print(f"{' InputSets ':#^40}")
-pipeline_identifier = "simple_test"
-print(f"InputSets -> List")
-for list_input_set in [
-    elem for elem in client.input_sets_v0.list(pipeline_identifier=pipeline_identifier)
-]:
-    # print(f"\t \t -> : {json.dumps(dict(list_input_set), indent=4, sort_keys=True)}")
-    print(f"\t \t -> : {list_input_set.identifier}")
 
-input_set_request = InputSetV0CreateRequest(
-    pipeline_identifier="simple_test",
-    identifier="simple_test",
-    name="Simple Test",
+# Test Suite Control InputSetV0
+SUITE_NAME = "InputSetV0"
+SUITE_TEST_ID = "SDK_Test_InputSetV0"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.input_sets_v0
+SUITE_CREATE_OBJECT = InputSetV0CreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
+    pipeline_identifier=global_project_pipeline_id,
     description="a test",
     variables=[
         {
@@ -28,31 +23,37 @@ input_set_request = InputSetV0CreateRequest(
     ],
 )
 
-input_set = client.input_sets_v0.get(
-    identifier=input_set_request.identifier, pipeline_identifier=pipeline_identifier
-)
-# print(input_set)
-if input_set:
-    print(f"\t -> Get : {input_set.identifier}")
-    input_set_request.description = "UPDATE from Existing"
-    input_set = client.input_sets_v0.update(identifier=input_set.identifier, body=input_set_request)
-    print(f"\t -> Updated : {input_set.identifier}")
+LIST_KWARGS = {"pipeline_identifier": global_project_pipeline_id}
+GET_KWARGS = {"pipeline_identifier": global_project_pipeline_id}
+DELETE_KWARGS = {"pipeline_identifier": global_project_pipeline_id}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
+    )
+    print(f"\t -> Updated : {validation_object.identifier}")
 
 else:
-    input_set_request.description = "CREATE from New"
-    input_set = client.input_sets_v0.create(input_set_request)
-    print(f"\t -> Created : {input_set.identifier}")
-    input_set_request.description = "UPDATE after Creating"
-    input_set = client.input_sets_v0.update(identifier=input_set.identifier, body=input_set_request)
-    print(f"\t -> Updated : {input_set.identifier}")
-print(f"InputSets -> List")
-for list_input_set in [
-    elem for elem in client.input_sets_v0.list(pipeline_identifier=pipeline_identifier)
-]:
-    print(f"\t \t -> : {list_input_set.identifier}")
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
+    )
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
 
 if cleanup:
-    client.input_sets_v0.delete(
-        identifier=input_set.identifier, pipeline_identifier=pipeline_identifier
-    )
-    print(f"\t -> Delete : {input_set.identifier}")
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier, **DELETE_KWARGS)
+    print(f"\t -> Delete : {validation_object.identifier}")

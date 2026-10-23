@@ -305,8 +305,6 @@ class CatalogCustomPropertyApi:
         }
         payload["entity_ref"] = "/".join([":".join([body.kind, self.idp_scope]), body.identifier])
 
-        print(payload)
-
         response = self._client._post(
             url, params=self.default_params, body=payload, response_model=None
         )

@@ -1,47 +1,53 @@
-import json
-
 ####################
 # Entities Tests
 ####################
-print(f"{' Entities ':#^40}")
-pipeline_identifier = "simple_test"
-print(f"Entities -> List")
-for list_entities in [elem for elem in client.entities.list()]:
-    print(f"\t \t -> : {list_entities.identifier}")
 
-entities_request = EntityResourceCreateRequest(
-    identifier="simple_test",
-    name="Simple Test",
+# Test Suite Control Entities
+SUITE_NAME = "Entities"
+SUITE_TEST_ID = "SDK_Test_Entities"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.entities
+SUITE_CREATE_OBJECT = EntityResourceCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
     description="a test",
     lifecycle="production",
     type="sdk_test",
     owner="test",
 )
 
-entities = client.entities.get(identifier=entities_request.identifier, kind=entities_request.kind)
-if entities:
-    print(f"\t -> Get : { entities.identifier}")
-    entities_request.description = "UPDATE from Existing"
-    entities = client.entities.update(
-        identifier=entities.identifier, kind=entities_request.kind, body=entities_request
+LIST_KWARGS = {}
+GET_KWARGS = {"kind": SUITE_CREATE_OBJECT.kind}
+UPDATE_KWARGS = {"kind": SUITE_CREATE_OBJECT.kind}
+DELETE_KWARGS = {"kind": SUITE_CREATE_OBJECT.kind}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : { entities.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
 
 else:
-    entities_request.description = "CREATE from New"
-    entities = client.entities.create(entities_request)
-    print(f"\t -> Created : { entities.identifier}")
-    entities_request.description = "UPDATE after Creating"
-    entities = client.entities.update(
-        identifier=entities.identifier, kind=entities_request.kind, body=entities_request
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request, **UPDATE_KWARGS
     )
-    print(f"\t -> Updated : { entities.identifier}")
-print(f"Entities -> List")
-for list_entities in [
-    elem for elem in client.entities.list(pipeline_identifier=pipeline_identifier)
-]:
-    print(f"\t \t -> : {list_entities.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
 
-if unit_cleanup:
-    client.entities.delete(identifier=entities.identifier, kind=entities_request.kind)
-    print(f"\t -> Delete : { entities.identifier}")
+if cleanup:
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier, **DELETE_KWARGS)
+    print(f"\t -> Delete : {validation_object.identifier}")

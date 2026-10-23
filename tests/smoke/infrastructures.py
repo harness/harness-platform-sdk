@@ -1,20 +1,16 @@
-import json
-
 ####################
 # Infrastructures Tests
 ####################
-print(f"{' Infrastructures ':#^40}")
-environment_identifier = "simple_test"
-print(f"Infrastructures -> List")
-for list_infrastructures in [
-    elem for elem in client.infrastructures.list(environment_identifier=environment_identifier)
-]:
-    print(f"\t \t -> : {list_infrastructures.identifier}")
 
-infrastructures_request = InfrastructureCreateRequest(
-    environment_identifier="simple_test",
-    identifier="simple_test",
-    name="Simple Test",
+# Test Suite Control Infrastructures
+SUITE_NAME = "Infrastructures"
+SUITE_TEST_ID = "SDK_Test_Infrastructures"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.infrastructures
+SUITE_CREATE_OBJECT = InfrastructureCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
+    environment_identifier=global_project_environment_id,
     description="a test",
     type="KubernetesDirect",
     deployment_type="Kubernetes",
@@ -26,34 +22,37 @@ infrastructures_request = InfrastructureCreateRequest(
     allow_simultaneous_deployments=True,
 )
 
-infrastructures = client.infrastructures.get(
-    identifier=infrastructures_request.identifier, environment_identifier=environment_identifier
-)
-if infrastructures:
-    print(f"\t -> Get : { infrastructures.identifier}")
-    infrastructures_request.description = "UPDATE from Existing"
-    infrastructures = client.infrastructures.update(
-        identifier=infrastructures.identifier, body=infrastructures_request
+LIST_KWARGS = {"environment_identifier": global_project_environment_id}
+GET_KWARGS = {"environment_identifier": global_project_environment_id}
+DELETE_KWARGS = {"environment_identifier": global_project_environment_id}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : { infrastructures.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
 
 else:
-    infrastructures_request.description = "CREATE from New"
-    infrastructures = client.infrastructures.create(infrastructures_request)
-    print(f"\t -> Created : { infrastructures.identifier}")
-    infrastructures_request.description = "UPDATE after Creating"
-    infrastructures = client.infrastructures.update(
-        identifier=infrastructures.identifier, body=infrastructures_request
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : { infrastructures.identifier}")
-print(f"Infrastructures -> List")
-for list_infrastructures in [
-    elem for elem in client.infrastructures.list(environment_identifier=environment_identifier)
-]:
-    print(f"\t \t -> : {list_infrastructures.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
 
-if unit_cleanup:
-    client.infrastructures.delete(
-        identifier=infrastructures.identifier, environment_identifier=environment_identifier
-    )
-    print(f"\t -> Delete : { infrastructures.identifier}")
+if cleanup:
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier, **DELETE_KWARGS)
+    print(f"\t -> Delete : {validation_object.identifier}")

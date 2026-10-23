@@ -1,55 +1,52 @@
-import json
-
 ####################
 # WorkspaceVariables Tests
 ####################
-print(f"{' WorkspaceVariables ':#^40}")
-workspace_identifier = "iacm_test"
-print(f"WorkspaceVariables -> List")
-for list_workspace_variables in [
-    elem for elem in client.workspace_variables.list(workspace_identifier=workspace_identifier)
-]:
-    print(f"\t \t -> : {list_workspace_variables.identifier}")
 
-workspace_variables_request = WorkspaceVariableCreateRequest(
-    workspace_identifier="iacm_test",
-    identifier="myvar",
+# Test Suite Control WorkspaceVariables
+SUITE_NAME = "WorkspaceVariables"
+SUITE_TEST_ID = "SDK_Test_WorkspaceVariables"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.workspace_variables
+SUITE_CREATE_OBJECT = WorkspaceVariableCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
+    workspace_identifier=global_project_workspace,
     value="Simple Test",
     value_type="string",
     kind="tf",
 )
 
-workspace_variables = client.workspace_variables.get(
-    workspace_identifier=workspace_variables_request.workspace_identifier,
-    identifier=workspace_variables_request.identifier,
-    kind=workspace_variables_request.kind,
-)
-if workspace_variables:
-    print(f"\t -> Get : { workspace_variables.identifier}")
-    workspace_variables_request.description = "UPDATE from Existing"
-    workspace_variables = client.workspace_variables.update(
-        identifier=workspace_variables.identifier, body=workspace_variables_request
+LIST_KWARGS = {"workspace_identifier": global_project_workspace}
+GET_KWARGS = {"workspace_identifier": global_project_workspace, "kind": SUITE_CREATE_OBJECT.kind}
+DELETE_KWARGS = {"workspace_identifier": global_project_workspace, "kind": "tf"}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : { workspace_variables.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
 
 else:
-    workspace_variables = client.workspace_variables.create(workspace_variables_request)
-    print(f"\t -> Created : { workspace_variables.identifier}")
-    workspace_variables_request.description = "UPDATE after Creating"
-    workspace_variables = client.workspace_variables.update(
-        identifier=workspace_variables.identifier, body=workspace_variables_request
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : { workspace_variables.identifier}")
-print(f"WorkspaceVariables -> List")
-for list_workspace_variables in [
-    elem for elem in client.workspace_variables.list(workspace_identifier=workspace_identifier)
-]:
-    print(f"\t \t -> : {list_workspace_variables.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
 
-if unit_cleanup:
-    client.workspace_variables.delete(
-        identifier=workspace_variables_request.identifier,
-        workspace_identifier=workspace_variables_request.workspace_identifier,
-        kind=workspace_variables_request.kind,
-    )
-    print(f"\t -> Delete : { workspace_variables.identifier}")
+if cleanup:
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier, **DELETE_KWARGS)
+    print(f"\t -> Delete : {validation_object.identifier}")

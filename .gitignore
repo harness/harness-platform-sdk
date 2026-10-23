@@ -135,7 +135,9 @@ dmypy.json
 settings.local.json
 !settings.local.json.example
 context_history
-.ai
+.ai/*
+!.ai/repository_tasks/
+!.ai/repository_tasks/**
 .claude/skills
 .claude/skills-manifest.json
 rendered
@@ -147,3 +149,20 @@ openapi/harness-openapi-normalized.json
 .harness.yaml
 DRONE_OUTPUT.ENV
 
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfplan.out
+.terraform.lock.hcl
+
+# Ignore any .tfvars files that are generated automatically for each Terraform run. Most
+# .tfvars files are managed as part of configuration and so should be included in
+# version control.
+#
+# example.tfvars
+*.tfvars
+!*.auto.tfvars

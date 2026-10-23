@@ -1,60 +1,80 @@
-# import json
+####################
+# CatalogCustomProperty Tests
+####################
 
-# ####################
-# # CatalogCustomProperty Tests
-# ####################
-print(f"{' CatalogCustomProperty ':#^40}")
-default_identifier = "lab"
-default_kind = "resource"
-default_scope = client._default_scope
-default_scope = Scope(
-    account_id=client.account_id, org="Harness_Platform_Management", project="Solutions_Factory"
+# Test Suite Control CatalogCustomProperty
+SUITE_NAME = "CatalogCustomProperty"
+SUITE_TEST_ID = global_catalog_entity
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.catalog_custom_properties
+SUITE_CREATE_OBJECT = CatalogCustomPropertyCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
+    kind="component",
+    mode="replace",
+    catalog_property="metadata.SDK_Validator",
+    value="CREATED",
 )
-print(f"CatalogCustomProperty -> Get Entities by a given property")
+
+LIST_KWARGS = {}
+GET_KWARGS = {"identifier": SUITE_TEST_ID, "kind": "component"}
+UPDATE_KWARGS = {}
+DELETE_KWARGS = {}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+print(f"\t \t -> : No List Method")
+
+print(f"{SUITE_NAME} -> Get Entities by a given property")
 for list_catalog_custom_properties in [
     elem
-    for elem in client.catalog_custom_properties.get_by_property(
-        catalog_property="metadata.hsf.is_drifted", scope=default_scope
+    for elem in SUITE_TEST_CLASS.get_by_property(
+        catalog_property=SUITE_CREATE_OBJECT.catalog_property
     )
 ]:
     print(
         f"\t \t -> : {list_catalog_custom_properties.identifier} = {list_catalog_custom_properties.value}"
     )
-print(f"CatalogCustomProperty -> Get Properties for a given entity")
-list_catalog_custom_properties = client.catalog_custom_properties.get_by_entity(
-    identifier=default_identifier, kind=default_kind, scope=default_scope
-)
-print(
-    f"\t \t -> : {list_catalog_custom_properties.identifier} = {list_catalog_custom_properties.properties}"
-)
 
-catalog_custom_properties_request = CatalogCustomPropertyCreateRequest(
-    identifier=default_identifier,
-    kind=default_kind,
-    mode="replace",
-    catalog_property="metadata.hsf.is_drifted",
-    value=True,
-)
-catalog_custom_properties = client.catalog_custom_properties.create(
-    catalog_custom_properties_request, scope=default_scope
-)
-print(
-    f"\t -> Created : { catalog_custom_properties.identifier} = { catalog_custom_properties.value}"
-)
-catalog_custom_properties_request.value = False
-catalog_custom_properties = client.catalog_custom_properties.update(
-    catalog_custom_properties_request, scope=default_scope
-)
-print(
-    f"\t -> Created : { catalog_custom_properties.identifier} = { catalog_custom_properties.value}"
-)
-list_catalog_custom_properties = client.catalog_custom_properties.get_by_entity(
-    identifier=default_identifier, kind=default_kind, scope=default_scope
-)
-print(
-    f"\t \t -> : {list_catalog_custom_properties.identifier} = {list_catalog_custom_properties.properties}"
-)
+print(f"{SUITE_NAME} -> Get Properties for a given entity")
+validation_object = SUITE_TEST_CLASS.get_by_entity(**GET_KWARGS)
+if len(validation_object.properties) >= 1:
+    print(f"\t Get -> {validation_object.identifier} has the following custom_properties:")
+    for catalog_properties in validation_object.properties:
+        print(
+            f"\t\t: {catalog_properties["property"]} has the following custom_properties {catalog_properties["value"]}"
+        )
+    SUITE_CREATE_OBJECT.value = "UPDATED"
+    validation_object = SUITE_TEST_CLASS.update(body=SUITE_CREATE_OBJECT, **UPDATE_KWARGS)
+    print(
+        f"\t -> Updated Entity {validation_object.identifier}: {validation_object.catalog_property} with value {validation_object.value}"
+    )
 
-if unit_cleanup:
-    client.catalog_custom_properties.delete(catalog_custom_properties_request, scope=default_scope)
-    print(f"\t -> Delete : { catalog_custom_properties.identifier}")
+else:
+    print(f"\t -> {validation_object.identifier} has no custom_properties")
+    validation_object = SUITE_TEST_CLASS.create(SUITE_CREATE_OBJECT)
+    print(
+        f"\t -> Created Entity {validation_object.identifier}: {validation_object.catalog_property} with value {validation_object.value}"
+    )
+    SUITE_CREATE_OBJECT.value = "RECENTLY_CREATED"
+    validation_object = SUITE_TEST_CLASS.update(body=SUITE_CREATE_OBJECT, **UPDATE_KWARGS)
+    print(
+        f"\t -> Updated Entity {validation_object.identifier}: {validation_object.catalog_property} with value {validation_object.value}"
+    )
+
+print(f"{SUITE_NAME} -> Get Entities by a given property")
+for list_catalog_custom_properties in [
+    elem
+    for elem in SUITE_TEST_CLASS.get_by_property(
+        catalog_property=SUITE_CREATE_OBJECT.catalog_property
+    )
+]:
+    print(
+        f"\t \t -> : {list_catalog_custom_properties.identifier} = {list_catalog_custom_properties.value}"
+    )
+
+if cleanup:
+    SUITE_TEST_CLASS.delete(body=SUITE_CREATE_OBJECT, **DELETE_KWARGS)
+    print(
+        f"\t -> Delete : CustomProperty {validation_object.catalog_property} from {validation_object.identifier}"
+    )

@@ -201,7 +201,7 @@ class WorkspaceVariablesApi:
         self,
         identifier: str,
         workspace_identifier: str,
-        kind: WorkspaceVariableKind,
+        kind: WorkspaceVariableKind | str,
         scope: Scope | None = None,
     ) -> WorkspaceVariableResponse:
         """Get a single workspacevariabless by ID.
@@ -220,13 +220,15 @@ class WorkspaceVariablesApi:
             ApiError: For non-2xx responses.
         """
         self.resolved_scope = scope
+        if isinstance(kind, WorkspaceVariableKind):
+            kind = kind.value
         url = self._client._build_url(
             "{root_api_path}/orgs/{org}/projects/{project}/workspaces/{workspace_identifier}/variables/{kind}/{identifier}",
             self.resolved_scope,
             root_api_path=self.root_api_path,
             identifier=identifier,
             workspace_identifier=workspace_identifier,
-            kind=kind.value,
+            kind=kind,
         )
 
         response = self._client._get(url, params=self.default_params, response_model=None)
@@ -311,7 +313,7 @@ class WorkspaceVariablesApi:
         self,
         identifier: str,
         workspace_identifier: str,
-        kind: WorkspaceVariableKind,
+        kind: WorkspaceVariableKind | str,
         scope: Scope | None = None,
     ) -> dict | None:
         """Delete a workspacevariabless.
@@ -330,12 +332,14 @@ class WorkspaceVariablesApi:
             ApiError: For non-2xx responses.
         """
         self.resolved_scope = scope
+        if isinstance(kind, WorkspaceVariableKind):
+            kind = kind.value
         url = self._client._build_url(
             "{root_api_path}/orgs/{org}/projects/{project}/workspaces/{workspace_identifier}/variables/{kind}/{identifier}",
             self.resolved_scope,
             root_api_path=self.root_api_path,
             identifier=identifier,
             workspace_identifier=workspace_identifier,
-            kind=kind.value,
+            kind=kind,
         )
         return self._client._delete(url, params=self.default_params, response_model=None)

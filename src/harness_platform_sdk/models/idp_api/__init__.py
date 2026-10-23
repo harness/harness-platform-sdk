@@ -15,7 +15,7 @@ from .entities import (
     EntitySystemCreateRequest,
     EntityWorkflowCreateRequest,
 )
-from .scores import ScoreResponse, ScoreSummaryResponse
+from .scores import ScoreCreateRequest, ScoreResponse, ScoreSummaryResponse
 
 __all__ = [
     "CatalogCustomPropertyResponse",
@@ -28,4 +28,5 @@ __all__ = [
     "EntitySystemCreateRequest",
     "ScoreResponse",
     "ScoreSummaryResponse",
+    "ScoreCreateRequest",
 ]

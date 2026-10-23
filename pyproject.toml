@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "BUSL-1.1"
 authors = [
-    {name = "Harness", email = "platform@harness.io"}
+    {name = "Harness", email = "no-reply@harness.io"}
 ]
 keywords = ["harness", "api", "sdk", "iac"]
 classifiers = [

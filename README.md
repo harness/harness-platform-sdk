@@ -148,8 +148,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
 
 ## Testing
 
+### Unit Tests
+
 ```bash
-# Run all tests
+# Run all unit tests
 mise run tests
 
 # Run with coverage report
@@ -158,6 +160,57 @@ mise run tests:cov
 # Run specific test file
 pytest tests/unit_tests/test_client.py -v
 ```
+
+### Smoke Tests
+
+Smoke tests validate end-to-end SDK functionality against a live Harness environment. They require a provisioned Harness account with fixture resources (org, project, secrets, connectors, etc.) pre-created via OpenTofu.
+
+**Prerequisites:**
+- Live Harness environment with credentials in `.env` (see [Terraform Fixtures](#terraform-fixtures) below)
+- OpenTofu/Terraform fixtures provisioned: `tests/fixtures/terraform/`
+- Environment variables: `HARNESS_PLATFORM_API_KEY`, `HARNESS_ACCOUNT_ID`, `HARNESS_ENDPOINT`
+
+**Run smoke tests:**
+
+```bash
+# Run all smoke tests in tier order
+python scripts/run_smoke_tests.py
+
+# Run only specific test type
+python scripts/run_smoke_tests.py --filter-type organizations
+python scripts/run_smoke_tests.py --filter-type pipelines
+
+# Run and clean up test-created resources
+python scripts/run_smoke_tests.py --cleanup
+
+# Run and clean up both test and unit-scoped resources
+python scripts/run_smoke_tests.py --cleanup --unit-cleanup
+```
+
+**Test Organization:**
+
+Tests are executed in tiers defined by `.test_order.yaml`. Each tier waits for prior tiers to complete, ensuring dependencies are satisfied:
+
+- **tier_0**: Organizations (foundation layer)
+- **tier_1**: Projects
+- **tier_2**: User Groups, Variables, Pipelines, Secrets, Services, Connectors, Environments, Resource Groups, Roles, Role Assignments
+- **tier_3**: Input Sets, Infrastructures, Templates, Triggers, Workspaces, Workspace States, Workspace Variables, Entities, Scores, Catalog Properties
+- **tier_manual**: Tests requiring manual setup (e.g., Workspace Approvals with running pipelines)
+
+### Terraform Fixtures
+
+Smoke tests depend on a pre-provisioned Harness environment. Fixtures are defined in `tests/fixtures/terraform/` using OpenTofu/Terraform HCL with the Harness provider.
+
+**Provision fixtures:**
+
+```bash
+cd tests/fixtures/terraform
+tofu init
+tofu plan
+tofu apply
+```
+
+See [Terraform Fixtures](tests/fixtures/terraform/README.md) for fixture structure and resource details.
 
 ## Version
 

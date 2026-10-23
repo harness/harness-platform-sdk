@@ -1,15 +1,29 @@
-####################
-# Pipeline Tests
-####################
+"""
+Smoke test for Pipelines V0 API (pipeline CRUD operations).
+
+Test Coverage:
+  - List pipelines
+  - Get pipeline by identifier
+  - Create pipeline with stages and variables
+  - Update pipeline (add stages)
+  - Delete pipeline (if cleanup=True)
+
+Scope: Project-level (requires org_id and project_id)
+Fixture Dependency: Organizations, Projects (Tier 0-1)
+"""
+
 print(f"{' Pipelines ':#^40}")
-print(f"Pipelines -> List")
+SUITE_NAME = "Pipelines"
+SUITE_TEST_ID = "SDK_Test_Pipeline"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+print(f"{SUITE_NAME} -> List")
 for list_pipeline in [elem for elem in client.pipelines_v0.list()]:
     print(f"\t \t -> : {list_pipeline.identifier}")
 
 pipeline_request = PipelineV0CreateRequest(
-    identifier="simple_test",
-    name="Simple Test",
-    description="a test",
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
+    description="Smoke Test Validation - Create",
     stages=[
         {
             "stage": {
@@ -71,22 +85,27 @@ additional_stage = [
     }
 ]
 
+# Attempt to get existing pipeline
 pipeline = client.pipelines_v0.get(identifier=pipeline_request.identifier)
-# print(pipeline)
 if pipeline:
     print(f"\t -> Get : {pipeline.identifier}")
-    pipeline_request.description = "UPDATE from Existing"
+    pipeline_request.description = "Smoke Test Validation - Update"
+    pipeline_request.stages += additional_stage
+    pipeline = client.pipelines_v0.update(identifier=pipeline.identifier, body=pipeline_request)
+    print(f"\t -> Updated : {pipeline.identifier}")
+else:
+    # Create if not found
+    pipeline = client.pipelines_v0.create(pipeline_request)
+    print(f"\t -> Created : {pipeline.identifier}")
+    pipeline_request.description = "Smoke Test Validation - Update after create"
     pipeline_request.stages += additional_stage
     pipeline = client.pipelines_v0.update(identifier=pipeline.identifier, body=pipeline_request)
     print(f"\t -> Updated : {pipeline.identifier}")
 
-else:
-    pipeline_request.description = "CREATE from New"
-    pipeline = client.pipelines_v0.create(pipeline_request)
-    print(f"\t -> Created : {pipeline.identifier}")
-    pipeline = client.pipelines_v0.update(identifier=pipeline.identifier, body=pipeline_request)
-    pipeline_request.description = "UPDATE after Creating"
-    print(f"\t -> Updated : {pipeline.identifier}")
-print(f"Pipelines -> List")
+print(f"{SUITE_NAME} -> List")
 for list_pipeline in [elem for elem in client.pipelines_v0.list()]:
     print(f"\t \t -> : {list_pipeline.identifier}")
+
+if cleanup:
+    client.pipelines_v0.delete(identifier=SUITE_TEST_ID)
+    print(f"\t -> Deleted : {SUITE_TEST_ID}")

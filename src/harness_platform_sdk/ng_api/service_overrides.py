@@ -237,6 +237,8 @@ class ServiceOverridesApi:
             override_identifier = "_".join([override_identifier, service_identifier])
         if infra_identifier:
             override_identifier = "_".join([override_identifier, infra_identifier])
+        if "identifier" in kwargs:
+            override_identifier = kwargs["identifier"]
 
         url = self._client._build_url(
             "{root_api_path}/{identifier}",

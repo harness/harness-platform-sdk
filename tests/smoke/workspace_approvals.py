@@ -1,51 +1,51 @@
-import json
-import uuid
-
 ####################
 # WorkspaceApprovals Tests
 ####################
-print(f"{' WorkspaceApprovals ':#^40}")
-workspace_identifier = "iacm_test"
-print(f"WorkspaceApprovals -> List")
-all_workspace_approvals = [
-    elem
-    for elem in client.workspace_approvals.list(
-        workspace_identifier=workspace_identifier, status="pending"
-    )
-]
-for list_workspace_approvals in all_workspace_approvals:
-    print(f"\t \t -> : {list_workspace_approvals.identifier}")
 
-if not all_workspace_approvals:
-    import uuid
-
-    approval_identifier = str(uuid)
-else:
-    approval_identifier = all_workspace_approvals[0].identifier
-workspace_approvals_request = WorkspaceApprovalCreateRequest(
-    identifier=approval_identifier,
+# Test Suite Control WorkspaceApprovals
+SUITE_NAME = "WorkspaceApprovals"
+SUITE_TEST_ID = "SDK_Test_WorkspaceApprovals"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.workspace_approvals
+SUITE_CREATE_OBJECT = WorkspaceApprovalCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
     status="approved",
     actioned_by="Harness SCOE Team",
     actioned_by_email="harness_scoe@scoe.harness.lab",
 )
 
-workspace_approvals = client.workspace_approvals.get(
-    identifier=approval_identifier,
-)
-if workspace_approvals:
-    print(f"\t -> Get : { workspace_approvals.identifier}")
-    workspace_approvals_request.description = "UPDATE from Existing"
-    workspace_approvals = client.workspace_approvals.update(
-        identifier=workspace_approvals.identifier, body=workspace_approvals_request
-    )
-    print(f"\t -> Updated : { workspace_approvals.identifier}")
-else:
-    print(f"\t -> Skipped - no active approval for workspace : { workspace_identifier }")
-print(f"WorkspaceApprovals -> List")
-for list_workspace_approvals in [
-    elem for elem in client.workspace_approvals.list(workspace_identifier=workspace_identifier)
-]:
-    print(f"\t \t -> : {list_workspace_approvals.identifier}")
+LIST_KWARGS = {"workspace_identifier": global_project_workspace, "status": "pending"}
+GET_KWARGS = {"workspace_identifier": global_project_workspace}
+DELETE_KWARGS = {"workspace_identifier": global_project_workspace}
 
-if unit_cleanup:
-    print(f"\t -> Delete Approval Skipped. Unsupported action")
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
+    )
+    print(f"\t -> Updated : {validation_object.identifier}")
+
+else:
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
+    )
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+if cleanup:
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier, **DELETE_KWARGS)
+    print(f"\t -> Delete : {validation_object.identifier}")

@@ -1,20 +1,15 @@
-import json
-
-from harness_platform_sdk.models.ng_api import *
-
 ####################
 # Variables Tests
 ####################
-print(f"{' Variables ':#^40}")
-pipeline_identifier = "simple_test"
-print(f"Variables -> List")
-for list_variables in [elem for elem in client.variables.list()]:
-    print(f"\t \t -> : {list_variables.identifier}")
 
-variables_request = VariableCreateRequest(
-    pipeline_identifier="simple_test",
-    identifier="simple_test",
-    name="Simple Test",
+# Test Suite Control Variables
+SUITE_NAME = "Variables"
+SUITE_TEST_ID = "SDK_Test_Variable"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.variables
+SUITE_CREATE_OBJECT = VariableCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
     description="a test",
     type="String",
     spec=VariableSpec(
@@ -24,29 +19,36 @@ variables_request = VariableCreateRequest(
     ),
 )
 
-variables = client.variables.get(
-    identifier=variables_request.identifier,
-)
-if variables:
-    print(f"\t -> Get : { variables.identifier}")
-    variables_request.description = "UPDATE from Existing"
-    variables_request.spec.fixed_value = "UPDATED"
-    variables = client.variables.update(identifier=variables.identifier, body=variables_request)
-    print(f"\t -> Updated : { variables.identifier}")
+LIST_KWARGS = {}
+GET_KWARGS = {}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
+    )
+    print(f"\t -> Updated : {validation_object.identifier}")
 
 else:
-    variables_request.description = "CREATE from New"
-    variables = client.variables.create(variables_request)
-    print(f"\t -> Created : { variables.identifier}")
-    variables_request.description = "UPDATE after Creating"
-    variables = client.variables.update(identifier=variables.identifier, body=variables_request)
-    print(f"\t -> Updated : { variables.identifier}")
-print(f"Variables -> List")
-for list_variables in [elem for elem in client.variables.list()]:
-    print(f"\t \t -> : {list_variables.identifier}")
-
-if unit_cleanup:
-    client.variables.delete(
-        identifier=variables.identifier,
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Delete : { variables.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+if cleanup:
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier)
+    print(f"\t -> Delete : {validation_object.identifier}")

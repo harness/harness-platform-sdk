@@ -1,45 +1,51 @@
 ####################
 # ResourceGroups Tests
 ####################
-print(f"{' ResourceGroups ':#^40}")
-print(f"ResourceGroups -> List")
-for resource_group in [elem for elem in client.resource_groups.list()]:
-    print(f"\t \t -> : {resource_group.identifier}")
-spec = {
-    "resource_groupManagerIdentifier": "harnessSecretManager",
-    "valueType": "Inline",
-    "value": "changeme",
-}
-resource_group_request = ResourceGroupCreateRequest(
-    identifier="simple_test",
-    name="Simple Test",
+
+# Test Suite Control ResourceGroups
+SUITE_NAME = "ResourceGroups"
+SUITE_TEST_ID = "SDK_Test_ResourceGroups"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.resource_groups
+SUITE_CREATE_OBJECT = ResourceGroupCreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
     description="Initial",
     allowed_scope_levels=["project"],
     resource_filter={"resources": [], "includeAllResource": "true"},
     included_scopes=[{"filter": "EXCLUDING_CHILD_SCOPES"}],
 )
-resource_group = client.resource_groups.get(identifier=resource_group_request.identifier)
-if resource_group:
-    print(f"\t -> Get : {resource_group_request.identifier}")
-    resource_group_request.description = "UPDATE from Existing"
-    resource_group = client.resource_groups.update(
-        identifier=resource_group.identifier, body=resource_group_request
+
+LIST_KWARGS = {}
+GET_KWARGS = {}
+
+print(f"{f" {SUITE_NAME} ":#^40}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
+
+test_create_request = SUITE_CREATE_OBJECT
+validation_object = SUITE_TEST_CLASS.get(identifier=test_create_request.identifier, **GET_KWARGS)
+if validation_object:
+    print(f"\t -> Get : {validation_object.identifier}")
+    test_create_request.description = "Smoke Test Validation - Update"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    print(f"\t -> Updated : {resource_group.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
+
 else:
-    resource_group_request.description = "CREATE from New"
-    resource_group = client.resource_groups.create(resource_group_request)
-    print(f"\t -> Created : {resource_group.identifier}")
-    resource_group = client.resource_groups.update(
-        identifier=resource_group.identifier, body=resource_group_request
+    validation_object = SUITE_TEST_CLASS.create(test_create_request)
+    print(f"\t -> Created : {validation_object.identifier}")
+    validation_object.description = "Smoke Test Validation - Update after create"
+    validation_object = SUITE_TEST_CLASS.update(
+        identifier=validation_object.identifier, body=test_create_request
     )
-    # print(resource_group)
-    resource_group.description = "UPDATE after Creating"
-    print(f"\t -> Updated : {resource_group.identifier}")
-print(f"resource_groups -> List")
-for resource_group in [elem for elem in client.resource_groups.list()]:
-    print(f"\t \t -> : {resource_group.identifier}")
+    print(f"\t -> Updated : {validation_object.identifier}")
+print(f"{SUITE_NAME} -> List")
+for validate_method_list in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {validate_method_list.identifier}")
 
 if cleanup:
-    client.resource_groups.delete(identifier=resource_group.identifier)
-    print(f"\t -> Delete : {resource_group.identifier}")
+    SUITE_TEST_CLASS.delete(identifier=validation_object.identifier)
+    print(f"\t -> Delete : {validation_object.identifier}")

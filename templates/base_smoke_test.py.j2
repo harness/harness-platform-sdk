@@ -1,49 +1,59 @@
-import json
+"""
+Smoke test for {{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} API.
 
-####################
-# {{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} Tests
-####################
-print(f"{' {{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} ':#^40}")
-pipeline_identifier = "simple_test"
-print(f"{{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} -> List")
-for list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} in [
-    elem for elem in client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.list(pipeline_identifier=pipeline_identifier)
-]:
-    # client._display_payload(list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }})
-    print(f"\t \t -> : {list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
+Test Coverage:
+  - List {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}
+  - Get {{ CLASS_NAME_PREFIX | title }}{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} by identifier
+  - Create {{ CLASS_NAME_PREFIX | title }}{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }}
+  - Update {{ CLASS_NAME_PREFIX | title }}{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }}
+  - Delete {{ CLASS_NAME_PREFIX | title }}{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} (if cleanup=True or unit_cleanup=True)
 
-{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request = {{ (CLASS_NAME_PREFIX | title) ~ (CLASS_VERSION|upper if CLASS_VERSION else '') }}CreateRequest(
-    pipeline_identifier="simple_test",
-    identifier="simple_test",
-    name="Simple Test",
-    description="a test",
+Scope: Project-level (requires org_id and project_id)
+Fixture Dependency: Organizations, Projects (Tier 0-1)
+
+Note: This is a generated template. See templates/base_smoke_test.py.j2 for the standard.
+"""
+
+SUITE_NAME = "{{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }}"
+SUITE_TEST_ID = "SDK_Test_{{ CLASS_NAME_PREFIX | title }}"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+SUITE_TEST_CLASS = client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}
+
+# Define any special parameters needed for list() and get() calls
+LIST_KWARGS = {"pipeline_identifier": "simple_test"}
+GET_KWARGS = {"pipeline_identifier": "simple_test"}
+DELETE_KWARGS = {"pipeline_identifier": "simple_test"}
+
+print(f"{f' {SUITE_NAME} ':#^40}")
+print(f"{SUITE_NAME} -> List")
+for list_resource in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {list_resource.identifier}")
+
+resource_request = {{ (CLASS_NAME_PREFIX | title) ~ (CLASS_VERSION|upper if CLASS_VERSION else '') }}CreateRequest(
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
+    description="Smoke Test Validation - Create",
 )
 
-{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} = client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.get(
-    identifier={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request.identifier, pipeline_identifier=pipeline_identifier
-)
-# client._display_payload({{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }})
-if {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}:
-    print(f"\t -> Get : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
-    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request.description = "UPDATE from Existing"
-    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} = client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.update(identifier={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier, body={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request)
-    print(f"\t -> Updated : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
-
+# Attempt to get existing resource
+resource = SUITE_TEST_CLASS.get(identifier=resource_request.identifier, **GET_KWARGS)
+if resource:
+    print(f"\t -> Get : {resource.identifier}")
+    resource_request.description = "Smoke Test Validation - Update"
+    resource = SUITE_TEST_CLASS.update(identifier=resource.identifier, body=resource_request)
+    print(f"\t -> Updated : {resource.identifier}")
 else:
-    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request.description = "CREATE from New"
-    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} = client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.create({{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request)
-    print(f"\t -> Created : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
-    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request.description = "UPDATE after Creating"
-    {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} = client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.update(identifier={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier, body={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}_request)
-    print(f"\t -> Updated : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
-print(f"{{ CLASS_NAME_PREFIX | title }}s{{ (CLASS_VERSION|upper) if CLASS_VERSION else '' }} -> List")
-for list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }} in [
-    elem for elem in client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.list(pipeline_identifier=pipeline_identifier)
-]:
-    print(f"\t \t -> : {list_{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
+    # Create if not found
+    resource = SUITE_TEST_CLASS.create(resource_request)
+    print(f"\t -> Created : {resource.identifier}")
+    resource_request.description = "Smoke Test Validation - Update after create"
+    resource = SUITE_TEST_CLASS.update(identifier=resource.identifier, body=resource_request)
+    print(f"\t -> Updated : {resource.identifier}")
 
-if unit_cleanup:
-    client.{{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.delete(
-        identifier={{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier, pipeline_identifier=pipeline_identifier
-    )
-    print(f"\t -> Delete : { {{ ( CLASS_NAME_PREFIX ~ 's' ~ ('_' ~ CLASS_VERSION if CLASS_VERSION else '') ) | lower }}.identifier}")
+print(f"{SUITE_NAME} -> List")
+for list_resource in [elem for elem in SUITE_TEST_CLASS.list(**LIST_KWARGS)]:
+    print(f"\t \t -> : {list_resource.identifier}")
+
+if cleanup or unit_cleanup:
+    SUITE_TEST_CLASS.delete(identifier=resource.identifier, **DELETE_KWARGS)
+    print(f"\t -> Delete : {resource.identifier}")

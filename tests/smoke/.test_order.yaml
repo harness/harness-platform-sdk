@@ -1,0 +1,31 @@
+---
+foundation: []
+tier_0:
+  - organizations
+tier_1:
+  - projects
+tier_2:
+  - user_groups
+  - variables
+  - pipelines_v0
+  - secrets
+  - services
+  - service_overrides
+  - connectors
+  - environments_v2
+  - resource_groups
+  - role_assignments
+  - roles
+tier_3:
+  - input_sets_v0
+  - infrastructures
+  - templates_v0
+  - triggers_v0
+  - workspaces
+  - workspace_states
+  - workspace_variables
+  - entities
+  - scores
+  - catalog_custom_properties
+tier_manual: []
+  # - workspace_approvals # Requires a RUNNING pipeline with an approval

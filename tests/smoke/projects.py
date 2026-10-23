@@ -1,32 +1,50 @@
-####################
-# Project Tests
-####################
+"""
+Smoke test for Projects API (project CRUD operations).
+
+Test Coverage:
+  - List projects (org-scoped)
+  - Get project by identifier
+  - Create project
+  - Update project
+  - Delete project (if cleanup=True)
+
+Scope: Organization-level (requires org_id)
+Fixture Dependency: Organizations (Tier 0)
+"""
+
 print(f"{' Projects ':#^40}")
-default_project_id = "simple_test"
-default_project_name = default_project_id.replace("_", " ").capitalize()
-print(f"Projects -> List")
+SUITE_NAME = "Projects"
+SUITE_TEST_ID = "PLATFORM_SDK_FIXTURES_TEST_PROJECT"
+SUITE_TEST_NAME = SUITE_TEST_ID.replace("_", " ").capitalize()
+print(f"{SUITE_NAME} -> List")
 for list_project in [elem for elem in client.projects.list()]:
     print(f"\t \t -> : {list_project.identifier}")
 
 project_request = ProjectCreateRequest(
-    identifier=global_project_id or default_project_id,
-    name=global_project_name or default_project_name,
-    description="a test",
+    identifier=SUITE_TEST_ID,
+    name=SUITE_TEST_NAME,
+    description="Smoke Test Validation - Create",
 )
+
+# Attempt to get existing project
 project = client.projects.get(identifier=project_request.identifier)
-# print(project)
 if project:
     print(f"\t -> Get : {project.identifier}")
-    project_request.description = "UPDATE from Existing"
+    project_request.description = "Smoke Test Validation - Update"
     project = client.projects.update(identifier=project.identifier, body=project_request)
     print(f"\t -> Updated : {project.identifier}")
 else:
-    project_request.description = "CREATE from New"
+    # Create if not found
     project = client.projects.create(project_request)
     print(f"\t -> Created : {project.identifier}")
+    project_request.description = "Smoke Test Validation - Update after create"
     project = client.projects.update(identifier=project.identifier, body=project_request)
-    project_request.description = "UPDATE after Creating"
     print(f"\t -> Updated : {project.identifier}")
-print(f"Projects -> List")
+
+print(f"{SUITE_NAME} -> List")
 for list_project in [elem for elem in client.projects.list()]:
     print(f"\t \t -> : {list_project.identifier}")
+
+if cleanup:
+    client.projects.delete(identifier=SUITE_TEST_ID)
+    print(f"\t -> Deleted : {SUITE_TEST_ID}")

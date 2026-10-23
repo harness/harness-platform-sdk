@@ -1,0 +1,161 @@
+# mise.toml
+#
+# Learn more about Mise-en-Place - https://mise.jdx.dev/getting-started.html
+#
+# Converted from Makefile - Terraform/OpenTofu tasks using Docker
+[tools]
+opentofu = "latest"
+terraform-docs = "latest"
+
+[env]
+ROOT_DIR = "{{config_root}}"
+TERRAFORM_TFVARS = "terraform.tfvars"
+PROJECT_DIR = "{{cwd}}"
+WORKDIR = "/project"
+RESOURCE = ""
+TEMPLATE_DIR = ""
+
+[tasks.help]
+description = "Show available tasks"
+run = "mise tasks"
+
+[tasks.init]
+description = "Executes Terraform/Tofu `init`."
+dir = "{{cwd}}"
+run = """
+  tofu init
+"""
+
+[tasks.providers]
+description = "Executes Terraform/Tofu `providers mirror`."
+dir = "{{cwd}}"
+run = """
+  tofu providers mirror -platform=linux_arm64 -platform=linux_amd64 -platform=darwin_arm64 .terraform/providers
+"""
+
+[tasks.fmt]
+description = "Formats the Terraform files in the current directory"
+dir = "{{cwd}}"
+run = """
+  tofu fmt -recursive ${TEMPLATE_DIR}
+"""
+
+[tasks."fmt:all"]
+description = "Formats all Terraform files in the entire repository"
+dir = "{{config_root}}"
+run = """
+  tofu fmt -recursive
+"""
+
+[tasks.plan]
+description = "Executes a Terraform/Tofu `plan`"
+dir = "{{cwd}}"
+depends = ["fmt"]
+run = """
+  tofu plan
+"""
+
+[tasks."plan:store"]
+description = "Executes a Terraform/Tofu `plan` and saves to file"
+dir = "{{cwd}}"
+depends = ["fmt"]
+run = """
+  tofu plan -out=terraform.tfplan
+"""
+
+[tasks."plan:show"]
+description = "Shows a saved Terraform/Tofu plan as Terraform/Tofu display"
+dir = "{{cwd}}"
+run = """
+  tofu show terraform.tfplan
+"""
+
+[tasks."plan:output"]
+description = "Convers a saved Terraform/Tofu plan and outputs to file"
+dir = "{{cwd}}"
+run = """
+  tofu show terraform.tfplan > terraform.tfplan.out
+"""
+
+[tasks.apply]
+description = "Automatically runs a Terraform/Tofu `apply`"
+dir = "{{cwd}}"
+run = """
+  tofu apply -auto-approve
+"""
+
+[tasks.destroy]
+description = "Automatically runs a Terraform/Tofu `destroy`"
+dir = "{{cwd}}"
+run = """
+  tofu destroy -auto-approve
+"""
+
+
+[tasks.teardown]
+description = "Full Suite Cleanup. Runs the commands - destroy and testing_cleanup"
+dir = "{{cwd}}"
+depends = ["init"]
+run = [
+    {task = "destroy"},
+    {task = "tofu:cleanup"}
+]
+
+[tasks."plan:init"]
+description = "Executes a Terraform/Tofu `plan` after an `init`"
+dir = "{{cwd}}"
+depends = ["init"]
+run = [
+    {task = "plan"}
+]
+
+[tasks.deploy]
+description = "Applies the Terraform template. Runs the commands - init, plan, and apply"
+dir = "{{cwd}}"
+depends = ["plan:init"]
+run = [
+    {task = "apply"}
+]
+
+[tasks."deploy:dryrun"]
+description = "Dry run deployment. Runs init and plan without apply"
+dir = "{{cwd}}"
+depends = ["init"]
+run = [
+    {task = "plan"}
+]
+
+[tasks.all]
+description = "End-to-end testing. Runs the commands - deploy, teardown"
+dir = "{{cwd}}"
+depends = ["init"]
+run = [
+    {task = "deploy"},
+    {task = "teardown"}
+]
+
+[tasks."tofu:cleanup"]
+description = "Removes all Testing Frameworks and details"
+dir   = "{{cwd}}"
+run = """
+  rm -rf .terraform
+  rm -rf .terraform.lock.hcl
+  rm -rf terraform.tfstate.testing*
+  rm -rf terraform.tfstate.backup
+  rm -rf terraform.tfstate
+  rm -rf imports.tf
+"""
+
+[tasks."plan:machine"]
+description = "Executes a Terraform/Tofu `plan`"
+dir = "{{cwd}}"
+run = """
+  tofu plan -json
+"""
+
+[tasks."plan:graph"]
+description = "Executes a Terraform/Tofu `graph`"
+dir = "{{cwd}}"
+run = """
+  tofu graph
+"""
