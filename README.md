@@ -214,8 +214,8 @@ See [Terraform Fixtures](tests/fixtures/terraform/README.md) for fixture structu
 
 ## Version
 
-- **Current:** 1.0.0
-- **Stability:** Production-ready (v1.0.0 release)
+- **Current:** 1.1.0
+- **Stability:** Production-ready (v1.0.0+ release)
 
 ## License
 

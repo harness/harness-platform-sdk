@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-10-23
+
+### Added
+
+- **IDP API Model Export** — Added `ScoreCreateRequest` to public API exports
+  - Exported `ScoreCreateRequest` model from `models/idp_api/__init__.py`
+  - Enables direct access to score creation model for IDP integrations
+  - Completes public API surface for IDP Scores functionality
+
+- **Smoke Test Infrastructure Documentation** — Comprehensive testing framework documentation
+  - Added `.ai/repository_tasks/.mdrc` with agent-specific instructions for repository management
+  - Added complete task workflow documentation: `task_changelog_update.md`, `task_determine_next_version.md`, `task_generate_readme_update.md`, `task_rollup_commit.md`
+  - Added `AGENTS.md` and `CLAUDE.md` for AI-assisted development workflows
+  - Enhanced smoke test infrastructure with Terraform fixtures and test ordering
+  - Added `tests/smoke/STANDARD.md` documenting smoke test standards and patterns
+  - Added Terraform test fixtures: `tests/fixtures/terraform/` with complete IaC setup
+  - Added `tests/fixtures/mise.toml` for test environment configuration
+  - Added `.test_order.yaml` for deterministic smoke test execution ordering
+
+### Updated
+
+- **IACM Workspace Variables API** — Enhanced flexibility for variable kind parameter
+  - Modified `get()` and `delete()` methods to accept `WorkspaceVariableKind | str` instead of enum-only
+  - Backward compatible: existing enum usage continues to work unchanged
+  - Enables string-based kind specification for dynamic variable management
+
+- **Service Overrides API** — Added support for custom identifier override
+  - Enhanced `create()` method to respect custom `identifier` passed in kwargs
+  - Allows explicit override of auto-generated identifiers
+  - Improves flexibility for service override naming strategies
+
+- **IDP Catalog Custom Properties API** — Removed debug print statement
+  - Cleaned up debug output from `create()` method
+  - Production-ready code quality improvement
+
+- **IDP Scores API** — Code quality improvements
+  - Removed debug print statements from `list_by_entity()` and `list()` methods
+  - Cleaned up unnecessary conditional check in `list()` method
+  - Improved code readability and production readiness
+
+- **Smoke Test Runner** — Enhanced test execution framework
+  - Restructured `scripts/run_smoke_tests.py` with improved organization and error handling
+  - Better test discovery and execution flow
+
+- **Development Configuration** — Updated tool configurations
+  - Enhanced `mise.toml` with updated task definitions
+  - Updated `.gitignore` with additional ignore patterns for test artifacts
+
+---
+
 ## [1.0.0] - 2026-09-14
 
 ### BREAKING CHANGE
